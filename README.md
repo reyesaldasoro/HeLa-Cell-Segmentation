@@ -11,6 +11,13 @@ the central slices with a decrease towards the edges of the cell where the struc
 The processing is unsupervised and  each 2D Slice is processed in about 5-10 seconds running on a MacBook Pro. 
 No systematic attempt to make the code faster was made.
 
+<h2> Citation </h2>
+This work has been accepted as an oral presentation in the conference Medical Image Understanding and Analysis (MIUA) 2018 (https://miua2018.soton.ac.uk) please cite as:
+
+<br>
+Cefa Karabag, Martin L. Jones, Christopher J. Peddie, Anne E. Weston, Lucy M. Collinson, and Constantino Carlos Reyes-Aldasoro, <b>Automated Segmentation of HeLa Nuclear Envelope from Electron Microscopy Images</b>,<i> in Proceedings of Medical Image Understanding and Analysis</i>, 7-9 July 2018, Southampton, UK.
+<br>
+
 <h2> Brief description </h2>
 
 The methodology consists of several image-processing steps: low-pass filtering, edge detection and determination of super-pixels, 
