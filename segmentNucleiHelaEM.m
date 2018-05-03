@@ -1,7 +1,8 @@
-function nucleiHela = segmentNucleiHelaEM(Hela)
-%function nucleiHela = segmentNucleiHelaEM(Hela)
+function nucleiHela = segmentNucleiHelaEM(Hela,cannyStdValue))
+%function nucleiHela = segmentNucleiHelaEM(Hela,cannyStdValue))
 %--------------------------------------------------------------------------
 % Input         Hela       : an image in Matlab format,it can be 2D/3D, double/uint8
+%               cannyStdValue: the value of the Std of the canny edge detection
 % Output        nucleiHela : a binary image with 1 for nuclei, 0 background
 %--------------------------------------------------------------------------
 % 
@@ -48,6 +49,9 @@ if levs>1
 end
 if ~isa(Hela,'double')
     Hela =double(Hela);
+end
+if ~exist('cannyStdValue','var')
+    cannyStdValue            = 4;
 end
 
 % Low pass filter for future operations
