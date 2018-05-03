@@ -72,7 +72,14 @@ Hela_Edge_L2     = bwlabel(ismember(Hela_Edge_L,find(( ([Hela_Edge_LR.Eccentrici
 
 Hela_Edge_D     = bwdist(Hela_Edge);
 
-Hela_Centroid       =  Hela_Edge+(Hela_Edge_D<5);
+% THE DISTANCE DETERMINES WHEN EDGES WILL BE CONNECTED, WITH LARGER CANNY VALUES, THE
+% EDGES MAY NOT CONNECT AT 5, SO BETTER TO INCREASE WITH THE CANNY VALUE
+if cannyStdValue>6
+    dilationEdges = 5+round(cannyStdValue/3);
+else
+    dilationEdges = 5;
+end
+Hela_Centroid       =  Hela_Edge+(Hela_Edge_D<dilationEdges);
 
 Hela_Centroid2      = bwlabel(Hela_Centroid==0);
 Hela_Centroid3      = regionprops(Hela_Centroid2,'Area','Centroid','eccentricity','extrema');
