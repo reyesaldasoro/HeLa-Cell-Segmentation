@@ -98,12 +98,19 @@ testExtreme1 = Hela_ExtremaMin<1;
 testExtreme2 = Hela_ExtremaMax>(min(rows,cols));
 
 % discard regions in the edges and at the same time fill holes in those that are kept
+% NOTE: WITH VERY LARGE REGIONS, THIS MAY BE THE REGION IN THE CENTRE WHICH EXPANDS
+% TO THE EDGES, THIS IS ESPECIALLY THE CASE WITH LARGE VALUES OF CANNY.
+
 Nuclei_0 = imfill(ismember(Hela_Centroid4,find(~(testExtreme1|testExtreme2))),'holes');
 
 %% repeat labelling process to detect small and bringther regions and keep the region in the centre 
 [Nuclei_1,numN] = bwlabel(Nuclei_0);
 Nuclei_2 = regionprops(Nuclei_1,Hela,'Area','MeanIntensity','Centroid');
 
+if numN ==0
+    nucleiHela = zeros(rows,cols);
+    return
+end
 % Centre the centroid with respect to rows and columns
 centralRegionCoord=sqrt(sum((reshape([Nuclei_2.Centroid],[2 numN])'-repmat([cols/2 rows/2],numN,1)).^2,2));
 % select the region which is closest to rows/2, cols/2
