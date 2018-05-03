@@ -57,7 +57,9 @@ end
 % Low pass filter for future operations
 Hela_LPF = imfilter(Hela,fspecial('Gaussian',7,2));
 %% Find edges and distance from those edges
-Hela_Edge       = edge(Hela,'canny',[],4);
+Hela_Edge           = edge(Hela,'canny',[],cannyStdValue);
+
+
 
 %% processing of the edges could be done
 Hela_Edge_L     = bwlabel(Hela_Edge);
