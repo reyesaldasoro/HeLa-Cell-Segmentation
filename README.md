@@ -41,8 +41,8 @@ Assuming your image is a tiff file called 'Hela.tiff'
 
 Hela0 			= imread('Hela.tiff');
 Hela 			= double(Hela0(:,:,1));   
-Hela_background 		= segmentBackgroundHelaEM(Hela);
-Hela_nuclei     		= segmentNucleiHelaEM(Hela);    
+Hela_background 	= segmentBackgroundHelaEM(Hela);
+Hela_nuclei     	= segmentNucleiHelaEM(Hela);    
 
 </pre>
 
