@@ -54,3 +54,11 @@ the segmented nuclei is shaded in green, the ground truth is a red line.
 
 ![Screenshot](Hela_CombinedB_2017_09_07.gif)
 
+
+<h2>More input parameters</h2>
+
+The code can receive 2 more parameters, one if you want to change the standard deviation of the Canny algorithm, and a previous segmentation. This last parameter is useful when you are processing a large number of slices, you can segment the central slice and use that as a parameter for the slices above and below. When the shape becomes irregular, this allows the algorithm to select more than one region.
+
+<img src="https://github.com/phagosight/reyesaldasoro/blob/master/figures/neutrophilActivated.jpg" width="200">
+
+
