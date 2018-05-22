@@ -52,8 +52,8 @@ The following animation shows a multi-slice segmentation where the segmented bac
 the segmented nuclei is shaded in green, the ground truth is a red line.
 
 
+![Screenshot1](Figures/Hela_CombinedB_2017_09_07.gif)
 
-<img src="https://github.com/reyesaldasoro/HeLa-Cell-Segmentation/blob/master/Figures/Hela_CombinedB_2017_09_07.gif" width=“600">
 
 
 <h2>More input parameters</h2>
@@ -68,5 +68,5 @@ nucleiHela = segmentNucleiHelaEM(Hela,cannyStdValue,previousSegmentation)
 
 This last parameter is useful when you are processing a large number of slices, you can segment the central slice and use that as a parameter for the slices above and below. When the shape becomes irregular, this allows the algorithm to select more than one region.
 
-<img src="https://github.com/reyesaldasoro/HeLa-Cell-Segmentation/blob/master/Figures/Hela_MultipleRegions.png" width=“600">
+![Screenshot2](Figures/Hela_MultipleRegions.png)
 
