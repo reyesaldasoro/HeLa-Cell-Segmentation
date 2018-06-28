@@ -1,4 +1,4 @@
-function Hela_background = segmentBackgroundHelaEM(Hela)
+function [Hela_background,Background_intensity,Hela_intensity] = segmentBackgroundHelaEM(Hela)
 %function  Hela_background = segmentBackgroundHelaEM(Hela)
 %--------------------------------------------------------------------------
 % Input         Hela       : an image in Matlab format,it can be 2D/3D, double/uint8
@@ -69,6 +69,7 @@ Hela_background = imfill(Hela_supPixBrightLarge,'holes');
 Hela_background = imclose(Hela_background,strel('disk',39));
 Hela_background = imfill(Hela_background,'holes');
 %imagesc(Hela_background)
+Background_intensity  =  mean(Hela(find(Hela_background)));
+Hela_intensity  =  mean(Hela(find(1-Hela_background)));
 
-q=1;
 
