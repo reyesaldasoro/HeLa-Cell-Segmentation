@@ -103,7 +103,7 @@ IndividualHelaLabels       = detectNumberOfCells(Hela,10);
 
 The algorithm can stop in 2 ways, one is to request a specific number of cells, say you are only interested in the 10 largest cells (second argument to the function), or until no more cells are detected (only one argument is passed, the image itself). An assumption for this last condition is that cells will only be considered if their associated distance peaks are within a limit, currently 50% of the height of the top peak.
 
-The output of the function is one 3D matrix with one level per cell detected. To visualise any given 
+The output of the function is one 3D matrix with one level per cell detected. To visualise any given cell, you can just use one level of the 3D Matrix like this:
 
 <pre class="codeinput">
 
