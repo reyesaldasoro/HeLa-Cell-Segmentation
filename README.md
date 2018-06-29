@@ -176,7 +176,7 @@ IndividualHelaLabels       = detectNumberOfCells(hela,7);
 It is possible to crop automatically a Region of Interest (ROI) from the 8,000 x 8,000 stack with the following function:
 
 <pre class="codeinput">
-function segmentHelaROI(inputFolder,outputFolder,IndividualHelaLabels,numberOfLabel,inputSlice)
+ segmentHelaROI(inputFolder,outputFolder,IndividualHelaLabels,numberOfLabel,inputSlice)
 </pre>
 
 This function reads a folder where a stack of 8,000 x 8,000 images with numerous HeLa cells are stored, selects ONE region of interest and produces a reduced version of the data by cropping the images to a region of 2,000 x 2,000 and selecting that region in N (ideally 300) slices.
