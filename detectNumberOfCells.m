@@ -1,4 +1,48 @@
 function helaFinalLabels         = detectNumberOfCells(hela,numCells)
+%function helaFinalLabels         = detectNumberOfCells(hela,numCells)
+%--------------------------------------------------------------------------
+% Input         Hela                 : an image in Tiff or Matlab format preferably 2D,
+%                                      double/uint8
+%               numCells             : optional, number of cells used to stop the
+%                                      iterative process to detect cells
+% Output        helaFinalLabels      : a 3D matrix with a label at each level
+%                                      corresponding to the region of one cell.
+%--------------------------------------------------------------------------
+% 
+% This code segments the REGION where HeLa Cells are located. The images have been
+% acquired with Electron Microscopy at The Crick Institute by Chris Peddie, Anne
+% Weston, Lucy Collinson and provided to the Data Study Group at the Alan Turing
+% Insititute by Martin Jones.
+%
+% The code uses traditional image processing methods (edge detection, labelling,
+% filtering, etc) to detect the regions where cells are located, ROUGHLY. It is
+% intended as a step previous to a fine segmentation and removes the manual selection
+% of cells by clicking in the centroid of the cell. 
+% It assumes the following:
+%   1 Background is brighter than cells, 
+%   2 The background is detected automatically with segmentBackgroundHelaEM.m
+%   3 As the image may have 20 or more cells, there are  2 ways to stop the iterative
+%   process, one with the input argument to detect a determined number of cells, and
+%   also the intensity of a distance map calculated in the algorithm, i.e. the
+%   distance away from the background.
+
+% Usual disclaimer
+%--------------------------------------------------------------------------
+%
+%     Copyright (C) 2018  Constantino Carlos Reyes-Aldasoro
+%
+%     This code is free software: you can redistribute it and/or modify
+%     it under the terms of the GNU General Public License as published by
+%     the Free Software Foundation, version 3 of the License.
+%
+%     The code is distributed in the hope that it will be useful,
+%     but WITHOUT ANY WARRANTY; without even the implied warranty of
+%     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%     GNU General Public License for more details.
+%
+%     The GNU General Public License is available at <http://www.gnu.org/licenses/>.
+%
+%--------------------------------------------------------------------------
 
 %%
 % This is one of the end parameters, number of cells to be detected by the algorithm
