@@ -1,11 +1,11 @@
-function helaFinalLabels         = detectNumberOfCells(hela,numCells)
-%function helaFinalLabels         = detectNumberOfCells(hela,numCells)
+function IndividualHelaLabels         = detectNumberOfCells(hela,numCells)
+%function IndividualHelaLabels         = detectNumberOfCells(hela,numCells)
 %--------------------------------------------------------------------------
 % Input         Hela                 : an image in Tiff or Matlab format preferably 2D,
 %                                      double/uint8
 %               numCells             : optional, number of cells used to stop the
 %                                      iterative process to detect cells
-% Output        helaFinalLabels      : a 3D matrix with a label at each level
+% Output        IndividualHelaLabels      : a 3D matrix with a label at each level
 %                                      corresponding to the region of one cell.
 %--------------------------------------------------------------------------
 % 
@@ -76,7 +76,7 @@ helaBackground(:,1)              = 1;
 helaBackground(:,end)            = 1;
 %% Initialise other variables
 % Final segmentation, will contain a label per every region classified as cell
-helaFinalLabels                           = zeros(rows,cols);
+IndividualHelaLabels                           = zeros(rows,cols);
 % Boundary of each region
 helaBoundary                    = zeros(rows,cols);
 
@@ -103,7 +103,7 @@ while (currPeak<=numCells)&&(maxPeak>0)
         rr2                             = max(1,round(rr(1)-maxPeak*1.2)):min(rows,round(rr(1)+maxPeak*1.2));
         cc2                             = max(1,round(cc(1)-maxPeak*1.2)):min(cols,round(cc(1)+maxPeak*1.2));
         % Assing a label to the same region
-        helaFinalLabels(rr2,cc2,currPeak)        = 1;
+        IndividualHelaLabels(rr2,cc2,currPeak)        = 1;
         % Remove the Distances/Peaks of the region to proceed to the next cell
         helaDistFromBackground(rr2,cc2) = 0;
         helaPeaks(rr2,cc2)              = 0;
