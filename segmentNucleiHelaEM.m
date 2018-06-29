@@ -1,9 +1,9 @@
-function nucleiHela = segmentNucleiHelaEM(Hela,cannyStdValue,previousSegmentation)
-%function nucleiHela = segmentNucleiHelaEM(Hela,cannyStdValue,previousSegmentation)
+function nucleiHela = segmentNucleiHelaEM(Hela,previousSegmentation,cannyStdValue)
+%function nucleiHela = segmentNucleiHelaEM(Hela,previousSegmentation,cannyStdValue)
 %--------------------------------------------------------------------------
 % Input         Hela                    : an image in Matlab format,it can be 2D/3D, double/uint8
-%               cannyStdValue           : the value of the Std of the canny edge detection
 %               previousSegmentation    : segmentation of slice above/below
+%               cannyStdValue           : the value of the Std of the canny edge detection
 % Output        nucleiHela              : a binary image with 1 for nuclei, 0 background
 %--------------------------------------------------------------------------
 % 
