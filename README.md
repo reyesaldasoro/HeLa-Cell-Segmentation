@@ -62,11 +62,11 @@ The code can receive 2 more parameters, one if you want to change the standard d
 
 <pre class="codeinput">
 
-nucleiHela = segmentNucleiHelaEM(Hela,cannyStdValue,previousSegmentation)
+nucleiHela = segmentNucleiHelaEM(Hela,previousSegmentation,cannyStdValue)
 
 </pre>
 
-This last parameter is useful when you are processing a large number of slices, you can segment the central slice and use that as a parameter for the slices above and below. When the shape becomes irregular, this allows the algorithm to select more than one region.
+This other parameter is useful when you are processing a large number of slices, you can segment the central slice and use that as a parameter for the slices above and below. When the shape becomes irregular, this allows the algorithm to select more than one region.
 
 ![Screenshot2](Figures/Hela_MultipleRegions.png)
 
