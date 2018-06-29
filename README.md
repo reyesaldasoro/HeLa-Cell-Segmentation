@@ -12,6 +12,7 @@ Segmentation of Nuclear Envelope of HeLa Cells observed with Electron Microscope
 [More input parameters](#parameters)   
 [Region of Interest from 8000 x 8000 images](#ROIS)   
 [Visual validation of the output](#validation)  
+[Automatic cropping of Regions of Interest](#cropping)  
 
 
 <a name="HeLa"/>
@@ -151,12 +152,10 @@ Further analysis can consider distance between cells, cells that are in contact 
 <h2>Visual validation of the output</h2>
 </a>
 
-To validate the output of <pre class="codeinput">detectNumberOfCells</pre>, the function <pre class="codeinput">validateIndividualHelaROIs</pre>is used. 
+To validate the output of <pre class="codeinput">detectNumberOfCells</pre>the function <pre class="codeinput">validateIndividualHelaROIs</pre>is used. 
 
 <pre class="codeinput">
-
 validateIndividualHelaROIs(Hela,IndividualHelaLabels);
-
 </pre>
  
 This generates a figure with the image (<i>Hela</i>), and overlaid the boundaries of all labels (provided in <i>IndividualHelaLabels</i>), with a number associated to each ROI. The number is important as this can be later used to crop the whole ROI (2,000 x 2,000 x 300) from the whole field of view.
@@ -169,5 +168,47 @@ In this case we have detected seven ROIs using the second argument like this:
 IndividualHelaLabels       = detectNumberOfCells(hela,7);
 </pre>
 
+
+<a name="cropping"/>
+<h2>Automatic cropping of Regions of Interest</h2>
+</a>
+
+It is possible to crop automatically a Region of Interest (ROI) from the 8,000 x 8,000 stack with the following function:
+
+<pre class="codeinput">
+function segmentHelaROI(inputFolder,outputFolder,IndividualHelaLabels,numberOfLabel,inputSlice)
+</pre>
+
+This function reads a folder where a stack of 8,000 x 8,000 images with numerous HeLa cells are stored, selects ONE region of interest and produces a reduced version of the data by cropping the images to a region of 2,000 x 2,000 and selecting that region in N (ideally 300) slices.
+
+The arguments to the function are:
+ inputFolder         : location of the input stack
+ outputFolder        : location where output stack will be saved
+ IndividualHelaLabels: This is a 3D matrix with the labels identifying 
+                       the cells, but only one 2D slice should be used
+                       to select the cell itself (e.g. (:,:,3)), thus
+                       next argument is necessary. These are provided
+                       by detectNumberOfCells
+ numberOfLabel       : the cell to be extracted
+ inputSlice          : the slice of the input stack from which the
+                       data will be extracted
+
+There is no output, all will be saved in the outputFolder
+
+Example, the data is stored in the Folder "DataWholeSlice", and the ROIs selected are 3 and 7 
+
+<pre class="codeinput">
+inputFolder = 'CrickDataWholeSlice';
+outputFolder = 'ROI3';
+segmentHelaROI(inputFolder,outputFolder,IndividualHelaLabels,3)
+
+
+outputFolder = 'ROI7';
+segmentHelaROI(inputFolder,outputFolder,IndividualHelaLabels,7)
+
+![Screenshot2](Figures/WholeSlice.png)
+
+![Screenshot2](Figures/ROI3.png)
+![Screenshot2](Figures/ROI7.png)
 
 
