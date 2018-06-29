@@ -4,26 +4,18 @@ Segmentation of Nuclear Envelope of HeLa Cells observed with Electron Microscope
 ##### Table of Contents  
 
 [HeLa Cells](#HeLa)  
-
 [Citation](#citation) 
-
 [Brief Description](#description) 
-
 [Limitations](#limitations) 
-
 [Running the code](#running) 
-
 [Results](#results) 
-
 [More input parameters](#parameters) 
-
 [Region of Interest from 8000 x 8000 images](#ROIS)  
-
 [Visual validation of the output](#validation)
 
 
 <a name="HeLa"/>
-## Segmentation of Nuclear Envelope of HeLa Cells observed with Electron Microscope
+<h2> Segmentation of Nuclear Envelope of HeLa Cells observed with Electron Microscope </h2>
 </a>
 
 
@@ -36,7 +28,7 @@ The processing is unsupervised and  each 2D Slice is processed in about 5-10 sec
 No systematic attempt to make the code faster was made.
 
 <a name="citation"/>
-## Citation 
+<h2> Citation </h2>
 </a>
 
 This work has been accepted as an oral presentation in the conference Medical Image Understanding and Analysis (MIUA) 2018 (https://miua2018.soton.ac.uk) please cite as:
@@ -46,7 +38,7 @@ Cefa Karabag, Martin L. Jones, Christopher J. Peddie, Anne E. Weston, Lucy M. Co
 <br>
 
 <a name="description"/>
-## Brief description 
+<h2> Brief description </h2>
 </a>
 
 The methodology consists of several image-processing steps: low-pass filtering, edge detection and determination of super-pixels, 
@@ -54,7 +46,7 @@ distance transforms and delineation of the nuclear envelope.
 
 
 <a name="limitations"/>
-##Limitations
+<h2>Limitations</h2>
 </a>
 
 The algorithm assumes the following: there is a single HeLa cell of interest, the  centre of the cell is located at centre 
@@ -64,7 +56,7 @@ the nuclear envelope is darker than the nuclei or its surroundings, the backgrou
 
 
 <a name="running"/>
-##Running the code
+<h2>Running the code</h2>
 </a>
 
 Assuming your image is a tiff file called 'Hela.tiff'
@@ -79,7 +71,7 @@ Hela_nuclei     	= segmentNucleiHelaEM(Hela);
 </pre>
 
 <a name="results"/>
-##Results
+<h2>Results</h2>
 </a>
 
 The following animation shows a multi-slice segmentation where the segmented background is shaded in purple, 
@@ -91,7 +83,7 @@ the segmented nuclei is shaded in green, the ground truth is a red line.
 
 
 <a name="parameters"/>
-##More input parameters
+<h2>More input parameters</h2>
 </a>
 
 The code can receive 2 more parameters, one if you want to change the standard deviation of the Canny algorithm, and a previous segmentation. 
@@ -107,7 +99,7 @@ This other parameter is useful when you are processing a large number of slices,
 ![Screenshot2](Figures/Hela_MultipleRegions.png)
 
 <a name="ROIS"/>
-##Region of Interest from 8000 x 8000 images
+<h2>Region of Interest from 8000 x 8000 images</h2>
 </a>
 
 The above images have been manually cropped from a larger image by detecting the central point of the cells, and then selecting 300 slices and 2000 x 2000 pixels with the point as the centre. Whilst this is not too difficult, time consuming or error-prone, the detection of the background allows to detect automatically the majority of cells from one single plane.
@@ -156,7 +148,7 @@ Further analysis can consider distance between cells, cells that are in contact 
 
 
 <a name="validation"/>
-##Visual validation of the output
+<h2>Visual validation of the output</h2>
 </a>
 
 To validate the output of <pre class="codeinput">detectNumberOfCells</pre>, the function <pre class="codeinput">validateIndividualHelaROIs</pre>is used. 
