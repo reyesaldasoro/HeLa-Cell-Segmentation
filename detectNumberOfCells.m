@@ -25,7 +25,18 @@ function helaFinalLabels         = detectNumberOfCells(hela,numCells)
 %   process, one with the input argument to detect a determined number of cells, and
 %   also the intensity of a distance map calculated in the algorithm, i.e. the
 %   distance away from the background.
-
+%
+%  ------------------------ CITATION ------------------------------------- 
+% This work has been accepted as an oral presentation in the conference:
+%
+% Medical Image Understanding and Analysis (MIUA) 2018 (https://miua2018.soton.ac.uk)
+% please cite as: 
+% Cefa Karabag, Martin L. Jones, Christopher J. Peddie, Anne E.
+% Weston, Lucy M. Collinson, and Constantino Carlos Reyes-Aldasoro, Automated
+% Segmentation of HeLa Nuclear Envelope from Electron Microscopy Images, in
+% Proceedings of Medical Image Understanding and Analysis, 7-9 July 2018,
+% Southampton, UK. Usual disclaimer
+%
 % Usual disclaimer
 %--------------------------------------------------------------------------
 %

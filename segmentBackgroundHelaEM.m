@@ -21,7 +21,17 @@ function [Hela_background,Background_intensity,Hela_intensity] = segmentBackgrou
 %   work for the middle region of the cell and not for the top and bottom edges (it
 %   was tested for slices 70 to 135
 %
-% Usual disclaimer
+%  ------------------------ CITATION ------------------------------------- 
+% This work has been accepted as an oral presentation in the conference:
+%
+% Medical Image Understanding and Analysis (MIUA) 2018 (https://miua2018.soton.ac.uk)
+% please cite as: 
+% Cefa Karabag, Martin L. Jones, Christopher J. Peddie, Anne E.
+% Weston, Lucy M. Collinson, and Constantino Carlos Reyes-Aldasoro, Automated
+% Segmentation of HeLa Nuclear Envelope from Electron Microscopy Images, in
+% Proceedings of Medical Image Understanding and Analysis, 7-9 July 2018,
+% Southampton, UK. Usual disclaimer
+%
 %--------------------------------------------------------------------------
 %
 %     Copyright (C) 2017  Constantino Carlos Reyes-Aldasoro
