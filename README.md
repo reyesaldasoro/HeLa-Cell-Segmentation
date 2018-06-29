@@ -207,7 +207,7 @@ outputFolder = 'ROI7';
 segmentHelaROI(inputFolder,outputFolder,IndividualHelaLabels,7)
 </pre>
 
-![Screenshot2](Figures/WholeSlice.png)
+![Screenshot2](Figures/WholeSlide.png)
 
 
 ![Screenshot2](Figures/ROI3.png)
