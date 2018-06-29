@@ -119,7 +119,7 @@ Further analysis can consider distance between cells, cells that are in contact 
 
 <h2>Visual validation of the output</h2>
 
-To validate the output of the previous function the following function is used:
+To validate the output of <pre class="codeinput">detectNumberOfCells</pre>, the function <pre class="codeinput">validateIndividualHelaROIs</pre>is used. 
 
 <pre class="codeinput">
 
@@ -130,3 +130,12 @@ validateIndividualHelaROIs(Hela,IndividualHelaLabels);
 This generates a figure with the image (<i>Hela</i>), and overlaid the boundaries of all labels (provided in <i>IndividualHelaLabels</i>), with a number associated to each ROI. The number is important as this can be later used to crop the whole ROI (2,000 x 2,000 x 300) from the whole field of view.
 
 ![Screenshot2](Figures/ValidateOutput.png)
+
+In this case we have detected seven ROIs using the second argument like this:
+
+<pre class="codeinput">
+IndividualHelaLabels       = detectNumberOfCells(hela,7);
+</pre>
+
+
+
