@@ -8,8 +8,8 @@ function [Hela_background,Background_intensity,Hela_intensity] = segmentBackgrou
 %--------------------------------------------------------------------------
 % 
 % This code segments the nuclei of HeLa Cells that have been acquired with Electron
-% Microscopy at The Crick Institute by Chris Peddie and provided to the Data Study
-% Group at the Allan Turing Insititute by Martin Jones.
+% Microscopy at The Crick Institute by Chris Peddie, Anne Weston, Lucy Collinson and
+% provided to the Data Study Group at the Allan Turing Insititute by Martin Jones.
 %
 % The code uses traditional image processing methods (edge detection, labelling,
 % filtering, etc) to detect the nuclei. It assumes the following:
