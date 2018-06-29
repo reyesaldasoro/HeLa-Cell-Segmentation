@@ -2,14 +2,23 @@
 Segmentation of Nuclear Envelope of HeLa Cells observed with Electron Microscope
 
 ##### Table of Contents  
+
 [HeLa Cells] (#HeLa)  
+
 [Citation] (#citation) 
+
 [Brief Description] (#description) 
+
 [Limitations] (#limitations) 
+
 [Running the code] (#running) 
+
 [Results] (#results) 
+
 [More input parameters] (#parameters) 
+
 [Region of Interest from 8000 x 8000 images] (#ROIS)  
+
 [Visual validation of the output](#validation)
 
 
