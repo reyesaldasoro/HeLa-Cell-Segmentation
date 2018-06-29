@@ -2,7 +2,9 @@ function [Hela_background,Background_intensity,Hela_intensity] = segmentBackgrou
 %function  Hela_background = segmentBackgroundHelaEM(Hela)
 %--------------------------------------------------------------------------
 % Input         Hela       : an image in Matlab format,it can be 2D/3D, double/uint8
-% Output        Hela_background : a binary image with 1 for background 0 else
+% Output        Hela_background      : a binary image with 1 for background 0 else
+%               Background_intensity : average intensity of background (single value)
+%               Hela_intensity       : average intensity of cell (single value)
 %--------------------------------------------------------------------------
 % 
 % This code segments the nuclei of HeLa Cells that have been acquired with Electron
