@@ -94,7 +94,7 @@ maxPeak                         = maxPeakAbs;
 %% Iterate to find peaks/cells
 currPeak                        = 1;
 %%
-while (currPeak<numCells)&&(maxPeak>0)
+while (currPeak<=numCells)&&(maxPeak>0)
     % Locate the largest peak, i.e. the largest cell, furthest away from background
     maxPeak                         = max(max(helaDistFromBackground.*helaPeaks));
     if maxPeak>(0.5*maxPeakAbs)
