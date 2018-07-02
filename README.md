@@ -11,6 +11,9 @@ Segmentation of Nuclear Envelope of HeLa Cells observed with Electron Microscope
 [Results](#results)   
 [More input parameters](#parameters)   
 [Region of Interest from 8000 x 8000 images](#ROIS)   
+[Input Option](#InputOptions)
+</a>
+
 [Visual validation of the output](#validation)  
 [Automatic cropping of Regions of Interest](#cropping)  
 
@@ -156,6 +159,24 @@ imagesc(Hela.*(IndividualHelaLabels(:,:,2)))
 ![Screenshot2](Figures/Output2.png)
 
 Further analysis can consider distance between cells, cells that are in contact with the edge of the image, size of the cells, etc.
+
+
+<a name="InputOptions"/>
+<h2>Input Options</h2>
+</a>
+
+There are three options to select the image to be segmented: 
+
+(1) Read an image (with "imread") and pass the variable with the 2D matrix, 
+(2) Pass the name of the image as an argument to the function, the function will read automatically that image,
+(3) Pass the name of the folder where the image is located, the function will read the whole directory inside the folder, will select the middle slice and will read automatically.
+
+<pre class="codeinput">
+>> IndividualHelaLabels       = detectNumberOfCells(Hela,10);
+>> IndividualHelaLabels       = detectNumberOfCells('DataWholeSlice/Prefix_3VBSED_roi_00_slice_0249.tif',10);
+>> IndividualHelaLabels       = detectNumberOfCells('DataWholeSlice',10);
+</pre>
+
 
 
 <a name="validation"/>
