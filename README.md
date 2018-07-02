@@ -202,14 +202,13 @@ In this case we have detected seven ROIs using the second argument like this:
 It is possible to crop automatically a Region of Interest (ROI) from the 8,000 x 8,000 stack with the following function:
 
 <pre class="codeinput">
- segmentHelaROI(inputFolder,outputFolder,IndividualHelaLabels,numberOfLabel,inputSlice)
+ segmentHelaROI(inputFolder,IndividualHelaLabels,numberOfLabel,inputSlice)
 </pre>
 
-This function reads a folder where a stack of 8,000 x 8,000 images with numerous HeLa cells are stored, selects ONE region of interest and produces a reduced version of the data by cropping the images to a region of 2,000 x 2,000 and selecting that region in N (ideally 300) slices.
+This function reads a folder where a stack of 8,000 x 8,000 images with numerous HeLa cells are stored, selects ONE region of interest (determined by numberOfLabels) and produces a reduced version of the data by cropping the images to a region of 2,000 x 2,000 and selecting that region in N (ideally 300) slices.
 
 The arguments to the function are:
  inputFolder         : location of the input stack
- outputFolder        : location where output stack will be saved
  IndividualHelaLabels: This is a 3D matrix with the labels identifying 
                        the cells, but only one 2D slice should be used
                        to select the cell itself (e.g. (:,:,3)), thus
@@ -219,25 +218,24 @@ The arguments to the function are:
  inputSlice          : the slice of the input stack from which the
                        data will be extracted
 
-There is no output, all will be saved in the outputFolder
 
-Example, the data is stored in the Folder "DataWholeSlice", and the ROIs selected are 3 and 7 
+There is no output, all will be saved in the outputFolder. The output folder will be name as follows:
+
+<b>ROI_RowLocation-ColumnLocation-SliceLocation_numberOfLabel</b>
+
+And the file will be the same, except that the number of label is not used.
+
+
+Example, the data is stored in the Folder "DataWholeSlice", and the ROIs selected is 6 
 
 <pre class="codeinput">
 inputFolder = 'CrickDataWholeSlice';
-outputFolder = 'ROI3';
-segmentHelaROI(inputFolder,outputFolder,IndividualHelaLabels,3)
-
-
-outputFolder = 'ROI7';
-segmentHelaROI(inputFolder,outputFolder,IndividualHelaLabels,7)
+segmentHelaROI(inputFolder,IndividualHelaLabels,6)
 </pre>
 
 ![Screenshot2](Figures/WholeSlide.png)
 
 
-![Screenshot2](Figures/ROI3.png)
-
-![Screenshot2](Figures/ROI7.png)
+![Screenshot2](Figures/ROI6.png)
 
 
