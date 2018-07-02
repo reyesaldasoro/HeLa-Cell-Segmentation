@@ -132,6 +132,13 @@ IndividualHelaLabels       = detectNumberOfCells(Hela,10);
 
 ![Screenshot2](Figures/DetectCells_3.gif)
 
+The segmentation will produce the following image for validation of the output
+
+<pre class="codeinput">
+IndividualHelaLabels       = detectNumberOfCells(hela,7);
+</pre>
+
+
 The algorithm can stop in 2 ways, one is to request a specific number of cells, say you are only interested in the 10 largest cells (second argument to the function), or until no more cells are detected (only one argument is passed, the image itself). An assumption for this last condition is that cells will only be considered if their associated distance peaks are within a limit, currently 50% of the height of the top peak.
 
 The output of the function is one 3D matrix with one level per cell detected. To visualise any given cell, you can just use one level of the 3D Matrix like this:
@@ -152,7 +159,7 @@ Further analysis can consider distance between cells, cells that are in contact 
 <h2>Visual validation of the output</h2>
 </a>
 
-To validate the output of <pre class="codeinput">detectNumberOfCells</pre>the function <pre class="codeinput">validateIndividualHelaROIs</pre>is used. 
+Another way to create the validation image previously shown is using the function "validateIndividualHelaROIs". 
 
 <pre class="codeinput">
 validateIndividualHelaROIs(Hela,IndividualHelaLabels);
@@ -163,11 +170,6 @@ This generates a figure with the image (<i>Hela</i>), and overlaid the boundarie
 ![Screenshot2](Figures/ValidateOutput.png)
 
 In this case we have detected seven ROIs using the second argument like this:
-
-<pre class="codeinput">
-IndividualHelaLabels       = detectNumberOfCells(hela,7);
-</pre>
-
 
 <a name="cropping"/>
 <h2>Automatic cropping of Regions of Interest</h2>
