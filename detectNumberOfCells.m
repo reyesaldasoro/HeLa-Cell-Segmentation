@@ -2,7 +2,7 @@ function IndividualHelaLabels         = detectNumberOfCells(hela,numCells)
 %function IndividualHelaLabels         = detectNumberOfCells(hela,numCells)
 %--------------------------------------------------------------------------
 % Input         Hela                 : an image in Tiff or Matlab format preferably 2D,
-%                                      double/uint8
+%                                      double/uint8, can be inside a folder
 %               numCells             : optional, number of cells used to stop the
 %                                      iterative process to detect cells
 % Output        IndividualHelaLabels      : a 3D matrix with a label at each level
@@ -55,11 +55,25 @@ function IndividualHelaLabels         = detectNumberOfCells(hela,numCells)
 %
 %--------------------------------------------------------------------------
 
-%%
-% This is one of the end parameters, number of cells to be detected by the algorithm
-if ~exist('numCells','var')
-    numCells = 25;
+%% Check type of input
+if isa(hela,'char')
+    % Input is a string, 
+    hela_name                   = hela;
+    clear hela;
+    % check if it is a file or a folder
+    if isdir(hela_name)
+        % It is a folder, take the central slice
+        dir0                    = dir (hela_name);
+        numFiles                = size(dir0,1);
+        hela                    = imread(strcat(hela_name,'/',dir0(ceil(numFiles/2)).name)); 
+    else
+        % It is a file, read 
+        hela                    = imread(hela_name);
+    end
 end
+
+% The image has been read, proceed with the detection stage.
+
 %% Detect Background of all the region
 
 [helaBackground]                 = segmentBackgroundHelaEM(hela);
@@ -91,6 +105,11 @@ maxPeakAbs                         = max(max(helaDistFromBackground));
 helaPeaks                       = imregionalmax(helaDistFromBackground.*(helaDistFromBackground>(0.5*maxPeakAbs)));
 
 maxPeak                         = maxPeakAbs;
+%% This is one of the end parameters, number of cells to be detected by the algorithm
+if ~exist('numCells','var')
+    numCells = 25;
+end
+
 %% Iterate to find peaks/cells
 currPeak                        = 1;
 %%
@@ -112,7 +131,15 @@ while (currPeak<=numCells)&&(maxPeak>0)
         helaBoundary(rr2(end)-50:rr2(end), cc2(1):cc2(end))         = 1;
         helaBoundary(rr2(1):rr2(end)     , cc2(1):cc2(1)+50)        = 1;
         helaBoundary(rr2(1):rr2(end)     , cc2(end)-50:cc2(end))    = 1;
+        positionROI(currPeak,:)                                     = [rr cc];
     end
     currPeak                        = currPeak+1;
 end
+%% Display output
+figure
+imagesc(hela2.*(1-helaBoundary))
+for counterROI = 1:currPeak-1
+    text(positionROI(counterROI,2),positionROI(counterROI,1),num2str(counterROI),'fontsize',20,'color','r')
+end
+colormap gray
 
