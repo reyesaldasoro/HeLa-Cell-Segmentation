@@ -128,8 +128,9 @@ if ~exist('inputSlice','var')
     inputSlice                 =  max(1,floor(numFilesIn/2));
 end
 
-zInit                          =  max(1,inputSlice-300);
-zFin                           =  min(numFilesIn,inputSlice+300);
+% The stack should have 300 slices if possible
+zInit                          =  max(1,inputSlice-150);
+zFin                           =  min(numFilesIn,inputSlice+149);
 
 %% Output folder name
 outputLocation                  = strcat('ROI_',num2str(rInit),'-',num2str(cInit),'-',num2str(zInit));
