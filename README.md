@@ -12,8 +12,7 @@ Segmentation of Nuclear Envelope of HeLa Cells observed with Electron Microscope
 [More input parameters](#parameters)   
 [Region of Interest from 8000 x 8000 images](#ROIS)   
 [Input Option](#InputOptions)
-</a>
-
+[Automatic cropping of <b>multiple</b> Regions of Interest](#multipleROIs)
 [Visual validation of the output](#validation)  
 [Automatic cropping of Regions of Interest](#cropping)  
 
@@ -237,5 +236,47 @@ segmentHelaROI(inputFolder,IndividualHelaLabels,6)
 
 
 ![Screenshot2](Figures/ROI6.png)
+
+
+
+<a name="multipleROIs"/>
+<h2>Automatic cropping of <b>multiple</b> Regions of Interest</h2>
+</a>
+
+It is possible to segment multiple ROIs in one line of code. The argument numberOfLabel can be passed with a number of ROIs selected like this:
+
+<pre class="codeinput">
+segmentHelaROI(inputFolder,IndividualHelaLabels,[1 3 4])
+</pre>
+
+or if all the ROIS that were previously detected are to be segmented, then the argument may be passed as empty or not even passed:
+
+<pre class="codeinput">
+segmentHelaROI(inputFolder,IndividualHelaLabels,[ ])
+segmentHelaROI(inputFolder,IndividualHelaLabels)
+</pre>
+
+These two lines will produce the same output. In these cases, the code will iterate over all the possible ROIs and will create a folder for each case. If a certain ROI had been previously segmented, the code will skip the segmentation and will warn with the following lines:
+
+<pre class="codeinput">
+------------------------------------------------
+---- ROI :5  -----------------------------------
+Output folder is NOT empty
+Please use a different name or empty the folder
+------------------------------------------------
+</pre>
+
+If it is not already segmented, then the lines will be like this:
+
+<pre class="codeinput">
+----------------------------
+---- ROI :8  ---------------
+Output folder does not exist
+Folder will be created
+----------------------------
+</pre>
+
+
+![Screenshot2](Figures/MultipleROIs.png)
 
 
