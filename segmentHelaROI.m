@@ -51,7 +51,7 @@ function segmentHelaROI(inputFolder,IndividualHelaLabels,numberOfLabel,inputSlic
 %--------------------------------------------------------------------------
 
 
-if nargin<3
+if nargin<2
     help segmentHelaROI;
     return
 end
@@ -122,12 +122,12 @@ else
     rInit                          =  ((posLabel.Centroid(2) - 1000));
     cInit                          =  ((posLabel.Centroid(1) - 1000));
     
-    if (rInit<1)||(rInit>rows)
+    if (rInit<1)||(rInit>(rows-2000))
         % For the time being shift the ROI, could also pad with zeros or discard
         % altogether
         rInit                      =  min(max(1,posLabel.Centroid(2) - 1000),rows-2000);
     end
-    if (cInit<1)||(cInit>cols)
+    if (cInit<1)||(cInit>(cols-2000))
         % For the time being shift the ROI, could also pad with zeros or discard
         % altogether
         cInit                      =  min(max(1,posLabel.Centroid(1) - 1000),cols-2000);
@@ -158,6 +158,7 @@ else
     % if output does not exist, it will be created.
     if ~exist(outputFolder,'dir')
         disp('----------------------------');
+        disp(strcat('---- ROI : ',num2str(numberOfLabel),'  ---------------'))
         disp('Output folder does not exist');
         disp('Folder will be created');
         disp('----------------------------');
@@ -173,6 +174,7 @@ else
         %     disp('----------------------');
     else
         disp('------------------------------------------------');
+        disp(strcat('---- ROI : ',num2str(numberOfLabel),'  -----------------------------------'))
         disp('Output folder is NOT empty');
         disp('Please use a different name or empty the folder');
         disp('------------------------------------------------');
