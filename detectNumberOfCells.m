@@ -135,6 +135,10 @@ while (currPeak<=numCells)&&(maxPeak>0)
     end
     currPeak                        = currPeak+1;
 end
+
+
+
+
 %% Display output
 figure
 imagesc(hela2.*(1-helaBoundary))
@@ -142,4 +146,3 @@ for counterROI = 1:currPeak-1
     text(positionROI(counterROI,2),positionROI(counterROI,1),num2str(counterROI),'fontsize',20,'color','r')
 end
 colormap gray
-
