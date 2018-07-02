@@ -58,17 +58,17 @@ function IndividualHelaLabels         = detectNumberOfCells(hela,numCells)
 %% Check type of input
 if isa(hela,'char')
     % Input is a string, 
-    hela_name                   = hela;
+    hela_name                       = hela;
     clear hela;
     % check if it is a file or a folder
     if isdir(hela_name)
         % It is a folder, take the central slice
-        dir0                    = dir (hela_name);
-        numFiles                = size(dir0,1);
-        hela                    = imread(strcat(hela_name,'/',dir0(ceil(numFiles/2)).name)); 
+        dir0                        = dir (hela_name);
+        numFiles                    = size(dir0,1);
+        hela                        = imread(strcat(hela_name,'/',dir0(ceil(numFiles/2)).name)); 
     else
         % It is a file, read 
-        hela                    = imread(hela_name);
+        hela                        = imread(hela_name);
     end
 end
 
@@ -76,46 +76,47 @@ end
 
 %% Detect Background of all the region
 
-[helaBackground]                 = segmentBackgroundHelaEM(hela);
+[helaBackground]                    = segmentBackgroundHelaEM(hela);
 
 %% Initial processing
 % Calculate size of the input image, it is usually 8192x8192
-[rows,cols]                     = size(hela);
+[rows,cols]                         = size(hela);
 %
-hela2                           = double(imfilter(hela,fspecial('gaussian',5,3)));
+hela2                               = double(imfilter(hela,fspecial('gaussian',5,3)));
 % set all the boundaries to one to remove bias on the edges
-helaBackground(1,:)              = 1;
-helaBackground(end,:)            = 1;
-helaBackground(:,1)              = 1;
-helaBackground(:,end)            = 1;
+helaBackground(1,:)                 = 1;
+helaBackground(end,:)               = 1;
+helaBackground(:,1)                 = 1;
+helaBackground(:,end)               = 1;
 %% Initialise other variables
+% This is one of the end parameters, number of cells to be detected by the algorithm
+if ~exist('numCells','var')
+    numCells = 25;
+end
 % Final segmentation, will contain a label per every region classified as cell
-IndividualHelaLabels                           = zeros(rows,cols);
+IndividualHelaLabels                = zeros(rows,cols);
 % Boundary of each region
-helaBoundary                    = zeros(rows,cols);
-
+helaBoundary                        = zeros(rows,cols);
+% Position of the Peak, for displaying later
+positionROI                         = zeros(numCells,2);
 %% Distance transform
 % Calculate distance from background towards the cells, this should create some peaks
 % for each of the cells
 %
-helaDistFromBackground          = bwdist(helaBackground);
+helaDistFromBackground              = bwdist(helaBackground);
 %% find the maximum value of the distances (i.e. size of the largest cell) and discard
 % those that are less than 50% that size, as they are not in that plane most likely
-maxPeakAbs                         = max(max(helaDistFromBackground));
-helaPeaks                       = imregionalmax(helaDistFromBackground.*(helaDistFromBackground>(0.5*maxPeakAbs)));
+maxPeakAbs                          = max(max(helaDistFromBackground));
+helaPeaks                           = imregionalmax(helaDistFromBackground.*(helaDistFromBackground>(0.5*maxPeakAbs)));
 
-maxPeak                         = maxPeakAbs;
-%% This is one of the end parameters, number of cells to be detected by the algorithm
-if ~exist('numCells','var')
-    numCells = 25;
-end
+maxPeak                             = maxPeakAbs;
 
 %% Iterate to find peaks/cells
-currPeak                        = 1;
+currPeak                            = 1;
 %%
 while (currPeak<=numCells)&&(maxPeak>0)
     % Locate the largest peak, i.e. the largest cell, furthest away from background
-    maxPeak                         = max(max(helaDistFromBackground.*helaPeaks));
+    maxPeak                             = max(max(helaDistFromBackground.*helaPeaks));
     if maxPeak>(0.5*maxPeakAbs)
         [rr,cc]                         = find(helaDistFromBackground ==maxPeak);
         % Locate the spread of the cell as a square
@@ -133,7 +134,7 @@ while (currPeak<=numCells)&&(maxPeak>0)
         helaBoundary(rr2(1):rr2(end)     , cc2(end)-50:cc2(end))    = 1;
         positionROI(currPeak,:)                                     = [rr cc];
     end
-    currPeak                        = currPeak+1;
+    currPeak                            = currPeak+1;
 end
 
 
