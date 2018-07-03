@@ -18,10 +18,12 @@ Contents
 -   [Display of the 3D segmentation](#12)
 
 </div>
+
+
 <a name="1"/>
-Process a whole stack of images 
 </a>
 
+Process a whole stack of images 
 -------------------------------
 
 
