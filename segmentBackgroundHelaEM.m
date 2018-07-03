@@ -7,6 +7,7 @@ function [Hela_background,Background_intensity,Hela_intensity] = segmentBackgrou
 %               Hela_intensity       : average intensity of cell (single value)
 %--------------------------------------------------------------------------
 % 
+%
 % This code segments the nuclei of HeLa Cells that have been acquired with Electron
 % Microscopy at The Crick Institute by Chris Peddie, Anne Weston, Lucy Collinson and
 % provided to the Data Study Group at the Alan Turing Insititute by Martin Jones.
