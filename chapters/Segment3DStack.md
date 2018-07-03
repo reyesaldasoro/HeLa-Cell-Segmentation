@@ -62,9 +62,9 @@ numSlices               = size(currentSetInfo,1);
 ```
 
 <a name="4"/>
-Central Slice segmentation and display
 </a>
 
+Central Slice segmentation and display
 --------------------------------------
 
 
@@ -127,9 +127,9 @@ the original image was a uint8, we had to convert the results prior to
 combining them.
 
 <a name="10"/>
-Multiple slices {#10}
 </a>
 
+Multiple slices
 ---------------
 
 
@@ -198,10 +198,9 @@ Time per slice:5.3282
 ```
 
 <a name="11"/>
-::Interpolate between slices 
 </a>
 
-
+Interpolate between slices 
 --------------------------
 
 
@@ -221,10 +220,10 @@ Hela_nuclei3 = round(Hela_nuclei3);
 ```
 
 <a name="12"/>
-Display of the 3D segmentation
 </a>
 
 
+Display of the 3D segmentation
 ------------------------------
 
 
