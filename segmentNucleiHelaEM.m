@@ -196,7 +196,7 @@ numPixBoundary = inf;
 
 while (numPixBoundary>150)&(k<25)
     k=k+1;
-    disp(k)
+    %disp(k)
     dilRegion   = imdilate(initRegion>0,ones(3))-initRegion;
     dilRegion2  = dilRegion .* (Hela_LPF>(minIntensity+15));
     dilRegion3  = bwlabel(dilRegion2);
