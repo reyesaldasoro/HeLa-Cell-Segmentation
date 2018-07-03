@@ -21,6 +21,7 @@ Contents
 <a name="1"/>
 Process a whole stack of images 
 </a>
+
 -------------------------------
 
 
@@ -61,6 +62,7 @@ numSlices               = size(currentSetInfo,1);
 <a name="4"/>
 Central Slice segmentation and display
 </a>
+
 --------------------------------------
 
 
@@ -125,6 +127,7 @@ combining them.
 <a name="10"/>
 Multiple slices {#10}
 </a>
+
 ---------------
 
 
@@ -195,7 +198,10 @@ Time per slice:5.3282
 <a name="11"/>
 Interpolate between slices {#11}
 </a>
+
+
 --------------------------
+
 
 
 A simple post-processing step is to interpolate between slices/
@@ -215,7 +221,10 @@ Hela_nuclei3 = round(Hela_nuclei3);
 <a name="12"/>
 Display of the 3D segmentation
 </a>
+
+
 ------------------------------
+
 
 
 
