@@ -5,7 +5,7 @@ generator: 'MATLAB 9.2'
 title: Segment3DStack
 ---
 
-::: {.content}
+
 Contents
 --------
 
@@ -20,8 +20,11 @@ Contents
 </div>
 <a name="1"/>
 Process a whole stack of images 
--------------------------------
 </a>
+-------------------------------
+
+
+
 This is a more detailed description of how to process a whole stack of
 images that contain one HeLa cell, that is one Region of Interest (ROI)
 consisting of approximately 300 slices each with dimensions 2,000 x
@@ -56,9 +59,10 @@ numSlices               = size(currentSetInfo,1);
 ```
 
 <a name="4"/>
-Central Slice segmentation and display {#4}
---------------------------------------
+Central Slice segmentation and display
 </a>
+--------------------------------------
+
 
 Let\'s display the central slice of the stack:
 
@@ -120,8 +124,11 @@ combining them.
 
 <a name="10"/>
 Multiple slices {#10}
----------------
 </a>
+---------------
+
+
+
 Once the central slice has been segmented, we can use that result as an
 input argument to the function and do this iteratively for all the
 slices of the set. We will go up first, and then down. For curiosity,
@@ -187,8 +194,10 @@ Time per slice:5.3282
 
 <a name="11"/>
 Interpolate between slices {#11}
---------------------------
 </a>
+--------------------------
+
+
 A simple post-processing step is to interpolate between slices/
 
 ``` {.codeinput}
@@ -205,8 +214,11 @@ Hela_nuclei3 = round(Hela_nuclei3);
 
 <a name="12"/>
 Display of the 3D segmentation
-------------------------------
 </a>
+------------------------------
+
+
+
 Finally, we would like to visualise the results, there are several ways
 to do this, one is to create a video or animated GIF changing the
 slices, which will be described in a separate section. Here we will
