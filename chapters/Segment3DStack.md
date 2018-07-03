@@ -18,10 +18,10 @@ Contents
 -   [Display of the 3D segmentation](#12)
 
 </div>
-
-Process a whole stack of images {#1}
+<a name="1"/>
+Process a whole stack of images 
 -------------------------------
-
+</a>
 This is a more detailed description of how to process a whole stack of
 images that contain one HeLa cell, that is one Region of Interest (ROI)
 consisting of approximately 300 slices each with dimensions 2,000 x
@@ -55,8 +55,10 @@ currentSetInfo          = imfinfo(dir0(currentSet).name);
 numSlices               = size(currentSetInfo,1);
 ```
 
+<a name="4"/>
 Central Slice segmentation and display {#4}
 --------------------------------------
+</a>
 
 Let\'s display the central slice of the stack:
 
@@ -73,7 +75,7 @@ title(strcat(currentName,'  (',num2str(currentSet),')    ',...
 colormap gray
 ```
 
-![](Segment3DStack_01.png)
+![](Figures/Segment3DStack_01.png)
 
 Notice that we filtered the image with a Gaussian Low Pass filter for
 display purposes as the original images are grainy. Notice also how we
@@ -92,7 +94,7 @@ imagesc(Hela_nuclei(:,:,centralSlice));
 colormap gray
 ```
 
-![](Segment3DStack_02.png)
+![](Figures/Segment3DStack_02.png)
 
 Notice that we stored the result on a 3D matrix, with the level given by
 the number of the central slice. This is done so that we can later on
@@ -110,15 +112,16 @@ figure(3)
 imagesc(CombinedResults);
 ```
 
-![](Segment3DStack_03.png)
+![](Figures/Segment3DStack_03.png)
 
 Notice first, the graininess of the original image, and also that, as
 the original image was a uint8, we had to convert the results prior to
 combining them.
 
+<a name="10"/>
 Multiple slices {#10}
 ---------------
-
+</a>
 Once the central slice has been segmented, we can use that result as an
 input argument to the function and do this iteratively for all the
 slices of the set. We will go up first, and then down. For curiosity,
@@ -162,276 +165,8 @@ disp(strcat('Time per slice: ',num2str((t2+t3)/(289-47))))
 
    152
 
-   153
-
-   154
-
-   155
-
-   156
-
-   157
-
-   158
-
-   159
-
-   160
-
-   161
-
-   162
-
-   163
-
-   164
-
-   165
-
-   166
-
-   167
-
-   168
-
-   169
-
-   170
-
-   171
-
-   172
-
-   173
-
-   174
-
-   175
-
-   176
-
-   177
-
-   178
-
-   179
-
-   180
-
-   181
-
-   182
-
-   183
-
-   184
-
-   185
-
-   186
-
-   187
-
-   188
-
-   189
-
-   190
-
-   191
-
-   192
-
-   193
-
-   194
-
-   195
-
-   196
-
-   197
-
-   198
-
-   199
-
-   200
-
-   201
-
-   202
-
-   203
-
-   204
-
-   205
-
-   206
-
-   207
-
-   208
-
-   209
-
-   210
-
-   211
-
-   212
-
-   213
-
-   214
-
-   215
-
-   216
-
-   217
-
-   218
-
-   219
-
-   220
-
-   221
-
-   222
-
-   223
-
-   224
-
-   225
-
-   226
-
-   227
-
-   228
-
-   229
-
-   230
-
-   231
-
-   232
-
-   233
-
-   234
-
-   235
-
-   236
-
-   237
-
-   238
-
-   239
-
-   240
-
-   241
-
-   242
-
-   243
-
-   244
-
-   245
-
-   246
-
-   247
-
-   248
-
-   249
-
-   250
-
-   251
-
-   252
-
-   253
-
-   254
-
-   255
-
-   256
-
-   257
-
-   258
-
-   259
-
-   260
-
-   261
-
-   262
-
-   263
-
-   264
-
-   265
-
-   266
-
-   267
-
-   268
-
-   269
-
-   270
-
-   271
-
-   272
-
-   273
-
-   274
-
-   275
-
-   276
-
-   277
-
-   278
-
-   279
-
-   280
-
-   281
-
-   282
-
-   283
-
-   284
-
-   285
-
-   286
-
-   287
-
+  ...
+  
    288
 
    289
@@ -440,205 +175,7 @@ disp(strcat('Time per slice: ',num2str((t2+t3)/(289-47))))
 
    149
 
-   148
-
-   147
-
-   146
-
-   145
-
-   144
-
-   143
-
-   142
-
-   141
-
-   140
-
-   139
-
-   138
-
-   137
-
-   136
-
-   135
-
-   134
-
-   133
-
-   132
-
-   131
-
-   130
-
-   129
-
-   128
-
-   127
-
-   126
-
-   125
-
-   124
-
-   123
-
-   122
-
-   121
-
-   120
-
-   119
-
-   118
-
-   117
-
-   116
-
-   115
-
-   114
-
-   113
-
-   112
-
-   111
-
-   110
-
-   109
-
-   108
-
-   107
-
-   106
-
-   105
-
-   104
-
-   103
-
-   102
-
-   101
-
-   100
-
-    99
-
-    98
-
-    97
-
-    96
-
-    95
-
-    94
-
-    93
-
-    92
-
-    91
-
-    90
-
-    89
-
-    88
-
-    87
-
-    86
-
-    85
-
-    84
-
-    83
-
-    82
-
-    81
-
-    80
-
-    79
-
-    78
-
-    77
-
-    76
-
-    75
-
-    74
-
-    73
-
-    72
-
-    71
-
-    70
-
-    69
-
-    68
-
-    67
-
-    66
-
-    65
-
-    64
-
-    63
-
-    62
-
-    61
-
-    60
-
-    59
-
-    58
-
-    57
-
-    56
-
-    55
-
-    54
-
-    53
-
-    52
-
-    51
-
-    50
-
-    49
+  ...
 
     48
 
@@ -648,9 +185,10 @@ Total time:1289.4234
 Time per slice:5.3282
 ```
 
+<a name="11"/>
 Interpolate between slices {#11}
 --------------------------
-
+</a>
 A simple post-processing step is to interpolate between slices/
 
 ``` {.codeinput}
@@ -665,9 +203,10 @@ Hela_nuclei3(:,:,2:289) =   Hela_nuclei2(:,:,1:288)+...
 Hela_nuclei3 = round(Hela_nuclei3);
 ```
 
-Display of the 3D segmentation {#12}
+<a name="12"/>
+Display of the 3D segmentation
 ------------------------------
-
+</a>
 Finally, we would like to visualise the results, there are several ways
 to do this, one is to create a video or animated GIF changing the
 slices, which will be described in a separate section. Here we will
@@ -724,7 +263,7 @@ set(h2,'edgecolor','none')
 axis tight
 ```
 
-![](Segment3DStack_04.png)
+![](Figures/Segment3DStack_04.png)
 
 \
 [Published with MATLAB®
