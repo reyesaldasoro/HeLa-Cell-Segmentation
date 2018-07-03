@@ -11,8 +11,8 @@ Segmentation of Nuclear Envelope of HeLa Cells observed with Electron Microscope
 [Results](#results)   
 [More input parameters](#parameters)   
 [Region of Interest from 8000 x 8000 images](#ROIS)   
-[Input Option](#InputOptions)
-[Automatic cropping of <b>multiple</b> Regions of Interest](#multipleROIs)
+[Input Options](#InputOptions)
+[Automatic cropping of multiple Regions of Interest](#multipleROIs)
 [Visual validation of the output](#validation)  
 [Automatic cropping of Regions of Interest](#cropping)  
 
