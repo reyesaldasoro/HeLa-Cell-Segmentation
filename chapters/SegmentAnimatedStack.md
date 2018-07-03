@@ -5,7 +5,7 @@ generator: 'MATLAB 9.2'
 title: SegmentAnimatedStack
 ---
 
-::: {.content}
+
 
 Contents
 --------
@@ -52,8 +52,6 @@ figure(1)
 clf
 h0=gcf;
 ```
-
-![](Figures/SegmentAnimatedStack_01.png)
 
 <a name="4"/>
 </a>
