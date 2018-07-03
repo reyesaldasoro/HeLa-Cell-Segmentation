@@ -20,7 +20,9 @@ function [Hela_background,Background_intensity,Hela_intensity] = segmentBackgrou
 %   post-processed (majority vote) once the whole data stack has been processed.
 %   4 Some constants of intensity and size are required, thus this code may only
 %   work for the middle region of the cell and not for the top and bottom edges (it
-%   was tested for slices 70 to 135
+%   was tested orginally for slices 70 to 135). However, further tests have
+%   shown it works well for other data sets and even for the 8,000 x 8,000
+%   images.
 %
 %  ------------------------ CITATION ------------------------------------- 
 % This work has been accepted as an oral presentation in the conference:
