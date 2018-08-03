@@ -315,7 +315,7 @@ for counterSlice=southPole:min(levs,northPole)
     F(counterSlice-southPole+1) = getframe(h0);
 end
 ```
-![](Figures/Hela_Ellipse_Rotate.gif)
+![](Figures/Hela_Ellipse_Jaccard.gif)
 
 Save as a video
 
