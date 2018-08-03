@@ -36,13 +36,16 @@ correlate with the biological characteristics of the cells.
 <p>
 
 ---------------------- WARNING -----------------------------------------
+
 Modelling the surface is done in 3D and it requires a large amount of
 memory. This was tested on a MAC with 32 GB RAM and a PC with 8 GB RAM.
 The PC required the conversion of doubles to singles to cope with the
 large variables. On the MAC there were no problems. Computers with less
 than 8 GB may not be able to run this script as it is and will require
 some trick to reduce the sizes, i.e. subsampling of the data.
+
 ---------------------- WARNING -----------------------------------------
+
 </p>
 
 <a name="2"/>
