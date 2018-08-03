@@ -23,6 +23,7 @@ Contents
 
 <a name="1"/>
 </a>
+
 Modelling the nuclear envelope of HeLa cells
 -------------------------------
 
@@ -32,6 +33,8 @@ display of the variations, both smooth and rugged over the surface, and
 measurements can be extracted with the expectation that they can
 correlate with the biological characteristics of the cells.
 
+<p>
+
 ---------------------- WARNING -----------------------------------------
 Modelling the surface is done in 3D and it requires a large amount of
 memory. This was tested on a MAC with 32 GB RAM and a PC with 8 GB RAM.
@@ -40,12 +43,14 @@ large variables. On the MAC there were no problems. Computers with less
 than 8 GB may not be able to run this script as it is and will require
 some trick to reduce the sizes, i.e. subsampling of the data.
 ---------------------- WARNING -----------------------------------------
-
+</p>
 
 <a name="2"/>
 </a>
+
 Reference
 -------------------------------
+
 For a detailed description please consult:
 Modelling the nuclear envelope of HeLa cells
 Cefa Karabağ, Martin L Jones, Christopher J Peddie, Anne E Weston, Lucy M Collinson, Constantino Carlos Reyes-Aldasoro
@@ -130,8 +135,10 @@ z_Sph                   = z_Sph0*equivRadius + centroid_Cell(3);
 
 <a name="4"/>
 </a>
+
 Nuclear envelope shape modelling.
 -------------------------------
+
 To further study the shape of the segmented NE, this was modelled against
 a 3D ellipsoid. The ellipsoid was adjusted to have the same volume as the
 nucleus. The equivalent radius is a vector that will multiply each z
@@ -139,25 +146,89 @@ level equally but the levels are not spherical
 
 
 
-
-
-
-Equivalent sphere
--------------------------------
-
-
-Once this set has been selected, we can read the information of the file
-to know how many slices are saved in this file:
-
 ``` {.codeinput}
-currentSetInfo          = imfinfo(dir0(currentSet).name);
-numSlices               = size(currentSetInfo,1);
+height                  = ( northPole-southPole )/2;
+equivRadiusC            = (totalVolume*3/4/pi/height).^(1/2);
+
+heightVec               = linspace(-height,height,numParallels+1);
+radiusVec               = ( equivRadiusC*equivRadiusC* (1 - (heightVec.^2)/(height^2))  ).^(1/2);
+radiusMat               = repmat(radiusVec',[1 numParallels+1]);
+zDisplacement           = linspace(southPole,northPole,numParallels+1);
+
+% Equivalent Ellipsoid
+x_Ellip                 = x_Sph0.*radiusMat + centroid_Cell(1);
+y_Ellip                 = y_Sph0.*radiusMat + centroid_Cell(2);
+z_Ellip                 = z_Sph0*height + centroid_Cell(3);
 ```
 
 
 
-Central Slice segmentation and display
+Generate the reference framework to create a isosurface with fewer faces
 --------------------------------------
+
+
+``` {.codeinput}
+
+[x2d,y2d]               = (meshgrid(1:cols,1:rows));
+z2d                     = int16(ones(rows,cols));
+x2d = int16(x2d);
+y2d = int16(y2d);
+```
+
+% When the memory is limited, subsample for the 3D case
+``` {.codeinput}
+SubStep = 1;
+x3d                     = repmat(x2d(1:SubStep:end,1:SubStep:end),[1 1 levs]);
+y3d                     = repmat(y2d(1:SubStep:end,1:SubStep:end),[1 1 levs]);
+%%
+z3d(rows/SubStep,cols/SubStep,levs)     = int16(0);
+for counterSlice=1:levs
+    disp(counterSlice)
+    z3d(:,:,counterSlice) = counterSlice*z2d(1:SubStep:end,1:SubStep:end);
+end
+
+z3d = int16(z3d);
+```
+
+
+
+
+Generate the isosurface of the cell
+--------------------------------------
+
+This generates an isosurface that has been subsampled for computational
+efficiency. With a step of 16 there are visible artifacts
+
+
+``` {.codeinput}
+fstep= 8;
+surf_Hela2          = isosurface(single(x3d(1:fstep:end,1:fstep:end,1:244)),...
+    single(y3d(1:fstep:end,1:fstep:end,1:244)),...
+    single(z3d(1:fstep:end,1:fstep:end,1:244)),...
+    Hela_nuclei3(1:fstep:end,1:fstep:end,1:244),0.5);
+```
+
+
+Start the display with the cell surface
+--------------------------------------
+
+
+``` {.codeinput}
+
+figure
+
+handleSurfaceNuclearEnvelope =  patch(surf_Hela2);
+
+lighting phong
+camlight left
+camlight right
+set(handleSurfaceNuclearEnvelope,'facecolor','red')
+set(handleSurfaceNuclearEnvelope,'edgecolor','none')
+
+handleSurfaceNuclearEnvelope.FaceAlpha = 0.75;
+```
+
+
 
 
 Let\'s display the central slice of the stack:
