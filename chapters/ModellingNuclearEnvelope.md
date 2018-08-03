@@ -56,7 +56,9 @@ Reference
 
 For a detailed description please consult:
 Modelling the nuclear envelope of HeLa cells
+
 Cefa Karabağ, Martin L Jones, Christopher J Peddie, Anne E Weston, Lucy M Collinson, Constantino Carlos Reyes-Aldasoro
+
 doi: https://doi.org/10.1101/344986
 
 
@@ -230,6 +232,43 @@ set(handleSurfaceNuclearEnvelope,'edgecolor','none')
 
 handleSurfaceNuclearEnvelope.FaceAlpha = 0.75;
 ```
+
+
+Ellipsoid or Sphere meshes
+--------------------------------------
+
+
+Spheres do not adjust well to some cells that tend to be flatter. If you want to compare against a sphere, uncomment the following lines:
+
+``` {.codeinput}
+% hold on
+% h_Sph                   = mesh(x_Sph,y_Sph,z_Sph);
+% h_Sph.FaceColor='none';
+% h_Sph.LineWidth=2;
+```
+
+
+We can now generate an ellipse and compare against the cell:
+``` {.codeinput}
+hold on
+handle_Ellipsoid                    = mesh(x_Ellip,y_Ellip,z_Ellip);
+
+handle_Ellipsoid.EdgeColor          = 'none';
+handle_Ellipsoid.FaceColor          = 'b';
+handle_Ellipsoid.LineWidth          = 2;
+handle_Ellipsoid.FaceAlpha          = 0.75;
+axis tight; grid on
+```
+
+![](Figures/Hela_Ellipse_Comparison.png)
+
+
+![](Figures/Hela_Ellipse_Rotate.gif)
+
+
+
+
+
 
 
 
