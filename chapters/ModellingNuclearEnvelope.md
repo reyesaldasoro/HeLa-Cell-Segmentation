@@ -27,7 +27,7 @@ Contents
 Modelling the nuclear envelope of HeLa cells
 -------------------------------
 
-This script follows from the framework for the automatic segmentation of the
+This script <b>ModellingNuclearEnvelopeHeLaCells.m </b>follows from the framework for the automatic segmentation of the
 nuclear envelope of cancerous HeLa cells. In here, the surface of the nuclear envelope is modelled against  an  ellipsoid.  The modelling of the surface provides a visual
 display of the variations, both smooth and rugged over the surface, and
 measurements can be extracted with the expectation that they can
