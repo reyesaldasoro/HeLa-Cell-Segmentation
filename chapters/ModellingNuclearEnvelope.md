@@ -260,17 +260,84 @@ handle_Ellipsoid.FaceAlpha          = 0.75;
 axis tight; grid on
 ```
 
-![](Figures/Hela_Ellipse_Comparison.png)
+The figure below shows the case where only 20 parallels were used to generate the sphere:
 
 
 ![](Figures/Hela_Ellipse_Rotate.gif)
 
+The figure below shows the case where the same number of slices and parallels was used:
+
+![](Figures/Hela_Ellipse_Comparison.png)
 
 
 
 
 
+Distance from Ellipsoid
+--------------------------------------
 
+
+The  surfaces  of  the  ellipsoid  and  the  nucleus  were  subsequently
+compared  by tracing rays from the centre of the ellipsoid and the
+distance between the surfaces for each ray was calculated. It was assumed
+that when the nucleus surface was  further  away  from  the  centre,  the
+difference  was  positive.
+
+``` {.codeinput}
+heightVec2              = linspace(-height,height,round(2*height)+1);
+radiusVec2               = ( equivRadiusC*equivRadiusC* (1 - (heightVec2.^2)/(height^2))  ).^(1/2);
+
+
+eqEllip(rows,cols,levs) =single(0);
+circRef             = ( (single(x2d -centroid_Cell(1))).^2 + (single(y2d - centroid_Cell(2))).^2).^(0.5);
+
+for counterSlice=southPole:northPole
+    % Iterate over all slices
+    disp(counterSlice)
+    eqEllip(:,:,counterSlice)   = single(circRef<radiusVec2(counterSlice-southPole+1));   
+end
+% Convert to a single to save memory
+eqEllip=single(eqEllip);
+```
+
+
+Display of the ellipsoid against the cell per slice
+``` {.codeinput}
+clear F
+figure
+h0=gcf;
+for counterSlice=southPole:min(levs,northPole)
+    disp(counterSlice)
+    imagesc(2*Hela_nuclei3(:,:,counterSlice)+eqEllip(:,:,counterSlice));    
+    title(strcat('Slice: ',num2str(counterSlice),', Jaccard:',num2str(sum(sum(Hela_nuclei3(:,:,counterSlice).*eqEllip(:,:,counterSlice)))/sum(sum(Hela_nuclei3(:,:,counterSlice)|eqEllip(:,:,counterSlice))))))
+    drawnow
+    pause(0.01)
+    F(counterSlice-southPole+1) = getframe(h0);
+end
+```
+![](Figures/Hela_Ellipse_Rotate.gif)
+
+Save as a video
+
+``` {.codeinput}v = VideoWriter('Hela_Ellipse_Jaccard.mp4', 'MPEG-4');
+open(v);
+writeVideo(v,F);
+close(v);
+```
+
+Save as a GIF
+
+``` {.codeinput}
+[imGif,mapGif] = rgb2ind(F(11).cdata,256,'nodither');
+numFrames = size(F,2);
+
+imGif(1,1,1,numFrames) = 0;
+for k = 2:numFrames
+    imGif(:,:,1,k) = rgb2ind(F(k).cdata,mapGif,'nodither');
+end
+imwrite(imGif,mapGif,'Hela_Ellipse_Jaccard.gif',...
+    'DelayTime',0,'LoopCount',inf)
+```    
 
 
 Let\'s display the central slice of the stack:
