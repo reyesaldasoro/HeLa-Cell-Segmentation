@@ -13,10 +13,10 @@ Contents
 
 -   [Modelling the nuclear envelope of HeLa cells](#1)
 -   [Reference](#2)
--   [Nuclear envelope shape modelling. ](#4)
--   [Multiple slices](#10)
--   [Interpolate between slices](#11)
--   [Display of the 3D segmentation](#12)
+-   [Nuclear envelope shape modelling](#4)
+-   [Ellipsoid or Sphere meshes](#10)
+-   [Distance from Ellipsoids](#11)
+-   [Modelling the Nuclear Envelope against the Ellipsoid](#12)
 
 </div>
 
@@ -180,7 +180,8 @@ x2d = int16(x2d);
 y2d = int16(y2d);
 ```
 
-% When the memory is limited, subsample for the 3D case
+When the memory is limited, subsample for the 3D case
+
 ``` {.codeinput}
 SubStep = 1;
 x3d                     = repmat(x2d(1:SubStep:end,1:SubStep:end),[1 1 levs]);
@@ -234,6 +235,8 @@ handleSurfaceNuclearEnvelope.FaceAlpha = 0.75;
 ```
 
 
+<a name="10"/>
+</a>
 Ellipsoid or Sphere meshes
 --------------------------------------
 
@@ -272,7 +275,8 @@ The figure below shows the case where the same number of slices and parallels wa
 
 
 
-
+<a name="11"/>
+</a>
 Distance from Ellipsoid
 --------------------------------------
 
@@ -340,11 +344,19 @@ imwrite(imGif,mapGif,'Hela_Ellipse_Jaccard.gif',...
 ```    
 
 
+
+<a name="12"/>
+</a>
+Modelling the Nuclear Envelope against the Ellipsoid
+--------------------------------------
+
+
+
 Prepare for the modelling of the surface
 
 
-% As these are memory intensive operations, need to clear a few variables
-% before proceeding
+As these are memory intensive operations, need to clear a few variables
+before proceeding
 
 ``` {.codeinput}
 
@@ -431,7 +443,7 @@ handleSurf              = surf(surfaceCell);
 handleSurf.EdgeColor    = 'none';
 colormap([a;b])
 ```
-Hela_Surface_RotateB
+
 
 ![](Figures/Hela_Surface_RotateB.gif)
 
