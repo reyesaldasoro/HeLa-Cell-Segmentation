@@ -167,10 +167,13 @@ else
     regionsToKeep               = find([Nuclei_0P.Area]>100);
     Nuclei_1                    = ismember(Hela_Centroid4, regionsToKeep);
     Nuclei_1L                   = bwlabel(Nuclei_1);
-    Nuclei_1P                   = regionprops(Nuclei_1L,'area');
-    diffInAreas                 = abs(([Nuclei_0P(regionsToKeep).Area]-[Nuclei_1P.Area])./([Nuclei_1P.Area]));
-    Nuclei_1F                    = ismember(Nuclei_1L,find(diffInAreas<0.15));
-    
+    if max(Nuclei_1L(:))>1
+        Nuclei_1P                   = regionprops(Nuclei_1L,'area');
+        diffInAreas                 = abs(([Nuclei_0P(regionsToKeep).Area]-[Nuclei_1P.Area])./([Nuclei_1P.Area]));
+        Nuclei_1F                   = ismember(Nuclei_1L,find(diffInAreas<0.25));
+    else
+        Nuclei_1F = Nuclei_1;
+    end
     Nuclei_3                    = imfill((Nuclei_1F),'holes');
 end
 
