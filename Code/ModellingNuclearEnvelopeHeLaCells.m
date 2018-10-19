@@ -197,7 +197,7 @@ h0=gcf;
 for counterSlice=southPole:min(levs,northPole)
     disp(counterSlice)
     imagesc(2*Hela_nuclei3(:,:,counterSlice)+eqEllip(:,:,counterSlice));    
-    title(strcat('Slice: ',num2str(counterSlice),', Jaccard:',num2str(sum(sum(Hela_nuclei3(:,:,counterSlice).*eqEllip(:,:,counterSlice)))/sum(sum(Hela_nuclei3(:,:,counterSlice)|eqEllip(:,:,counterSlice))))))
+    title(strcat('Slice: ',num2str(counterSlice),', Jaccard:',num2str(  sum(sum(Hela_nuclei3(:,:,counterSlice).*eqEllip(:,:,counterSlice)))/sum(sum(Hela_nuclei3(:,:,counterSlice)|eqEllip(:,:,counterSlice))) )))
     drawnow
     pause(0.01)
     F(counterSlice-southPole+1) = getframe(h0);
