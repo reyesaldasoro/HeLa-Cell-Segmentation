@@ -237,6 +237,7 @@ handleSurfaceNuclearEnvelope.FaceAlpha = 0.75;
 
 <a name="10"/>
 </a>
+
 Ellipsoid or Sphere meshes
 --------------------------------------
 
@@ -277,6 +278,7 @@ The figure below shows the case where the same number of slices and parallels wa
 
 <a name="11"/>
 </a>
+
 Distance from Ellipsoid
 --------------------------------------
 
@@ -347,6 +349,7 @@ imwrite(imGif,mapGif,'Hela_Ellipse_Jaccard.gif',...
 
 <a name="12"/>
 </a>
+
 Modelling the Nuclear Envelope against the Ellipsoid
 --------------------------------------
 
