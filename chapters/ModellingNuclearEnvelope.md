@@ -383,13 +383,13 @@ Place the centroid to locate later on
 ``` {.codeinput}
 cell_v_Ellipse(round(centroid_Cell(2)):round(centroid_Cell(2)),...
     round(centroid_Cell(1)):round(centroid_Cell(1)),:) = 4;
-    ```
+```
 
 ``` {.codeinput}
 Hela_nuclei4 = single(Hela_nuclei3);
 Hela_nuclei4(round(centroid_Cell(2))-1:round(centroid_Cell(2))+1,...
     round(centroid_Cell(1))-1:round(centroid_Cell(1))+1,:) = 4;
-    ```
+```
 
 Clear the variable as memory is required
 
