@@ -23,7 +23,7 @@ Contents
 <a name="1"/>
 </a>
 
-Process a whole stack of images 
+Process a whole stack of images
 -------------------------------
 
 
@@ -178,7 +178,7 @@ disp(strcat('Time per slice: ',num2str((t2+t3)/(289-47))))
    152
 
   ...
-  
+
    288
 
    289
@@ -200,12 +200,15 @@ Time per slice:5.3282
 <a name="11"/>
 </a>
 
-Interpolate between slices 
+Interpolate between slices
 --------------------------
 
 
 
-A simple post-processing step is to interpolate between slices/
+A simple post-processing step is to interpolate between slices is to add  
+three consecutive slices, and then use a greater than comparison, 1 will be the case
+when a given pixel only appears in one slice, two in two and so on. So greater
+than 1 is a good option, as >2 will erode the results.
 
 ``` {.codeinput}
 % Duplicate results
@@ -216,7 +219,7 @@ Hela_nuclei3(:,:,2:289) =   Hela_nuclei2(:,:,1:288)+...
                             Hela_nuclei2(:,:,2:289)+...
                             Hela_nuclei2(:,:,3:290);
 
-Hela_nuclei3 = round(Hela_nuclei3);
+Hela_nuclei3 = (Hela_nuclei3)>1;
 ```
 
 <a name="12"/>
