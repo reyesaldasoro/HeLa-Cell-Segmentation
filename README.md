@@ -1,6 +1,11 @@
 # HeLa-Cell-Segmentation
 Segmentation of Nuclear Envelope of HeLa Cells observed with Electron Microscope
 
+
+<img src="Figures/Hela_CombinedB_2017_09_07.gif" width="250" height="250" /> <img src="chapters/Figures/Hela_Ellipse_Rotate.gif" width="250" height="250" /> <img src="chapters/Figures/ROI_3516-5712-314.gif" width="250" height="250" />
+
+
+
 ##### Table of Contents  
 
 [HeLa Cells](#HeLa)  
