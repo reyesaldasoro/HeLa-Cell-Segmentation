@@ -39,10 +39,15 @@ No systematic attempt to make the code faster was made.
 <h2> Citation </h2>
 </a>
 
-This work has been accepted as an oral presentation in the conference Medical Image Understanding and Analysis (MIUA) 2018 (https://miua2018.soton.ac.uk) please cite as:
-
+This work has been published in the Journal of Imaging, if you find the work or the software interesting or useful, please cite as:<br> <br> 
+<b>Cefa Karabag, Martin L. Jones, Christopher J. Peddie, Anne E. Weston, Lucy M. Collinson, and Constantino Carlos Reyes-Aldasoro,
+Segmentatin and Modelling the nuclear envelope of HeLa cells, J Imaging (2019), 5(9), 75
+https://doi.org/10.3390/jimaging5090075
+</b>
+<br><br> 
+A previous version was accepted as an oral presentation in the conference Medical Image Understanding and Analysis (MIUA) 2018 (https://miua2018.soton.ac.uk) 
 <br>
-Cefa Karabag, Martin L. Jones, Christopher J. Peddie, Anne E. Weston, Lucy M. Collinson, and Constantino Carlos Reyes-Aldasoro, <b>Automated Segmentation of HeLa Nuclear Envelope from Electron Microscopy Images</b>,<i> in Proceedings of Medical Image Understanding and Analysis</i>, 9-11 July 2018, Southampton, UK.
+ <b>Automated Segmentation of HeLa Nuclear Envelope from Electron Microscopy Images</b>,<i> in Proceedings of Medical Image Understanding and Analysis</i>, 9-11 July 2018, Southampton, UK.
 <br>
 
 <a name="description"/>
