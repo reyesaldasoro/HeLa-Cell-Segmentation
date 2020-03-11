@@ -237,7 +237,8 @@ cell_v_Ellipse = 2*Hela_nuclei3(:,:,1:levs)+eqEllip(:,:,1:levs);
 %%  Jaccard, for the case of the bioArXiv manuscript Jaccard = 0.7184
 jaccardEllipse =  sum(cell_v_Ellipse(:)==3)/sum(cell_v_Ellipse(:)>0);
 %% Extract surface of the cell vs the ellipse once it has been adapted to have more parallels
-counterSlice=144;
+% 144 is mid slice give more or less
+counterSlice=round(0.5*(northPole+southPole));
 imagesc(2*Hela_nuclei3(:,:,counterSlice)+eqEllip(:,:,counterSlice));
 hold
 %% place the centroid to locate later on
@@ -271,8 +272,9 @@ for counterSlice=3+southPole:min(levs,northPole)
     end
 end
 %% Display distance from Ellipse for one slice of the data
+centreSlice = round(0.5*(northPole+southPole));
 figure
-plot(surfaceCell(144,:),'b-','linewidth',2)
+plot(surfaceCell(centreSlice,:),'b-','linewidth',2)
 grid on 
 axis tight
 xlabel('Angle','fontsize',20)
