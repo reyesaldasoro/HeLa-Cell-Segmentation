@@ -40,6 +40,8 @@ end
 % envelope has been previously obtained. E.g.
 
 load('nucleiHelaC_2018_02_01.mat')
+
+% obtain the number of levels and other dimensions
 [rows,cols,levs]= size(Hela_nuclei3);
 clear Hela_background_3
 
@@ -55,7 +57,7 @@ southPole           = find(massCell,1,'first');
 northPole           = 15+find(massCell,1,'last');
 
 % Centre of Gravity may be useful in other applications
-% [~,centreGravity]   = max((1:244)'.*massCell);
+% [~,centreGravity]   = max((1:levs)'.*massCell);
 %% Calculate the centroid of the cell based on the projections on all dimensions
 cell_xy             = sum(Hela_nuclei3,3);
 cell_xz             = squeeze(sum(Hela_nuclei3,1))';
@@ -133,10 +135,10 @@ z3d = int16(z3d);
 % This generates an isosurface that has been subsampled for computational
 % efficiency. With a step of 16 there are visible artifacts
 fstep= 8;
-surf_Hela2          = isosurface(single(x3d(1:fstep:end,1:fstep:end,1:244)),...
-    single(y3d(1:fstep:end,1:fstep:end,1:244)),...
-    single(z3d(1:fstep:end,1:fstep:end,1:244)),...
-    Hela_nuclei3(1:fstep:end,1:fstep:end,1:244),0.5);
+surf_Hela2          = isosurface(single(x3d(1:fstep:end,1:fstep:end,1:levs)),...
+    single(y3d(1:fstep:end,1:fstep:end,1:levs)),...
+    single(z3d(1:fstep:end,1:fstep:end,1:levs)),...
+    Hela_nuclei3(1:fstep:end,1:fstep:end,1:levs),0.5);
 
 %% Start the display with the cell surface
 figure
