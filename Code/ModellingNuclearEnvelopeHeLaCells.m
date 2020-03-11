@@ -285,7 +285,7 @@ ylabel('Distance from Ellipse','fontsize',20)
 %% Display the surface with a combined colormap that highlights the negative and positive areas
 figure
 a                       = hot;
-a                       = b(end:-1:1,end:-1:1);
+b                       = a(end:-1:1,end:-1:1);
 handleSurf              = surf(surfaceCell);
 handleSurf.EdgeColor    = 'none';
 colormap([a;b])
