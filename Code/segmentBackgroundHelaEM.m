@@ -1,4 +1,4 @@
-function [Hela_background,Background_intensity,Hela_intensity] = segmentBackgroundHelaEM(Hela)
+function [Hela_background,Background_intensity,Hela_intensity] = segmentBackgroundHelaEM(Hela,avNucleiIntensity)
 %function  Hela_background = segmentBackgroundHelaEM(Hela)
 %--------------------------------------------------------------------------
 % Input         Hela       : an image in Matlab format,it can be 2D/3D, double/uint8
@@ -74,17 +74,31 @@ Hela_LPF = imfilter(Hela,fspecial('Gaussian',7,2));
 % Use a much blurrier edge detection to create large superpixels to detect the
 % background
 
-Hela_Edge       = imdilate(edge(Hela,'canny',[],9),ones(21));
-Hela_supPix     = bwlabel(1-Hela_Edge);
-Hela_supPixR    = regionprops(Hela_supPix,Hela_LPF,'Area','meanintensity');
+Hela_Edge                   = imdilate(edge(Hela,'canny',[],9),ones(21));
+Hela_supPix                 = bwlabel(1-Hela_Edge);
+Hela_supPixR                = regionprops(Hela_supPix,Hela_LPF,'Area','meanintensity');
+
+% The background is assumed to be bright, if the average intensity of the nuclei is an input argument, use as
+% a minimum level above which the background should be placed. Ideally calculate separately as well with Otsu
+
+if ~exist('avNucleiIntensity','var')
+    avNucleiIntensity       = 150;
+end
+backgroundIntensity         = min(max(avNucleiIntensity+10,255*graythresh(Hela_LPF/255)),200);
+
+
 
 %imagesc(Hela_supPix)
-Hela_supPixBrightLarge = ismember(Hela_supPix,find(([Hela_supPixR.MeanIntensity]>160)&( [Hela_supPixR.Area]>1000 )   )  );
-Hela_background = imfill(Hela_supPixBrightLarge,'holes');
-Hela_background = imclose(Hela_background,strel('disk',39));
-Hela_background = imfill(Hela_background,'holes');
+Hela_supPixBrightLarge      = ismember(Hela_supPix,find(([Hela_supPixR.MeanIntensity]>backgroundIntensity)&( [Hela_supPixR.Area]>1000 )   )  );
+% Create the background
+Hela_background             = imfill(Hela_supPixBrightLarge,'holes');
+Hela_background             = imclose(Hela_background,strel('disk',39));
+Hela_background             = imfill(Hela_background,'holes');
+% Final dilation to compensate for the original dilation of the edges
+Hela_background             = imdilate(Hela_background,strel('disk',10));
+
 %imagesc(Hela_background)
-Background_intensity  =  mean(Hela(find(Hela_background)));
-Hela_intensity  =  mean(Hela(find(1-Hela_background)));
+Background_intensity        =  mean(Hela(find(Hela_background)));
+Hela_intensity              =  mean(Hela(find(1-Hela_background)));
 
 
