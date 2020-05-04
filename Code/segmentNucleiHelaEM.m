@@ -1,4 +1,4 @@
-function nucleiHela = segmentNucleiHelaEM(Hela,previousSegmentation,cannyStdValue)
+function [nucleiHela,avNucleiIntensity] = segmentNucleiHelaEM(Hela,previousSegmentation,cannyStdValue)
 %function nucleiHela = segmentNucleiHelaEM(Hela,previousSegmentation,cannyStdValue)
 %--------------------------------------------------------------------------
 % Input         Hela                    : an image in Matlab format,it can be 2D/3D, double/uint8
@@ -222,8 +222,9 @@ nucleiHela = imfill(nucleiHela,'holes');
 % Initial experiments showed that the result slightly underestimate the nuclei, so
 % dilate by 5
 %nucleiHela = imdilate(nucleiHela,ones(5));
-nucleiHela = imdilate(nucleiHela,strel('disk',5));
-
+nucleiHela              = imdilate(nucleiHela,strel('disk',5));
+% calculate mean Intensity of Nuclei
+avNucleiIntensity       =  mean(Hela(nucleiHela==1));
 
 
 
