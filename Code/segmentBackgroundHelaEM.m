@@ -1,4 +1,4 @@
-function [Hela_background,Background_intensity,Hela_intensity] = segmentBackgroundHelaEM(Hela,avNucleiIntensity)
+function [Hela_background,Background_intensity,Hela_intensity] = segmentBackgroundHelaEM(Hela,avNucleiIntensity,nucleiHela)
 %function  Hela_background = segmentBackgroundHelaEM(Hela)
 %--------------------------------------------------------------------------
 % Input         Hela       : an image in Matlab format,it can be 2D/3D, double/uint8
@@ -75,7 +75,7 @@ Hela_LPF = imfilter(Hela,fspecial('Gaussian',7,2));
 % background
 
 Hela_Edge                   = imdilate(edge(Hela,'canny',[],9),ones(21));
-Hela_supPix                 = bwlabel(1-Hela_Edge);
+Hela_supPix                 = bwlabel((1-Hela_Edge).*(1-nucleiHela));
 Hela_supPixR                = regionprops(Hela_supPix,Hela_LPF,'Area','meanintensity');
 
 % The background is assumed to be bright, if the average intensity of the nuclei is an input argument, use as
