@@ -89,7 +89,7 @@ backgroundIntensity         = min(max(avNucleiIntensity+10,255*graythresh(Hela_L
 
 
 %imagesc(Hela_supPix)
-Hela_supPixBrightLarge      = ismember(Hela_supPix,find(([Hela_supPixR.MeanIntensity]>backgroundIntensity)&( [Hela_supPixR.Area]>1000 )   )  );
+Hela_supPixBrightLarge      = ismember(Hela_supPix,find(([Hela_supPixR.MeanIntensity]>backgroundIntensity)&( [Hela_supPixR.Area]>100 )   )  );
 % Create the background
 Hela_background             = imfill(Hela_supPixBrightLarge,'holes');
 Hela_background             = imclose(Hela_background,strel('disk',39));
