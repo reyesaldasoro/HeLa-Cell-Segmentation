@@ -1,4 +1,4 @@
-function [nucleiHela,avNucleiIntensity] = segmentNucleiHelaEM(Hela,previousSegmentation,cannyStdValue)
+function [nucleiHela,avNucleiIntensity,envelopeIntensity] = segmentNucleiHelaEM(Hela,previousSegmentation,cannyStdValue)
 %function nucleiHela = segmentNucleiHelaEM(Hela,previousSegmentation,cannyStdValue)
 %--------------------------------------------------------------------------
 % Input         Hela                    : an image in Matlab format,it can be 2D/3D, double/uint8
@@ -190,7 +190,7 @@ end
 
 % this should present a line that decreases up to a groove, corresponding to the
 % nuclei envelope and then recover steadily
-[minIntensity,distMinIntensity]= min(Nuclei_6);
+[envelopeIntensity,distMinIntensity]= min(Nuclei_6);
 %% do a region growing to fit the boundary closer to darker pixels
 % The growing will move the boundary outside towards darker pixels, When a boundary
 % pixel is below a certain intensity level (determined by previous step) it is
@@ -207,7 +207,7 @@ while (numPixBoundary>150)&(k<25)
     k=k+1;
     %disp(k)
     dilRegion   = imdilate(initRegion>0,ones(3))-initRegion;
-    dilRegion2  = dilRegion .* (Hela_LPF>(minIntensity+15));
+    dilRegion2  = dilRegion .* (Hela_LPF>(envelopeIntensity+15));
     dilRegion3  = bwlabel(dilRegion2);
     dilRegion4  = regionprops(dilRegion3);
     dilRegion5 = ismember(dilRegion3,find([dilRegion4.Area]>7));
