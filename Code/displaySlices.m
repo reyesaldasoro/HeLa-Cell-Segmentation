@@ -6,29 +6,15 @@ filtG= gaussF(3,3,1);
 
 
 %%
-numROI              = 2;
+numROI              = 5;
 currROI             = dir0(numROI).name;
-currSlice           = 142;
-filtG= gaussF(3,3,1);
-currentImage = double(imread(strcat(baseDir,currROI),currSlice));
+currSlice           = 90;
+filtG                   = gaussF(3,3,1);
+currentImage            = double(imread(strcat(baseDir,currROI),currSlice));
 
-[nucleiHela,avNucleiIntensity]                          = segmentNucleiHelaEM(currentImage);
+[nucleiHela,avNucleiIntensity,envelopeIntensity]                          = segmentNucleiHelaEM(currentImage);
 [Hela_background,Background_intensity,Hela_intensity]   = segmentBackgroundHelaEM(currentImage,avNucleiIntensity,nucleiHela);
-
-
-distFromBack        = (bwdist(Hela_background));
-distFromNucl        = (bwdist(nucleiHela));
-breakDistFromBack   = (watershed(-imfilter(distFromBack,gaussF(19,19,1))));
-watershedsBack      = 1*imdilate((breakDistFromBack==0),ones(5));
-regionsNotBackground= (bwlabel((1-watershedsBack).*(1-Hela_background)));
-cellRegionClass     = unique(regionsNotBackground(nucleiHela>0));
-cellRegionClass(cellRegionClass==0)=[];
-cellRegion          = imclose(ismember(regionsNotBackground,cellRegionClass),ones(20));
-
-
-dataOut = imfilter(currentImage,filtG);
-dataOut(:,:,3) = (cellRegion).*imfilter(currentImage,filtG);
-dataOut(:,:,2) = (1-nucleiHela).*imfilter(currentImage,filtG);
+[cellRegion,dataOut]                                    = segmentHelaCellEM(Hela_background,nucleiHela,currentImage);
 
 
 figure(currSlice)
