@@ -68,9 +68,13 @@ cellRegionClass(cellRegionClass==0)=[];
 cellRegion          = imclose(ismember(regionsNotBackground,cellRegionClass),ones(20));
 
 if exist('Hela','var')
-    dataOut             = imfilter(Hela,filtG);
-    dataOut(:,:,3)      = (cellRegion).*imfilter(Hela,filtG);
-    dataOut(:,:,2)      = (1-nucleiHela).*imfilter(Hela,filtG);
+    filtG               = fspecial('Gaussian',3,0.85);
+    HelaLPF             = imfilter(Hela,filtG,'replicate');
+    dataOut             = imfilter(Hela,filtG,'replicate');
+    dataOut(:,:,3)      = (cellRegion).*HelaLPF;
+    dataOut(:,:,2)      = (1-nucleiHela).*HelaLPF;
+    dataOut(:,:,2)      = dataOut(:,:,2)+0.75*(nucleiHela).*HelaLPF;
+    
 else
     dataOut = [];
 end
