@@ -22,15 +22,16 @@ function [nucleiHela,avNucleiIntensity] = segmentNucleiHelaEM(Hela,previousSegme
 %   was tested for slices 70 to 135
 %
 %  ------------------------ CITATION ------------------------------------- 
-% This work has been accepted as an oral presentation in the conference:
+% This work has been accepted as a journal paper:
 %
 % Medical Image Understanding and Analysis (MIUA) 2018 (https://miua2018.soton.ac.uk)
 % please cite as: 
+%
 % Cefa Karabag, Martin L. Jones, Christopher J. Peddie, Anne E.
-% Weston, Lucy M. Collinson, and Constantino Carlos Reyes-Aldasoro, Automated
-% Segmentation of HeLa Nuclear Envelope from Electron Microscopy Images, in
-% Proceedings of Medical Image Understanding and Analysis, 7-9 July 2018,
-% Southampton, UK. Usual disclaimer
+% Weston, Lucy M. Collinson, and Constantino Carlos Reyes-Aldasoro, 
+% Segmentation and Modelling of the Nuclear Envelope of HeLa Cells Imaged 
+% with Serial Block Face Scanning Electron Microscopy, 
+% J. Imaging 2019, 5(9), 75; https://doi.org/10.3390/jimaging5090075 
 %
 % Usual disclaimer
 %--------------------------------------------------------------------------
