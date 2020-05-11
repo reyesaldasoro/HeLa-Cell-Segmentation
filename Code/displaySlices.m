@@ -12,7 +12,7 @@ currSlice           = 90;
 filtG                   = gaussF(3,3,1);
 currentImage            = double(imread(strcat(baseDir,currROI),currSlice));
 
-[nucleiHela,avNucleiIntensity,envelopeIntensity]                          = segmentNucleiHelaEM(currentImage);
+[nucleiHela,avNucleiIntensity,envelopeIntensity]        = segmentNucleiHelaEM(currentImage);
 [Hela_background,Background_intensity,Hela_intensity]   = segmentBackgroundHelaEM(currentImage,avNucleiIntensity,nucleiHela);
 [cellRegion,dataOut]                                    = segmentHelaCellEM(Hela_background,nucleiHela,currentImage);
 
@@ -48,3 +48,26 @@ imagesc(imfilter(currentImage,filtG)+watershedsBack)
 currentImage_e          = edge(currentImage,'canny',[],1.5);
 imagesc(currentImage.*(currentImage_e==0))
 axis([500 800 800 1100])
+
+
+%%
+baseDir             = 'D:\Acad\Crick\Hela8000\';
+dir0                = dir(strcat(baseDir,'*dm4'));
+
+filtG= gaussF(3,3,1);
+
+for k=10:10:500
+    disp(k)
+    [c,d]=dmread(dir0(k).name);
+    maxD(k/10)=max(d(:));
+    minD(k/10)=min(d(:));
+    
+end
+    
+
+%%
+% To convert from uint32 to uint8 and keep the same range of values than the cropped ROIs
+ d3=double(d2); 
+ d4=(d3-mean(d3))/std(d3(:));
+ d5=165+35*d4;
+ d5(d5<0)=0;d5(d5>256)=256;
