@@ -10,7 +10,7 @@ h0                  = figure(1);
     imagesc(imfilter(currentImage,filtG))
 h1=gca;
  
-hT =    title(num2str(k));
+hT =    title(num2str(1));
  
 %%
 % 
@@ -29,7 +29,7 @@ hT =    title(num2str(k));
 clear HeL*
 HeLa3d(8192,8192,30)=uint8(0);
 
-for biasSl = 150:30:500
+for biasSl = 0:30:90
     
     for k=biasSl+(1:30) %numImages
         disp(k)
