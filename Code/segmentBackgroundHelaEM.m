@@ -101,14 +101,30 @@ Hela_supPixBrightLarge      = ismember(Hela_supPix,find(([Hela_supPixR.MeanInten
 Hela_background             = imfill(Hela_supPixBrightLarge,'holes');
 Hela_background2             = imclose(Hela_background,strel('disk',39));
 Hela_background3             = imopen(Hela_background2,strel('disk',19));
-% This final filling of holes can remove whole cells
-%Hela_background             = imfill(Hela_background,'holes');
-% Final dilation to compensate for the original dilation of the edges
-Hela_background             = imdilate(Hela_background3,strel('disk',10));
 
-%imagesc(Hela_background)
+% Calculate average intensities
 Background_intensity        =  mean(Hela(find(Hela_background)));
 Hela_intensity              =  mean(Hela(find(1-Hela_background)));
+
+% Grab the bright parts very close to the background (i.e. far from nuclei)
+Hela_background4            = bwdist(Hela_background3); 
+Hela_background5            = Hela>(Background_intensity-5);
+
+Hela_background6            = Hela_background5.*(Hela_background4<50).*(Hela_background4>0);
+
+% This final filling of holes can remove whole cells
+%Hela_background             = imfill(Hela_background,'holes');
+Hela_background7             = imclose(Hela_background3+Hela_background6,ones(4));
+Hela_background8             = imopen((Hela_background3+Hela_background6),strel('disk',6));
+
+
+% Final dilation to compensate for the original dilation of the edges
+%Hela_background             = imdilate(Hela_background3+Hela_background6,strel('disk',2));
+Hela_background             = imdilate(Hela_background7,strel('disk',2));
+%Hela_background             = Hela_background7;
+
+%imagesc(Hela_background)
+
 
 Hela_output(rows,cols,3)    = 0;
 Hela_output(:,:,1)          = Hela;
