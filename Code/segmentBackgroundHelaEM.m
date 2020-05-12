@@ -66,6 +66,14 @@ if ~isa(Hela,'double')
     Hela =double(Hela);
 end
 
+if ~exist('avNucleiIntensity','var')
+    avNucleiIntensity       = 150;
+end
+if ~exist('nucleiHela','var')
+    nucleiHela       = zeros(rows,cols);
+end
+
+
 % Low pass filter for future operations
 Hela_LPF = imfilter(Hela,fspecial('Gaussian',7,2));
 %% Find edges and distance from those edges
@@ -82,9 +90,7 @@ Hela_supPixR                = regionprops(Hela_supPix,Hela_LPF,'Area','meaninten
 % The background is assumed to be bright, if the average intensity of the nuclei is an input argument, use as
 % a minimum level above which the background should be placed. Ideally calculate separately as well with Otsu
 
-if ~exist('avNucleiIntensity','var')
-    avNucleiIntensity       = 150;
-end
+
 backgroundIntensity         = min(max(avNucleiIntensity+10,255*graythresh(Hela_LPF/255)),200);
 
 
