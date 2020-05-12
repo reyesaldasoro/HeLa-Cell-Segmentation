@@ -1,4 +1,4 @@
-function [Hela_background,Background_intensity,Hela_intensity] = segmentBackgroundHelaEM(Hela,avNucleiIntensity,nucleiHela)
+function [Hela_background,Background_intensity,Hela_intensity,Hela_output] = segmentBackgroundHelaEM(Hela,avNucleiIntensity,nucleiHela)
 %function  Hela_background = segmentBackgroundHelaEM(Hela)
 %--------------------------------------------------------------------------
 % Input         Hela       : an image in Matlab format,it can be 2D/3D, double/uint8
@@ -99,13 +99,20 @@ backgroundIntensity         = min(max(avNucleiIntensity+10,255*graythresh(Hela_L
 Hela_supPixBrightLarge      = ismember(Hela_supPix,find(([Hela_supPixR.MeanIntensity]>backgroundIntensity)&( [Hela_supPixR.Area]>100 )   )  );
 % Create the background
 Hela_background             = imfill(Hela_supPixBrightLarge,'holes');
-Hela_background             = imclose(Hela_background,strel('disk',39));
-Hela_background             = imfill(Hela_background,'holes');
+Hela_background2             = imclose(Hela_background,strel('disk',39));
+Hela_background3             = imopen(Hela_background2,strel('disk',19));
+% This final filling of holes can remove whole cells
+%Hela_background             = imfill(Hela_background,'holes');
 % Final dilation to compensate for the original dilation of the edges
-Hela_background             = imdilate(Hela_background,strel('disk',10));
+Hela_background             = imdilate(Hela_background3,strel('disk',10));
 
 %imagesc(Hela_background)
 Background_intensity        =  mean(Hela(find(Hela_background)));
 Hela_intensity              =  mean(Hela(find(1-Hela_background)));
 
-
+Hela_output(rows,cols,3)    = 0;
+Hela_output(:,:,1)          = Hela;
+Hela_output(:,:,2)          = Hela.*(1-Hela_background)+0.7*Hela.*(Hela_background) ;
+Hela_output(:,:,3)          = Hela.*(1-Hela_background)+0.7*Hela.*(Hela_background);
+Hela_output=uint8(Hela_output);
+%imagesc(Hela_output)
