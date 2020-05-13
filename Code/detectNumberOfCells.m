@@ -96,7 +96,7 @@ if ~exist('numCells','var')
     numCells = 25;
 end
 % Final segmentation, will contain a label per every region classified as cell
-IndividualHelaLabels                = uint8(zeros(rows,cols));
+IndividualHelaLabels                = uint8(zeros(rows,cols,numCells));
 % Boundary of each region
 helaBoundary                        = zeros(rows,cols);
 % Position of the Peak, for displaying later
@@ -117,11 +117,12 @@ maxPeak                             = maxPeakAbs;
 currPeak                            = 1;
 rankCells                           = [];
 %%
+combinedHeight                              = helaDistFromBackground.*helaPeaks;
 % Use the try in case the memory runs out
 try
     while (currPeak<=numCells)&&(maxPeak>0)
         % Locate the largest peak, i.e. the largest cell, furthest away from background
-        maxPeak                             = max(max(helaDistFromBackground.*helaPeaks));
+        maxPeak                             = max(max(combinedHeight));
         if maxPeak>(0.5*maxPeakAbs)
             rankCells                       = [rankCells maxPeak];
             [rr,cc]                         = find(helaDistFromBackground ==maxPeak);
@@ -133,6 +134,7 @@ try
             % Remove the Distances/Peaks of the region to proceed to the next cell
             helaDistFromBackground(rr2,cc2) = 0;
             helaPeaks(rr2,cc2)              = 0;
+            combinedHeight(rr2,cc2)         = 0;
             % Create boundaries for the region selected, mainly to display
             helaBoundary(rr2(1):rr2(1)+50    , cc2(1):cc2(end))         = 1;
             helaBoundary(rr2(end)-50:rr2(end), cc2(1):cc2(end))         = 1;
