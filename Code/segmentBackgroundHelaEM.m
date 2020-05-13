@@ -91,12 +91,12 @@ Hela_supPixR                = regionprops(Hela_supPix,Hela_LPF,'Area','meaninten
 % a minimum level above which the background should be placed. Ideally calculate separately as well with Otsu
 
 
-backgroundIntensity         = min(max(avNucleiIntensity+10,255*graythresh(Hela_LPF/255)),200);
-
+backgroundIntensity         = 5+min(max(avNucleiIntensity+10,255*graythresh(Hela_LPF/255)),200);
+minSize                     = max(200,round(rows/10));
 
 
 %imagesc(Hela_supPix)
-Hela_supPixBrightLarge      = ismember(Hela_supPix,find(([Hela_supPixR.MeanIntensity]>backgroundIntensity)&( [Hela_supPixR.Area]>100 )   )  );
+Hela_supPixBrightLarge      = ismember(Hela_supPix,find(([Hela_supPixR.MeanIntensity]>backgroundIntensity)&( [Hela_supPixR.Area]>minSize )   )  );
 % Create the background
 Hela_background             = imfill(Hela_supPixBrightLarge,'holes');
 Hela_background2             = imclose(Hela_background,strel('disk',39));
