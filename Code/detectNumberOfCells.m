@@ -1,10 +1,12 @@
-function [IndividualHelaLabels,rankCells,positionROI]        = detectNumberOfCells(hela,numCells)
+function [IndividualHelaLabels,rankCells,positionROI]        = detectNumberOfCells(hela,numCells,helaBackground)
 %function IndividualHelaLabels         = detectNumberOfCells(hela,numCells)
 %--------------------------------------------------------------------------
 % Input         Hela                 : an image in Tiff or Matlab format preferably 2D,
 %                                      double/uint8, can be inside a folder
 %               numCells             : optional, number of cells used to stop the
 %                                      iterative process to detect cells
+%               helaBackground       : the background, if not calculated previously 
+%                                       it is calculated here
 % Output        IndividualHelaLabels      : a 3D matrix with a label at each level
 %                                      corresponding to the region of one cell.
 %--------------------------------------------------------------------------
@@ -75,9 +77,9 @@ end
 % The image has been read, proceed with the detection stage.
 
 %% Detect Background of all the region
-
-[helaBackground]                    = segmentBackgroundHelaEM(hela);
-
+if ~exist('helaBackground','var')
+    [helaBackground]                    = segmentBackgroundHelaEM(hela);
+end
 %% Initial processing
 % Calculate size of the input image, it is usually 8192x8192
 [rows,cols]                         = size(hela);
