@@ -1,4 +1,4 @@
-function IndividualHelaLabels         = detectNumberOfCells(hela,numCells)
+function [IndividualHelaLabels,rankCells,positionROI]        = detectNumberOfCells(hela,numCells)
 %function IndividualHelaLabels         = detectNumberOfCells(hela,numCells)
 %--------------------------------------------------------------------------
 % Input         Hela                 : an image in Tiff or Matlab format preferably 2D,
@@ -113,6 +113,7 @@ maxPeak                             = maxPeakAbs;
 
 %% Iterate to find peaks/cells
 currPeak                            = 1;
+rankCells                           = [];
 %%
 % Use the try in case the memory runs out
 try
@@ -120,6 +121,7 @@ try
         % Locate the largest peak, i.e. the largest cell, furthest away from background
         maxPeak                             = max(max(helaDistFromBackground.*helaPeaks));
         if maxPeak>(0.5*maxPeakAbs)
+            rankCells                       = [rankCells maxPeak];
             [rr,cc]                         = find(helaDistFromBackground ==maxPeak);
             % Locate the spread of the cell as a square
             rr2                             = max(1,round(rr(1)-maxPeak*1.2)):min(rows,round(rr(1)+maxPeak*1.2));
@@ -135,13 +137,15 @@ try
             helaBoundary(rr2(1):rr2(end)     , cc2(1):cc2(1)+50)        = 1;
             helaBoundary(rr2(1):rr2(end)     , cc2(end)-50:cc2(end))    = 1;
             positionROI(currPeak,:)                                     = [rr(1) cc(1)];
+            currPeak                            = currPeak+1;
         end
-        currPeak                            = currPeak+1;
+
     end
 catch
     
 end
 
+positionROI(currPeak:end,:) = [];
 
 
 %% Display output
