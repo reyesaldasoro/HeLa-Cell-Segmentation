@@ -94,7 +94,7 @@ if ~exist('numCells','var')
     numCells = 25;
 end
 % Final segmentation, will contain a label per every region classified as cell
-IndividualHelaLabels                = zeros(rows,cols);
+IndividualHelaLabels                = uint8(zeros(rows,cols));
 % Boundary of each region
 helaBoundary                        = zeros(rows,cols);
 % Position of the Peak, for displaying later
@@ -114,29 +114,33 @@ maxPeak                             = maxPeakAbs;
 %% Iterate to find peaks/cells
 currPeak                            = 1;
 %%
-while (currPeak<=numCells)&&(maxPeak>0)
-    % Locate the largest peak, i.e. the largest cell, furthest away from background
-    maxPeak                             = max(max(helaDistFromBackground.*helaPeaks));
-    if maxPeak>(0.5*maxPeakAbs)
-        [rr,cc]                         = find(helaDistFromBackground ==maxPeak);
-        % Locate the spread of the cell as a square
-        rr2                             = max(1,round(rr(1)-maxPeak*1.2)):min(rows,round(rr(1)+maxPeak*1.2));
-        cc2                             = max(1,round(cc(1)-maxPeak*1.2)):min(cols,round(cc(1)+maxPeak*1.2));
-        % Assing a label to the same region
-        IndividualHelaLabels(rr2,cc2,currPeak)        = 1;
-        % Remove the Distances/Peaks of the region to proceed to the next cell
-        helaDistFromBackground(rr2,cc2) = 0;
-        helaPeaks(rr2,cc2)              = 0;
-        % Create boundaries for the region selected, mainly to display
-        helaBoundary(rr2(1):rr2(1)+50    , cc2(1):cc2(end))         = 1;
-        helaBoundary(rr2(end)-50:rr2(end), cc2(1):cc2(end))         = 1;
-        helaBoundary(rr2(1):rr2(end)     , cc2(1):cc2(1)+50)        = 1;
-        helaBoundary(rr2(1):rr2(end)     , cc2(end)-50:cc2(end))    = 1;
-        positionROI(currPeak,:)                                     = [rr cc];
+% Use the try in case the memory runs out
+try
+    while (currPeak<=numCells)&&(maxPeak>0)
+        % Locate the largest peak, i.e. the largest cell, furthest away from background
+        maxPeak                             = max(max(helaDistFromBackground.*helaPeaks));
+        if maxPeak>(0.5*maxPeakAbs)
+            [rr,cc]                         = find(helaDistFromBackground ==maxPeak);
+            % Locate the spread of the cell as a square
+            rr2                             = max(1,round(rr(1)-maxPeak*1.2)):min(rows,round(rr(1)+maxPeak*1.2));
+            cc2                             = max(1,round(cc(1)-maxPeak*1.2)):min(cols,round(cc(1)+maxPeak*1.2));
+            % Assing a label to the same region
+            IndividualHelaLabels(rr2,cc2,currPeak)        = 1;
+            % Remove the Distances/Peaks of the region to proceed to the next cell
+            helaDistFromBackground(rr2,cc2) = 0;
+            helaPeaks(rr2,cc2)              = 0;
+            % Create boundaries for the region selected, mainly to display
+            helaBoundary(rr2(1):rr2(1)+50    , cc2(1):cc2(end))         = 1;
+            helaBoundary(rr2(end)-50:rr2(end), cc2(1):cc2(end))         = 1;
+            helaBoundary(rr2(1):rr2(end)     , cc2(1):cc2(1)+50)        = 1;
+            helaBoundary(rr2(1):rr2(end)     , cc2(end)-50:cc2(end))    = 1;
+            positionROI(currPeak,:)                                     = [rr(1) cc(1)];
+        end
+        currPeak                            = currPeak+1;
     end
-    currPeak                            = currPeak+1;
+catch
+    
 end
-
 
 
 
