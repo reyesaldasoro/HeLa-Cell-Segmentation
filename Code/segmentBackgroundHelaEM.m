@@ -110,18 +110,30 @@ Hela_intensity              =  mean(Hela(find(1-Hela_background)));
 Hela_background4            = bwdist(Hela_background3); 
 Hela_background5            = Hela>(Background_intensity-5);
 
-Hela_background6            = Hela_background5.*(Hela_background4<50).*(Hela_background4>0);
+% This allows to stretch close tothe cells 
+Hela_background6            = Hela_background5.*(Hela_background4<350).*(Hela_background4>0);
 
 % This final filling of holes can remove whole cells
 %Hela_background             = imfill(Hela_background,'holes');
 Hela_background7             = imclose(Hela_background3+Hela_background6,ones(4));
-Hela_background8             = imopen((Hela_background3+Hela_background6),strel('disk',6));
+%Hela_background8             = imopen(Hela_background7,strel('disk',6));
+
+Hela_background9             = bwlabel(Hela_background7);
+Hela_background9R            = regionprops(Hela_background9,'Area');
+% Remove very small regions of background (inside cells most probably)
+Hela_background10            = ismember(Hela_background9,find([Hela_background9R.Area]>(minSize*5 )   )  );
+
+Foreground                  = bwlabel(1-Hela_background10);
+ForegroundR                 = regionprops(Foreground,Hela_background4,'Area','minintensity');
 
 
+ 
 % Final dilation to compensate for the original dilation of the edges
 %Hela_background             = imdilate(Hela_background3+Hela_background6,strel('disk',2));
-Hela_background             = imdilate(Hela_background7,strel('disk',2));
+Hela_background             = imdilate(Hela_background10,strel('disk',2));
 %Hela_background             = Hela_background7;
+
+% Remove large holes in very large regions of background.
 
 %imagesc(Hela_background)
 
