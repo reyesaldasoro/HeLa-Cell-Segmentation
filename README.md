@@ -7,6 +7,10 @@ Segmentation, Measurement and Visualisation of Nuclear Envelope of HeLa Cells ob
 
 
 
+
+
+
+
 ##### Table of Contents  
 
 [HeLa Cells](#HeLa)  
@@ -28,25 +32,25 @@ Segmentation, Measurement and Visualisation of Nuclear Envelope of HeLa Cells ob
 </a>
 
 
-This code contains an image-processing pipeline for the automatic segmentation of the nuclear envelope of {\it HeLa} cells 
-observed through Electron Microscopy. This pipeline has been tested with a 3D stack of 300 images. 
-The intermediate results of neighbouring slices are further combined to improve the final results. 
-Comparison with a hand-segmented  ground truth reported Jaccard similarity values between 94-98% on 
+This code contains an image-processing pipeline for the automatic segmentation of the nuclear envelope of {\it HeLa} cells
+observed through Electron Microscopy. This pipeline has been tested with a 3D stack of 300 images.
+The intermediate results of neighbouring slices are further combined to improve the final results.
+Comparison with a hand-segmented  ground truth reported Jaccard similarity values between 94-98% on
 the central slices with a decrease towards the edges of the cell where the structure was considerably more complex.
-The processing is unsupervised and  each 2D Slice is processed in about 5-10 seconds running on a MacBook Pro. 
+The processing is unsupervised and  each 2D Slice is processed in about 5-10 seconds running on a MacBook Pro.
 No systematic attempt to make the code faster was made.
 
 <a name="citation"/>
 <h2> Citation </h2>
 </a>
 
-This work has been published in the Journal of Imaging, if you find the work or the software interesting or useful, please cite as:<br> <br> 
+This work has been published in the Journal of Imaging, if you find the work or the software interesting or useful, please cite as:<br> <br>
 <b>Cefa Karabag, Martin L. Jones, Christopher J. Peddie, Anne E. Weston, Lucy M. Collinson, and Constantino Carlos Reyes-Aldasoro,
 Segmentatin and Modelling the nuclear envelope of HeLa cells, J Imaging (2019), 5(9), 75
 https://doi.org/10.3390/jimaging5090075
 </b>
-<br><br> 
-A previous version was accepted as an oral presentation in the conference Medical Image Understanding and Analysis (MIUA) 2018 (https://miua2018.soton.ac.uk) 
+<br><br>
+A previous version was accepted as an oral presentation in the conference Medical Image Understanding and Analysis (MIUA) 2018 (https://miua2018.soton.ac.uk)
 <br>
  <b>Automated Segmentation of HeLa Nuclear Envelope from Electron Microscopy Images</b>,<i> in Proceedings of Medical Image Understanding and Analysis</i>, 9-11 July 2018, Southampton, UK.
 <br>
@@ -55,16 +59,16 @@ A previous version was accepted as an oral presentation in the conference Medica
 <h2> Brief description </h2>
 </a>
 
-The methodology consists of several image-processing steps: low-pass filtering, edge detection and determination of super-pixels, 
-distance transforms and delineation of the nuclear envelope. 
+The methodology consists of several image-processing steps: low-pass filtering, edge detection and determination of super-pixels,
+distance transforms and delineation of the nuclear envelope.
 
 
 <a name="limitations"/>
 <h2>Limitations</h2>
 </a>
 
-The algorithm assumes the following: there is a single HeLa cell of interest, the  centre of the cell is located at centre 
-of a 3D stack of images, 
+The algorithm assumes the following: there is a single HeLa cell of interest, the  centre of the cell is located at centre
+of a 3D stack of images,
 the nuclear envelope is darker than the nuclei or its surroundings, the background is brighter than any cellular structure.
 
 
@@ -88,7 +92,7 @@ Hela_nuclei     	= segmentNucleiHelaEM(Hela);
 <h2>Results</h2>
 </a>
 
-The following animation shows a multi-slice segmentation where the segmented background is shaded in purple, 
+The following animation shows a multi-slice segmentation where the segmented background is shaded in purple,
 the segmented nuclei is shaded in green, the ground truth is a red line.
 
 
@@ -100,7 +104,7 @@ the segmented nuclei is shaded in green, the ground truth is a red line.
 <h2>More input parameters</h2>
 </a>
 
-The code can receive 2 more parameters, one if you want to change the standard deviation of the Canny algorithm, and a previous segmentation. 
+The code can receive 2 more parameters, one if you want to change the standard deviation of the Canny algorithm, and a previous segmentation.
 
 <pre class="codeinput">
 
@@ -130,7 +134,7 @@ Then, from this background, it is easy to calculate a distance transform:
 
 ![Screenshot2](Figures/DistanceFromBackground.png)
 
-That distance transform is related to the cells in the image in terms of their size, and how far away they are from the background. 
+That distance transform is related to the cells in the image in terms of their size, and how far away they are from the background.
 
 ![Screenshot2](Figures/DistanceFromBackground2.png)
 
@@ -175,9 +179,9 @@ Further analysis can consider distance between cells, cells that are in contact 
 <h2>Input Options</h2>
 </a>
 
-There are three options to select the image to be segmented: 
+There are three options to select the image to be segmented:
 
-(1) Read an image (with "imread") and pass the variable with the 2D matrix, 
+(1) Read an image (with "imread") and pass the variable with the 2D matrix,
 (2) Pass the name of the image as an argument to the function, the function will read automatically that image,
 (3) Pass the name of the folder where the image is located, the function will read the whole directory inside the folder, will select the middle slice and will read automatically.
 
@@ -193,12 +197,12 @@ There are three options to select the image to be segmented:
 <h2>Visual validation of the output</h2>
 </a>
 
-Another way to create the validation image previously shown is using the function "validateIndividualHelaROIs". 
+Another way to create the validation image previously shown is using the function "validateIndividualHelaROIs".
 
 <pre class="codeinput">
 validateIndividualHelaROIs(Hela,IndividualHelaLabels);
 </pre>
- 
+
 This generates a figure with the image (<i>Hela</i>), and overlaid the boundaries of all labels (provided in <i>IndividualHelaLabels</i>), with a number associated to each ROI. The number is important as this can be later used to crop the whole ROI (2,000 x 2,000 x 300) from the whole field of view.
 
 ![Screenshot2](Figures/ValidateOutput.png)
@@ -219,7 +223,7 @@ This function reads a folder where a stack of 8,000 x 8,000 images with numerous
 
 The arguments to the function are:
  inputFolder         : location of the input stack
- IndividualHelaLabels: This is a 3D matrix with the labels identifying 
+ IndividualHelaLabels: This is a 3D matrix with the labels identifying
                        the cells, but only one 2D slice should be used
                        to select the cell itself (e.g. (:,:,3)), thus
                        next argument is necessary. These are provided
@@ -236,7 +240,7 @@ There is no output, all will be saved in the outputFolder. The output folder wil
 And the file will be the same, except that the number of label is not used.
 
 
-Example, the data is stored in the Folder "DataWholeSlice", and the ROIs selected is 6 
+Example, the data is stored in the Folder "DataWholeSlice", and the ROIs selected is 6
 
 <pre class="codeinput">
 inputFolder = 'CrickDataWholeSlice';
@@ -289,5 +293,3 @@ Folder will be created
 
 
 ![Screenshot2](Figures/MultipleROIs.png)
-
-
