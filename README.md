@@ -9,6 +9,7 @@ Segmentation, Measurement and Visualisation of Nuclear Envelope of HeLa Cells ob
 
 [HeLa Cells](#HeLa)  
 [Citation](#citation)   
+[Data sets](#datasets)   
 [Brief Description](#description)   
 [Limitations](#limitations)   
 [Running the code](#running)   
@@ -56,6 +57,17 @@ A previous version was accepted as an oral presentation in the conference Medica
 <br>
  <b>Automated Segmentation of HeLa Nuclear Envelope from Electron Microscopy Images</b>,<i> in Proceedings of Medical Image Understanding and Analysis</i>, 9-11 July 2018, Southampton, UK.
 <br>
+
+<a name="datasets"/>
+<h2> Data sets </h2>
+</a>
+
+All the data is available. 
+<ul>
+<li> The 8000x8000 data sets are freely available through EMPIAR: http://dx.doi.org/10.6019/EMPIAR-10094
+<li> The cropped images at 2000x2000 data sets are available through EMPIAR: https://dx.doi.org/10.6019/EMPIAR-10478
+<li> The ground truth is avaialbe through Zenodo: https://doi.org/10.5281/zenodo.3874949
+
 
 <a name="description"/>
 <h2> Brief description </h2>
