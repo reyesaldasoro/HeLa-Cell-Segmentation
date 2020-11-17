@@ -163,7 +163,7 @@ figure(3)
 h2 =  patch(surf_Hela2);
 view(160,30)
 lighting phong
-camlight left
+%camlight left
 camlight right
 set(h2,'facecolor','red')
 set(h2,'edgecolor','none')
