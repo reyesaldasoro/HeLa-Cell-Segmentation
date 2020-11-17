@@ -25,20 +25,21 @@ yy_3D = repmat(yy1,[1 1 numFiles]);
 %zz2             = repmat(xx1(:,1)
 %%
 
-horSlice = 88;
-hold off
+horSlice = 68;
+hold on
 %horSliceSurf = surf(xx1(1:end/fstep,1:end/fstep),yy1(1:end/fstep,1:end/fstep),...
 %                horSlice*zz1(1:end/fstep,1:end/fstep),(Hela_3D(1:fstep:end,1:fstep:end,horSlice)));
 horSliceSurf = surf(xx_3D(:,:,horSlice),yy_3D(:,:,horSlice),zz_3D(:,:,horSlice),(Hela_3D(:,:,horSlice)));
 horSliceSurf.EdgeColor='none';
-hold on
-verSlice =1100;
+%hold on
+verSlice =500;
 verSliceSurf = surf(squeeze(xx_3D(:,verSlice,:)),squeeze(yy_3D(:,verSlice,:)),squeeze(zz_3D(:,verSlice,:)),squeeze(Hela_3D(:,verSlice,:)));
 verSliceSurf.EdgeColor='none';
 
 colormap gray
 %%
 verSliceSurf.FaceAlpha=0.9;
+h2.FaceAlpha=0.9152;
 
 %% Either load a previous result or run 
 %load('nucleiHelaC_2018_02_01.mat')
