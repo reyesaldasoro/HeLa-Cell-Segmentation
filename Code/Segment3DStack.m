@@ -159,7 +159,7 @@ surf_Hela2          = isosurface(x3d(1:fstep:end,1:fstep:end,minSlice:maxSlice),
 
 %%
 % Finally, let's display the surface
-figure(4)
+figure(3)
 h2 =  patch(surf_Hela2);
 view(160,30)
 lighting phong
