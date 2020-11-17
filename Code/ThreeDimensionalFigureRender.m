@@ -1,10 +1,11 @@
 
-load('nucleiHelaC_2018_02_01.mat')
-load('D:\OneDrive - City, University of London\Acad\AlanTuringStudyGroup\nucleiHela_2018_02_01.mat')
+%load('nucleiHelaC_2018_02_01.mat')
+%load('D:\OneDrive - City, University of London\Acad\AlanTuringStudyGroup\nucleiHela_2018_02_01.mat')
+load('C:\Users\sbbk034\OneDrive - City, University of London\Acad\AlanTuringStudyGroup\nucleiHela_2018_02_01.mat')
 
 %%
 
-Hela_nuclei4 = Hela_nuclei3;
+Hela_nuclei4 = Hela_nuclei;
 
 Hela_nuclei4(1:5,1:5,119:120)=1;
 Hela_nuclei4(1995:2000,1995:2000,119:120)=1;
