@@ -120,6 +120,9 @@ if (isempty(cannyStdValue))
 end
 
 %% Process over the whole cell
+[rows,cols,numSlices]= size(Hela_3D);
+Hela_nuclei(rows,cols,numSlices)    = 0;
+Hela_background(rows,cols,numSlices)    = 0;
 centralSlice                        = round(numSlices/2);
 Hela_nuclei(:,:,centralSlice)       = segmentNucleiHelaEM(Hela_3D(:,:,centralSlice));    
 Hela_background(:,:,centralSlice)   = segmentBackgroundHelaEM(Hela_3D(:,:,centralSlice));
@@ -132,6 +135,8 @@ for currentSlice=centralSlice+1:numSlices
     if (sum(sum(Hela_nuclei(:,:,currentSlice-1))))>0
         % Perform segmentation and save in the 3D Matrix       
         Hela_nuclei(:,:,currentSlice)       = segmentNucleiHelaEM(    Hela_3D(:,:,currentSlice),Hela_nuclei(:,:,currentSlice-1));
+    else
+        disp('no nuclei detected')
     end
 end
 
@@ -145,6 +150,8 @@ for currentSlice=centralSlice:-1:1
     % only process the current slice if the previous contains results
     if (sum(sum(Hela_nuclei(:,:,currentSlice+1))))>0
         Hela_nuclei(:,:,currentSlice)       = segmentNucleiHelaEM(Hela_3D(:,:,currentSlice),Hela_nuclei(:,:,currentSlice+1));
+    else
+        disp('no nuclei detected')
     end
 end
 
@@ -155,7 +162,7 @@ end
 
 % Duplicate results
 %Hela_nuclei2            = Hela_nuclei;
-[rows,cols,numSlices]= size(Hela_nuclei);
+
 Hela_nuclei3(rows,cols,numSlices)   = 0;
 % interpolation between slices
 Hela_nuclei3(:,:,2:numSlices-1) =   Hela_nuclei(:,:,1:numSlices-2)+...
