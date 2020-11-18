@@ -126,7 +126,7 @@ Hela_background(:,:,centralSlice)   = segmentBackgroundHelaEM(Hela_3D(:,:,centra
 %%
 for currentSlice=centralSlice+1:numSlices 
     % Iterate from the central slice UP, display the current position
-    disp(currentSlice)
+    disp(strcat('Segmenting slice number',32,num2str(currentSlice)))
     % Perform segmentation and save in the 3D Matrix
     Hela_background(:,:,currentSlice)   = segmentBackgroundHelaEM(Hela_3D(:,:,currentSlice));
     Hela_nuclei(:,:,currentSlice)       = segmentNucleiHelaEM(    Hela_3D(:,:,currentSlice),Hela_nuclei(:,:,currentSlice-1));    
@@ -136,11 +136,22 @@ end
 tic
 for currentSlice=centralSlice:-1:1
     % Iterate from the central slice DOWN, display the current position
-    disp(currentSlice)
-  
+    disp(strcat('Segmenting slice number',32,num2str(currentSlice)))  
     % Perform segmentation and save in the 3D Matrix
     Hela_background(:,:,currentSlice)   = segmentBackgroundHelaEM(Hela_3D(:,:,currentSlice));
     Hela_nuclei(:,:,currentSlice)       = segmentNucleiHelaEM(Hela_3D(:,:,currentSlice),Hela_nuclei(:,:,currentSlice+1));    
 end
 
 
+%% Interpolate between slices
+% A simple post-processing step is to interpolate between slices/
+
+% Duplicate results
+Hela_nuclei2            = Hela_nuclei;
+Hela_nuclei2(1,1,290)   = 0;
+% interpolation between slices
+Hela_nuclei3(:,:,2:289) =   Hela_nuclei2(:,:,1:288)+...
+                            Hela_nuclei2(:,:,2:289)+...
+                            Hela_nuclei2(:,:,3:290);
+
+Hela_nuclei3 = round(Hela_nuclei3);
