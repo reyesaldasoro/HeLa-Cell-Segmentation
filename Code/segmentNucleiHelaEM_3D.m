@@ -143,6 +143,7 @@ for currentSlice=centralSlice:-1:1
 end
 
 
+
 %% Interpolate between slices
 % A simple post-processing step is to interpolate between slices/
 
