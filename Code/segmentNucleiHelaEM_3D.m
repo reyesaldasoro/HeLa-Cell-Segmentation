@@ -170,3 +170,5 @@ Hela_nuclei3(:,:,2:numSlices-1) =   Hela_nuclei(:,:,1:numSlices-2)+...
                                     Hela_nuclei(:,:,3:numSlices);
 
 Hela_nuclei3 = round(Hela_nuclei3);
+Hela_nuclei = Hela_nuclei3>1;
+
