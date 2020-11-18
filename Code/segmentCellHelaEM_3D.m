@@ -66,7 +66,10 @@ if numSlices ==1
     % Find the distance transform from the background, then filter and use
     % watershed to determine where to "cut" the cell, especially when there
     % are 2 cells that are close to each other
-    Hela_background_dist = imfilter(bwdist(Hela_background),fspecial('Gaussian',9,1));
+    Hela_background_dist = imfilter(bwdist(Hela_background),fspecial('Gaussian',29,1));
+    % level the peaks to avoid partitions
+    maxHeight = max(Hela_background_dist(:));
+    Hela_background_dist( Hela_background_dist>(maxHeight*0.75) )=(maxHeight*0.75);
     regionsCells    = watershed(-   Hela_background_dist);
     % find the region of the cell
     currentCellRegs     = unique(regionsCells(Hela_nuclei));
@@ -87,7 +90,7 @@ if numSlices ==1
     % Keep all the regions that are contiguous to the cell and have a small
     % area (10% nucleus)
     areaNuclei      = sum(Hela_nuclei(:));
-    RegionsToKeep0  = (([(Rest_cell_P(Rest_cell_next).Area)]<areaNuclei));
+    RegionsToKeep0  = (([(Rest_cell_P(Rest_cell_next).Area)]<(areaNuclei/10)));
     RegionsToKeep1   = Rest_cell_next(find(RegionsToKeep0));
     RegionsToKeep2  = ismember(Rest_cell,RegionsToKeep1);
     Hela_cell       = Hela_cell +RegionsToKeep2;
