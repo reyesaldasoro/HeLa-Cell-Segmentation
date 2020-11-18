@@ -92,7 +92,7 @@ the nuclear envelope is darker than the nuclei or its surroundings, the backgrou
 <h2>Running the code</h2>
 </a>
 
-Assuming your image is a tiff file called 'Hela.tiff'
+Assuming your image is a tiff file called 'Hela.tiff' you can pass this directly to the function *segmentNucleiHelaEM* as an input argument and returns the segmentation of the nuclei with 1 and the rest with 0. The background is segmented with *segmentBackgroundHelaEM* and similarly returns a matrix with 1 for background and 0 for the rest.
 
 <pre class="codeinput">
 
@@ -102,6 +102,14 @@ Hela_background 	= segmentBackgroundHelaEM(Hela);
 Hela_nuclei     	= segmentNucleiHelaEM(Hela);    
 
 </pre>
+
+To process a stack of images, you can use the extension of the previous function through *segmentNucleiHelaEM_3D*. The input argument can be either:
+1. a folder where the stack of images (these have to be *tiff* images, will analyse if there are other extension later on), one image per slice of the data, 
+2. a multidimensional TIFF file,
+3. a three dimensional Matlab matrix.
+
+The outputs of this function are 2 matrices *Hela_nuclei* and *Hela_background* which will be three dimensional with as many levels as slices of the original data
+
 
 <a name="results"/>
 <h2>Results</h2>
