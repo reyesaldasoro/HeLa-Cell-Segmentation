@@ -62,20 +62,41 @@ end
 
 if numSlices ==1
     % Two dimensional case
+    % 
     % Find the distance transform from the background, then filter and use
     % watershed to determine where to "cut" the cell, especially when there
     % are 2 cells that are close to each other
-    regionsCells    = watershed(- imfilter(bwdist(Hela_background),fspecial('Gaussian',3,1)  ));
+    Hela_background_dist = imfilter(bwdist(Hela_background),fspecial('Gaussian',9,1));
+    regionsCells    = watershed(-   Hela_background_dist);
     % find the region of the cell
-    currentCell     = unique(cc(Hela_nuclei));
+    currentCellRegs     = unique(regionsCells(Hela_nuclei));
+    currentCellRegs(currentCellRegs==0)=[];
     % remove all other regions as well as the background and the nucleus
-    Hela_cell       = (regionsCells==currentCell).*(1-Hela_background).*(1-Hela_nuclei);
-    
+    currentCell         = ismember(regionsCells,currentCellRegs);
+    try
+        Hela_cell       = currentCell.*(1-Hela_background).*(1-Hela_nuclei);
+        Hela_cell       = imclose(Hela_cell,ones(3));
+        [Rest_cell,numR]= bwlabel((1-Hela_background).*(1-Hela_cell).*(1-Hela_nuclei));
+    catch
+        q=1;
+    end
+
+    Rest_cell_P     = regionprops(Rest_cell,'Area');
+    Rest_cell_next  = unique(Rest_cell.*imdilate(Hela_cell,ones(3)));
+    Rest_cell_next(Rest_cell_next==0)=[];
+    % Keep all the regions that are contiguous to the cell and have a small
+    % area (10% nucleus)
+    areaNuclei      = sum(Hela_nuclei(:));
+    RegionsToKeep0  = (([(Rest_cell_P(Rest_cell_next).Area)]<areaNuclei));
+    RegionsToKeep1   = Rest_cell_next(find(RegionsToKeep0));
+    RegionsToKeep2  = ismember(Rest_cell,RegionsToKeep1);
+    Hela_cell       = Hela_cell +RegionsToKeep2;
 else
     % Three dimensional case
     Hela_cell(rows,cols,numSlices)=0;
-    for k=1:numSlices
-        disp(strcat('Processing slice number',32,num2str(k)))
-        Hela_cell(:,:,k) = segmentCellHelaEM_3D(Hela_nuclei(:,:,k),Hela_background(:,:,k));
+    centralSlice                        = round(numSlices/2);
+    for currentSlice=centralSlice+1:numSlices 
+        disp(strcat('Processing slice number',32,num2str(currentSlice)))
+        Hela_cell(:,:,currentSlice) = segmentCellHelaEM_3D(Hela_nuclei(:,:,currentSlice),Hela_background(:,:,currentSlice));
     end
 end
