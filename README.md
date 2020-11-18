@@ -110,7 +110,7 @@ To process a stack of images, you can use the extension of the previous function
 
 The outputs of this function are 2 matrices *Hela_nuclei* and *Hela_background* which will be three dimensional with as many levels as slices of the original data.
 
-**MEMORY** these functions load all the slices into a single matrix in Matlab. This has been tested with 300 slices of 2,000 x 2,000 pixels on a computer with 32GB RAM memory. Computers with less memory may have problems. If you have less memory available, You can run a loop and segment per slice as described in one of the chapters. This was tested on a computer with 8GB RAM.
+**MEMORY:** these functions load all the slices into a single matrix in Matlab. This has been tested with 300 slices of 2,000 x 2,000 pixels on a computer with 32GB RAM memory. Computers with less memory may have problems. If you have less memory available, You can run a loop and segment per slice as described in one of the chapters. This was tested on a computer with 8GB RAM.
 
 
 <a name="results"/>
