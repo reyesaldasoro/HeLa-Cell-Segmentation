@@ -63,6 +63,7 @@ end
 if numSlices ==1
     % Two dimensional case
     % 
+    areaNuclei      = sum(Hela_nuclei(:));
     % Find the distance transform from the background, then filter and use
     % watershed to determine where to "cut" the cell, especially when there
     % are 2 cells that are close to each other
@@ -72,8 +73,20 @@ if numSlices ==1
     Hela_background_dist( Hela_background_dist>(maxHeight*0.75) )=(maxHeight*0.75);
     regionsCells    = watershed(-   Hela_background_dist);
     % find the region of the cell
-    currentCellRegs     = unique(regionsCells(Hela_nuclei));
-    currentCellRegs(currentCellRegs==0)=[];
+    % if there is nuclei use this as guide, otherwise select the most
+    % central one
+    if areaNuclei>0
+        currentCellRegs     = unique(regionsCells(Hela_nuclei));
+        currentCellRegs(currentCellRegs==0)=[];
+    else
+        centroidsRegions = regionprops(regionsCells,'centroid');
+        posXY = [centroidsRegions.Centroid];
+        posRC(:,1)  = posXY(1:2:end)-(rows/2);
+        posRC(:,2)  = posXY(2:2:end)-(cols/2);
+        distCentr   = sqrt(sum(posRC.^2,2));
+        [minDist,centralReg]  = min(distCentr); 
+        currentCell         = ismember(regionsCells,centralReg);
+    end
     % remove all other regions as well as the background and the nucleus
     currentCell         = ismember(regionsCells,currentCellRegs);
     try
@@ -89,7 +102,7 @@ if numSlices ==1
     Rest_cell_next(Rest_cell_next==0)=[];
     % Keep all the regions that are contiguous to the cell and have a small
     % area (10% nucleus)
-    areaNuclei      = sum(Hela_nuclei(:));
+
     RegionsToKeep0  = (([(Rest_cell_P(Rest_cell_next).Area)]<(areaNuclei/10)));
     RegionsToKeep1   = Rest_cell_next(find(RegionsToKeep0));
     RegionsToKeep2  = ismember(Rest_cell,RegionsToKeep1);
