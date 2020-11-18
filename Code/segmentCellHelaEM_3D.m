@@ -70,7 +70,7 @@ if numSlices ==1
     Hela_background_dist = imfilter(bwdist(Hela_background),fspecial('Gaussian',29,1));
     % level the peaks to avoid partitions
     maxHeight = max(Hela_background_dist(:));
-    Hela_background_dist( Hela_background_dist>(maxHeight*0.75) )=(maxHeight*0.75);
+    Hela_background_dist( Hela_background_dist>(maxHeight*0.70) )=(maxHeight*0.70);
     regionsCells    = watershed(-   Hela_background_dist);
     % find the region of the cell
     % if there is nuclei use this as guide, otherwise select the most
@@ -79,19 +79,26 @@ if numSlices ==1
         currentCellRegs     = unique(regionsCells(Hela_nuclei));
         currentCellRegs(currentCellRegs==0)=[];
     else
-        centroidsRegions = regionprops(regionsCells,'centroid');
+        centroidsRegions = regionprops(regionsCells,'centroid','Area','MinoraxisLength');
+        % Discard very narrow areas
+        regionsCells = bwlabel(ismember(regionsCells,find([centroidsRegions.MinorAxisLength]>5)));
+        centroidsRegions = regionprops(regionsCells,'centroid','Area','MinoraxisLength');
         posXY = [centroidsRegions.Centroid];
         posRC(:,1)  = posXY(1:2:end)-(rows/2);
         posRC(:,2)  = posXY(2:2:end)-(cols/2);
         distCentr   = sqrt(sum(posRC.^2,2));
         [minDist,centralReg]  = min(distCentr); 
-        currentCell         = ismember(regionsCells,centralReg);
+        %currentCell         = ismember(regionsCells,centralReg);
+        % Use a small range as there are cases where 
+        currentCellRegs = find(distCentr<(minDist+30));
+        %currentCellRegs = centralReg;
     end
     % remove all other regions as well as the background and the nucleus
     currentCell         = ismember(regionsCells,currentCellRegs);
     try
-        Hela_cell       = currentCell.*(1-Hela_background).*(1-Hela_nuclei);
-        Hela_cell       = imclose(Hela_cell,ones(3));
+        Hela_cell1       = currentCell.*(1-Hela_background).*(1-Hela_nuclei);
+        Hela_cell2       = imclose(Hela_cell1,ones(9));
+        Hela_cell       = imfill(Hela_cell2,'holes');
         [Rest_cell,numR]= bwlabel((1-Hela_background).*(1-Hela_cell).*(1-Hela_nuclei));
     catch
         q=1;
