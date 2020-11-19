@@ -132,6 +132,7 @@ currPeak                            = 1;
 rankCells                           = [];
 %%
 combinedHeight                              = helaDistFromBackground.*helaPeaks;
+widthBox                            = max(10,round(rows/200));
 % Use the try in case the memory runs out
 try
     while (currPeak<=numCells)&&(maxPeak>0)
@@ -150,10 +151,10 @@ try
             helaPeaks(rr2,cc2)              = 0;
             combinedHeight(rr2,cc2)         = 0;
             % Create boundaries for the region selected, mainly to display
-            helaBoundary(rr2(1):rr2(1)+50    , cc2(1):cc2(end))         = 1;
-            helaBoundary(rr2(end)-50:rr2(end), cc2(1):cc2(end))         = 1;
-            helaBoundary(rr2(1):rr2(end)     , cc2(1):cc2(1)+50)        = 1;
-            helaBoundary(rr2(1):rr2(end)     , cc2(end)-50:cc2(end))    = 1;
+            helaBoundary(rr2(1):rr2(1)+widthBox    , cc2(1):cc2(end))         = 1;
+            helaBoundary(rr2(end)-widthBox:rr2(end), cc2(1):cc2(end))         = 1;
+            helaBoundary(rr2(1):rr2(end)     , cc2(1):cc2(1)+widthBox)        = 1;
+            helaBoundary(rr2(1):rr2(end)     , cc2(end)-widthBox:cc2(end))    = 1;
             positionROI(currPeak,:)                                     = [rr(1) cc(1)];
             currPeak                            = currPeak+1;
         end
