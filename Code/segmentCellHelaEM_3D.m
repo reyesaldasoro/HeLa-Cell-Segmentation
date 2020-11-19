@@ -67,7 +67,7 @@ if numSlices ==1
     % Find the distance transform from the background, then filter and use
     % watershed to determine where to "cut" the cell, especially when there
     % are 2 cells that are close to each other
-    Hela_background_dist = imfilter(bwdist(Hela_background),fspecial('Gaussian',29,1));
+    Hela_background_dist = imfilter(bwdist(Hela_background),fspecial('Gaussian',9,1));
     % level the peaks to avoid partitions
     maxHeight = max(Hela_background_dist(:));
     Hela_background_dist( Hela_background_dist>(maxHeight*0.70) )=(maxHeight*0.70);
@@ -95,25 +95,34 @@ if numSlices ==1
     end
     % remove all other regions as well as the background and the nucleus
     currentCell         = ismember(regionsCells,currentCellRegs);
-    try
+    %try
         Hela_cell1       = currentCell.*(1-Hela_background).*(1-Hela_nuclei);
         Hela_cell2       = imclose(Hela_cell1,ones(9));
         Hela_cell       = imfill(Hela_cell2,'holes');
         [Rest_cell,numR]= bwlabel((1-Hela_background).*(1-Hela_cell).*(1-Hela_nuclei));
-    catch
-        q=1;
-    end
+    %catch
+    %    q=1;
+    %end
 
-    Rest_cell_P     = regionprops(Rest_cell,'Area');
+    Rest_cell_P     = regionprops(Rest_cell,'Area','Centroid','Extrema');
     Rest_cell_next  = unique(Rest_cell.*imdilate(Hela_cell,ones(3)));
     Rest_cell_next(Rest_cell_next==0)=[];
     % Keep all the regions that are contiguous to the cell and have a small
     % area (10% nucleus)
 
-    RegionsToKeep0  = (([(Rest_cell_P(Rest_cell_next).Area)]<(areaNuclei/10)));
-    RegionsToKeep1   = Rest_cell_next(find(RegionsToKeep0));
-    RegionsToKeep2  = ismember(Rest_cell,RegionsToKeep1);
-    Hela_cell       = Hela_cell +RegionsToKeep2;
+    RegionsToKeep0  = (([(Rest_cell_P(Rest_cell_next).Area)]<(0.35*areaNuclei)));
+    % discard regions that touch edges
+    topLeft         = [Rest_cell_P.Extrema]<1;
+    bottomRight1    = [Rest_cell_P.Extrema]>rows;
+    bottomRight2    = [Rest_cell_P.Extrema]>cols;
+    top             = topLeft(:,2:2:end)';
+    left            = topLeft(:,1:2:end)';
+    bottom          = bottomRight1(:,2:2:end)';
+    right           = bottomRight2(:,1:2:end)';
+    RegionsToKeep1  = find(1-any([top left bottom right],2));
+    RegionsToKeep2   = Rest_cell_next(find(RegionsToKeep0));
+    RegionsToKeep3  = ismember(Rest_cell,intersect(RegionsToKeep1,RegionsToKeep2));
+    Hela_cell       = Hela_cell +RegionsToKeep3;
 else
     % Three dimensional case
     Hela_cell(rows,cols,numSlices)=0;
