@@ -172,3 +172,7 @@ Hela_nuclei3(:,:,2:numSlices-1) =   Hela_nuclei(:,:,1:numSlices-2)+...
 Hela_nuclei3 = round(Hela_nuclei3);
 Hela_nuclei = Hela_nuclei3>1;
 
+% Hela_nuclei is a logical and thus uses less memory than a double, reduce
+% the background as well. Tested with logical and uint8 and uses the same
+% space in disk but since nuclei is logical, keep consistent
+Hela_background = (Hela_background>0);
