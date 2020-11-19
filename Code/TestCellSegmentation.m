@@ -28,8 +28,9 @@ clear k dir0 baseDir gaussFilt
 load('C:\Users\sbbk034\OneDrive - City, University of London\Documents\GitHub\HeLa-Cell-Segmentation\Code\Hela_background.mat');
 load('C:\Users\sbbk034\OneDrive - City, University of London\Documents\GitHub\HeLa-Cell-Segmentation\Code\Hela_nuclei.mat');
 
-%%
-centralSlice = 178;
+%% This works well whilst there is a nuclei, beyond that is not that good,
+% perhaps propagate surfaces down or get a vertical cut
+centralSlice = 38;
 [Hela_cell] = segmentCellHelaEM_3D(Hela_nuclei(:,:,centralSlice),Hela_background(:,:,centralSlice));
 qq(:,:,1) = (Hela_3D(:,:,centralSlice)+ 20*Hela_cell)  /255;
 qq(:,:,2) = (Hela_3D(:,:,centralSlice)+ 30*Hela_nuclei(:,:,centralSlice))  /255;
