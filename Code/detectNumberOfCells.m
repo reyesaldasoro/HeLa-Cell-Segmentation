@@ -1,4 +1,4 @@
-function [IndividualHelaLabels,rankCells,positionROI]        = detectNumberOfCells(hela,numCells,helaBackground)
+function [IndividualHelaLabels,rankCells,positionROI]        = detectNumberOfCells(hela,numCells,helaBackground,toDisplay)
 %function IndividualHelaLabels         = detectNumberOfCells(hela,numCells)
 %--------------------------------------------------------------------------
 % Input         Hela                 : an image in Tiff or Matlab format preferably 2D,
@@ -80,6 +80,16 @@ end
 if ~exist('helaBackground','var')
     [helaBackground]                    = segmentBackgroundHelaEM(hela);
 end
+if isempty(helaBackground)
+    [helaBackground]                    = segmentBackgroundHelaEM(hela);
+end
+
+%% enable display
+if ~exist('toDisplay','var')
+    toDisplay = 0;
+end
+
+
 %% Initial processing
 % Calculate size of the input image, it is usually 8192x8192
 [rows,cols]                         = size(hela);
@@ -95,6 +105,10 @@ helaBackground(:,end)               = 1;
 if ~exist('numCells','var')
     numCells = 25;
 end
+if isempty(numCells)
+    numCells = 25;
+end
+
 % Final segmentation, will contain a label per every region classified as cell
 IndividualHelaLabels                = uint8(zeros(rows,cols,numCells));
 % Boundary of each region
@@ -146,16 +160,18 @@ try
 
     end
 catch
-    
+    disp('error encountered')
 end
 
 positionROI(currPeak:end,:) = [];
 
 
 %% Display output
-figure
-imagesc(hela2.*(1-helaBoundary))
-for counterROI = 1:currPeak-1
-    text(positionROI(counterROI,2),positionROI(counterROI,1),num2str(counterROI),'fontsize',20,'color','r')
+if toDisplay==1
+    figure
+    imagesc(hela2.*(1-helaBoundary))
+    for counterROI = 1:currPeak-1
+        text(positionROI(counterROI,2),positionROI(counterROI,1),num2str(counterROI),'fontsize',20,'color','r')
+    end
+    colormap gray
 end
-colormap gray
