@@ -1,0 +1,106 @@
+function [IndividualHelaLabels,rankCells,positionROI]        = detectNumberOfCells_3D(baseDir,numCells)
+%function IndividualHelaLabels         = detectNumberOfCells_3D(baseDir,numCells)
+% This function calls iteratively detectNumberOfCells in 2D to find all the
+% cells in a stack, these will be in different positions and aligned.
+%--------------------------------------------------------------------------
+% Input         baseDir                 : a folder with a series of images
+%               numCells             : optional, number of cells used to stop the
+%                                      iterative process to detect cells
+% Output        IndividualHelaLabels      : a 3D matrix with a label at each level
+%                                      corresponding to the region of one cell.
+%--------------------------------------------------------------------------
+% 
+% This code segments the REGION where HeLa Cells are located. The images have been
+% acquired with Electron Microscopy at The Crick Institute by Chris Peddie, Anne
+% Weston, Lucy Collinson and provided to the Data Study Group at the Alan Turing
+% Insititute by Martin Jones.
+%
+% The code uses traditional image processing methods (edge detection, labelling,
+% filtering, etc) to detect the regions where cells are located, ROUGHLY. It is
+% intended as a step previous to a fine segmentation and removes the manual selection
+% of cells by clicking in the centroid of the cell. 
+% It assumes the following:
+%   1 Background is brighter than cells, 
+%   2 The background is detected automatically with segmentBackgroundHelaEM.m
+%   3 As the image may have 20 or more cells, there are  2 ways to stop the iterative
+%   process, one with the input argument to detect a determined number of cells, and
+%   also the intensity of a distance map calculated in the algorithm, i.e. the
+%   distance away from the background.
+%
+%  ------------------------ CITATION ------------------------------------- 
+% This work has been accepted as an oral presentation in the conference:
+%
+% Medical Image Understanding and Analysis (MIUA) 2018 (https://miua2018.soton.ac.uk)
+% please cite as: 
+% Cefa Karabag, Martin L. Jones, Christopher J. Peddie, Anne E.
+% Weston, Lucy M. Collinson, and Constantino Carlos Reyes-Aldasoro, Automated
+% Segmentation of HeLa Nuclear Envelope from Electron Microscopy Images, in
+% Proceedings of Medical Image Understanding and Analysis, 7-9 July 2018,
+% Southampton, UK. Usual disclaimer
+%
+% Usual disclaimer
+%--------------------------------------------------------------------------
+%
+%     Copyright (C) 2018  Constantino Carlos Reyes-Aldasoro
+%
+%     This code is free software: you can redistribute it and/or modify
+%     it under the terms of the GNU General Public License as published by
+%     the Free Software Foundation, version 3 of the License.
+%
+%     The code is distributed in the hope that it will be useful,
+%     but WITHOUT ANY WARRANTY; without even the implied warranty of
+%     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%     GNU General Public License for more details.
+%
+%     The GNU General Public License is available at <http://www.gnu.org/licenses/>.
+%
+%--------------------------------------------------------------------------
+
+%% Check type of input
+if isa(baseDir,'char')
+        % check if it is a file or a folder
+    if isfolder(baseDir)
+        % It is a folder, take the central slice
+        dir0                        = dir (baseDir);
+        numSlices                   = size(dir0,1);
+
+    else
+        % It is a file, read 
+
+    end
+    
+else
+    disp('This function processes multiple slices inside a folder');
+    return
+end
+
+%%
+
+%%
+step=4;
+probingSlices = 1:50:numSlices;
+for k=1:numel(probingSlices)
+    disp(strcat('Reading slice = ',32,num2str(k)))
+    Hela_3D = ( imfilter(imread(strcat(baseDir,dir0(probingSlices(k)).name)), gaussFilt));
+    [IndividualHelaLabels,rankCells(:,k),positionROI(:,:,k)]  = detectNumberOfCells(Hela_3D(1:step:end,1:step:end),20);
+end
+
+%%
+
+figure
+clf
+hold on
+
+for k=1:11
+    for kk=1:20
+        text(positionROI(kk,2,k),positionROI(kk,1,k),k,num2str(kk),'color',[k/11 0 (11-k)/11])
+    end
+end
+
+axis([1 2000 1 2000 1 11])
+grid on
+axis ij
+rotate3d on
+%% Find which cells are colocated
+
+
