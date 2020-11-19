@@ -164,17 +164,22 @@ end
 %% Interpolate between slices
 % A simple post-processing step is to interpolate between slices/
 
-% Duplicate results
-%Hela_nuclei2            = Hela_nuclei;
-
 Hela_nuclei3(rows,cols,numSlices)   = 0;
 % interpolation between slices
 Hela_nuclei3(:,:,2:numSlices-1) =   Hela_nuclei(:,:,1:numSlices-2)+...
                                     Hela_nuclei(:,:,2:numSlices-1)+...
                                     Hela_nuclei(:,:,3:numSlices);
+Hela_nuclei3                    = round(Hela_nuclei3);
+Hela_nuclei                     = Hela_nuclei3>1;
+%%
+Hela_background3(rows,cols,numSlices)   = 0;
+% interpolation between slices
+Hela_background3(:,:,2:numSlices-1) =   Hela_background(:,:,1:numSlices-2)+...
+                                    Hela_background(:,:,2:numSlices-1)+...
+                                    Hela_background(:,:,3:numSlices);
+Hela_background3                    = round(Hela_background3);
+Hela_background                     = Hela_background3>1;
 
-Hela_nuclei3 = round(Hela_nuclei3);
-Hela_nuclei = Hela_nuclei3>1;
 
 % Hela_nuclei is a logical and thus uses less memory than a double, reduce
 % the background as well. Tested with logical and uint8 and uses the same
