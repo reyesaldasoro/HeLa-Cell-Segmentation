@@ -1,9 +1,9 @@
-function [Hela_nuclei,Hela_background] = segmentNucleiHelaEM_3D(Hela,cannyStdValue)
-%function nucleiHela = segmentNucleiHelaEM_3D(Hela,previousSegmentation,cannyStdValue)
+function [Hela_nuclei,Hela_background] = segmentNucleiHelaEM_3D(baseDir,cannyStdValue)
+%function nucleiHela = segmentNucleiHelaEM_3D(baseDir,previousSegmentation,cannyStdValue)
 % This is the volumentric option of segmentNucleiHelaEM, it takes a stack
 % of images and process them all
 %--------------------------------------------------------------------------
-% Input         Hela                    : 1) A folder with n images in Matlab/tiff format,it can be 2D/3D, double/uint8
+% Input         baseDir                    : 1) A folder with n images in Matlab/tiff format,it can be 2D/3D, double/uint8
 %                                       : 2) A tiff with many slices
 %               cannyStdValue           : the value of the Std of the canny edge detection
 % Output        nucleiHela              : a binary volume with 1 for nuclei, 0 background
@@ -53,14 +53,14 @@ function [Hela_nuclei,Hela_background] = segmentNucleiHelaEM_3D(Hela,cannyStdVal
 %
 %--------------------------------------------------------------------------
 %% Parse input parameters
-if isa(Hela,'char')
-    if isfolder(Hela)
+if isa(baseDir,'char')
+    if isfolder(baseDir)
         % Hela is a folder where all the slides are located these must be
         % *.tiff or *.tif
-        if (Hela(end)~=filesep)
-            Hela = strcat(Hela,filesep);
+        if (baseDir(end)~=filesep)
+            baseDir = strcat(baseDir,filesep);
         end
-        dir0        = dir (strcat(Hela,'*.tif*'));
+        dir0        = dir (strcat(baseDir,'*.tif*'));
         numSlices   = size(dir0,1);
         if numSlices==1
             % Single image
@@ -69,18 +69,18 @@ if isa(Hela,'char')
         else
             % multiple images
             % Read info of first slice to format the 3D data
-            infoSlices = imfinfo(strcat(Hela,dir0(1).name));
+            infoSlices = imfinfo(strcat(baseDir,dir0(1).name));
             Hela_3D(infoSlices.Height,infoSlices.Width,numSlices)=0;
             gaussFilt =  fspecial('Gaussian',3,1);
             for k=1:numSlices
                 disp(strcat('Reading slice number',32,num2str(k)))
-                Hela_3D(:,:,k) = imfilter(imread(strcat(Hela,dir0(k).name)), gaussFilt);
+                Hela_3D(:,:,k) = imfilter(imread(strcat(baseDir,dir0(k).name)), gaussFilt);
             end
         end
     else
-        % Hela is not a folder, it can be a file location
+        % baseDir is not a folder, it can be a file location
         % Read info of first slice to format the 3D data
-        infoSlices = imfinfo(Hela);          
+        infoSlices = imfinfo(baseDir);          
         numSlices = size(infoSlices,1);
         % It is a string, check to see if it has many levels
         if numSlices==1
@@ -93,26 +93,26 @@ if isa(Hela,'char')
             gaussFilt =  fspecial('Gaussian',3,1);
             for k=1:numSlices
                 disp(strcat('Reading slice number',32,num2str(k)))
-                Hela_3D(:,:,k) = imfilter(imread(Hela,k), gaussFilt);
+                Hela_3D(:,:,k) = imfilter(imread(baseDir,k), gaussFilt);
             end
         end
     end
 else
     % last option, it can be a matlab matrix
-    if (isa(Hela,'double'))|(isa(Hela,'uint8'))
+    if (isa(baseDir,'double'))|(isa(baseDir,'uint8'))
         % Matrix, test size
-        [rows,cols,numSlices]= size(Hela);
+        [rows,cols,numSlices]= size(baseDir);
         if numSlices==1
             % Single image
             disp('This function processes multiple slices, for single images use segmentNucleiHelaEM_3D');
             return
         else
             % multiple images
-            Hela_3D = Hela;
+            Hela_3D = baseDir;
         end
     end
 end
-clear Hela
+clear baseDir
 
 %%
 % Check the existance of Canny value,
