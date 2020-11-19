@@ -68,7 +68,9 @@ if isa(Hela,'char')
             return
         else
             % multiple images
-            Hela_3D(2000,2000,numSlices)=0;
+            % Read info of first slice to format the 3D data
+            infoSlices = imfinfo(strcat(Hela,dir0(1).name));
+            Hela_3D(infoSlices.Height,infoSlices.Width,numSlices)=0;
             gaussFilt =  fspecial('Gaussian',3,1);
             for k=1:numSlices
                 disp(strcat('Reading slice number',32,num2str(k)))
@@ -77,7 +79,9 @@ if isa(Hela,'char')
         end
     else
         % Hela is not a folder, it can be a file location
-        numSlices = size(imfinfo(Hela),1);
+        % Read info of first slice to format the 3D data
+        infoSlices = imfinfo(Hela);          
+        numSlices = size(infoSlices,1);
         % It is a string, check to see if it has many levels
         if numSlices==1
             % Single image
@@ -85,7 +89,7 @@ if isa(Hela,'char')
             return
         else
             % multiple images
-            Hela_3D(2000,2000,numSlices)=0;
+            Hela_3D(infoSlices.Height,infoSlices.Width,numSlices)=0;
             gaussFilt =  fspecial('Gaussian',3,1);
             for k=1:numSlices
                 disp(strcat('Reading slice number',32,num2str(k)))
