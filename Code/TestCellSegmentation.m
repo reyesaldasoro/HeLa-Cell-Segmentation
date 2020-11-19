@@ -21,17 +21,20 @@ for k=1:numSlices
     disp(strcat('Reading slice number',32,num2str(k)))
     Hela_3D(:,:,k)              = imfilter(imread(strcat(baseDir,dir0(k).name)), gaussFilt);
 end
-%%
-[Hela_nuclei,Hela_background]   = segmentNucleiHelaEM_3D(Hela_3D);
+clear k dir0 baseDir gaussFilt
+%% Calculate or read
+%[Hela_nuclei,Hela_background]   = segmentNucleiHelaEM_3D(Hela_3D);
 
+load('C:\Users\sbbk034\OneDrive - City, University of London\Documents\GitHub\HeLa-Cell-Segmentation\Code\Hela_background.mat');
+load('C:\Users\sbbk034\OneDrive - City, University of London\Documents\GitHub\HeLa-Cell-Segmentation\Code\Hela_nuclei.mat');
 
 %%
-centralSlice = 282;
+centralSlice = 178;
 [Hela_cell] = segmentCellHelaEM_3D(Hela_nuclei(:,:,centralSlice),Hela_background(:,:,centralSlice));
 qq(:,:,1) = (Hela_3D(:,:,centralSlice)+ 20*Hela_cell)  /255;
 qq(:,:,2) = (Hela_3D(:,:,centralSlice)+ 30*Hela_nuclei(:,:,centralSlice))  /255;
 qq(:,:,3) = (Hela_3D(:,:,centralSlice)+ 100*Hela_background(:,:,centralSlice))/255;
-figure(4)
+figure(9)
 imagesc(qq)
 
 %%
