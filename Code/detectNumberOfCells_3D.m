@@ -61,7 +61,13 @@ if isa(baseDir,'char')
         % check if it is a file or a folder
     if isfolder(baseDir)
         % It is a folder, take the central slice
-        dir0                        = dir (baseDir);
+              
+        if (baseDir(end)~=filesep)
+            baseDir = strcat(baseDir,filesep);
+        end
+        dir0        = dir (strcat(baseDir,'*.tif*'));
+        
+
         numSlices                   = size(dir0,1);
 
     else
@@ -75,8 +81,12 @@ else
 end
 
 %%
+stackInfo       = imfinfo((strcat(baseDir,dir0(probingSlices(k)).name)));
+rows            = stackInfo.Width;
+cols            = stackInfo.Height;
 
 %%
+gaussFilt =  fspecial('Gaussian',3,1);
 step=4;
 probingSlices = 1:50:numSlices;
 for k=1:numel(probingSlices)
@@ -91,7 +101,7 @@ figure
 clf
 hold on
 
-for k=1:11
+for k=1:3
     for kk=1:20
         text(positionROI(kk,2,k),positionROI(kk,1,k),k,num2str(kk),'color',[k/11 0 (11-k)/11])
     end
@@ -102,5 +112,16 @@ grid on
 axis ij
 rotate3d on
 %% Find which cells are colocated
+% find distance between cells in level 1 and cells in level 2 
+% Since the image has been subsampled the distances are reduced, rescale
+positionROI     = positionROI *step;
+r1              = repmat(positionROI(:,1,1),[1,20]);
+r2              = repmat(positionROI(:,1,2),[1,20])';
+c1              = repmat(positionROI(:,2,1),[1,20]);
+c2              = repmat(positionROI(:,2,2),[1,20])';
+dist_1_2        = sqrt((r1-r2).^2+(c1-c2).^2);
+[minDist_1_2,pairDist]     = min(round(dist_1_2),[],2);
+% Find those cases where teh cells are less than   *** 150 *** pixels in
+% straight line 
 
 
