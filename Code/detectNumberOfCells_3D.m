@@ -103,7 +103,7 @@ cols            = stackInfo.Height;
 
 %%
 gaussFilt           = fspecial('Gaussian',3,1);
-stepPix             = 8;
+stepPix             = 4;
 stepSlice           = 20;
 probingSlices       = 1:stepSlice:numSlices;
 numSlicesProb       = numel(probingSlices);
@@ -205,7 +205,7 @@ final_centroid=zeros(numFinalCells,5);
     end
 
 
-
+final_centroid(:,3:5) = 1+ final_centroid(:,3:5)*(stepSlice)-stepSlice;
 %%
 if toDisplay ==1
     figure
