@@ -1,4 +1,4 @@
-function [final_cells,final_dist]        = detectNumberOfCells_3D(baseDir,numCells,toDisplay)
+function [final_centroid,final_cells,final_dist]        = detectNumberOfCells_3D(baseDir,numCells,toDisplay)
 %function IndividualHelaLabels         = detectNumberOfCells_3D(baseDir,numCells)
 % This function calls iteratively detectNumberOfCells in 2D to find all the
 % cells in a stack, these will be in different positions and aligned.
@@ -107,10 +107,12 @@ stepPix             = 8;
 stepSlice           = 20;
 probingSlices       = 1:stepSlice:numSlices;
 numSlicesProb       = numel(probingSlices);
+rankCells           = zeros(numCells,numSlicesProb);
+positionROI         = zeros(numCells,2,numSlicesProb);
 for k=1:numSlicesProb
     disp(strcat('Reading slice = ',32,num2str(k)))
     Hela_3D = ( imfilter(imread(strcat(baseDir,dir0(probingSlices(k)).name)), gaussFilt));
-    [IndividualHelaLabels,rankCells(:,k),positionROI(:,:,k)]  = detectNumberOfCells(Hela_3D(1:stepPix:end,1:stepPix:end),numCells);
+    [~,rankCells(:,k),positionROI(:,:,k)]  = detectNumberOfCells(Hela_3D(1:stepPix:end,1:stepPix:end),numCells);
 end
 % Since the image has been subsampled the distances are reduced, rescale
 positionROI     = positionROI *stepPix;
@@ -123,10 +125,10 @@ positionROI2    = positionROI;
 
 final_cells = [];
 final_dist  = [];
-final_rank  = [];
+%final_rank  = [];
 %positionROI=qqq;
 %%
-kkk=3;
+
 maximum_distance    = 300;
 for startingSlice  = 1:numSlicesProb-1
     for cellAtSlice = 1:numCells
@@ -136,7 +138,7 @@ for startingSlice  = 1:numSlicesProb-1
             dist_i                          = zeros(1,numSlicesProb);
             cell_i                          = zeros(1,numSlicesProb);
             cell_i(startingSlice)           = cellAtSlice;
-            rank_i(startingSlice)           = rankCells(cellAtSlice,startingSlice);
+            %rank_i(startingSlice)           = rankCells(cellAtSlice,startingSlice);
             %cell_i_2(1)                    = cellAtSlice;
             dist_i(startingSlice)           = 0 ;
             for cSlices = startingSlice: numSlicesProb-1
@@ -178,15 +180,30 @@ final_dist(final_dist==inf)   = 0;
 min_connections                 = (ceil(150/stepSlice));
 %final_rank(sum(final_cells>0,2)<min_connections,:)   = [];
 final_dist(sum(final_cells>0,2)<min_connections,:)  = [];
-
 final_cells(sum(final_cells>0,2)<min_connections,:) = [];
 
 
 %%
 
 %final_cells(final_cells==0)=0;
-kkk=5;
+
 numFinalCells = size(final_cells,1);
+
+%%
+final_centroid=zeros(numFinalCells,5);
+    %currLine =[];
+    for k=1:numFinalCells
+        levsToPlot = find(final_cells(k,:));
+        cellsToPlot = final_cells(k,levsToPlot);
+        clear currLine
+        currLine =[];
+        for k2 =1:numel(levsToPlot)
+            currLine = [currLine;[positionROI2(cellsToPlot(k2),:,levsToPlot(k2)) levsToPlot(k2) ]];
+        end
+        %plot3(currLine(:,2),currLine(:,1),currLine(:,3),'linewidth',2)
+        final_centroid(k,:) = [round(mean(currLine)) levsToPlot(1) levsToPlot(end) ] ;
+    end
+
 
 
 %%
@@ -208,7 +225,7 @@ if toDisplay ==1
     rotate3d on
     %%
     
-    currLine =[];
+    %currLine =[];
     for k=1:numFinalCells
         levsToPlot = find(final_cells(k,:));
         cellsToPlot = final_cells(k,levsToPlot);
@@ -222,7 +239,7 @@ if toDisplay ==1
 end
 
 %%
-q=1;
+
 
 
 
