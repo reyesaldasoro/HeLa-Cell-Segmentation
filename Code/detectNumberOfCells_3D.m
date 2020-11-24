@@ -1,4 +1,4 @@
-function [IndividualHelaLabels,rankCells,positionROI]        = detectNumberOfCells_3D(baseDir,numCells,toDisplay)
+function [final_cells,final_dist]        = detectNumberOfCells_3D(baseDir,numCells,toDisplay)
 %function IndividualHelaLabels         = detectNumberOfCells_3D(baseDir,numCells)
 % This function calls iteratively detectNumberOfCells in 2D to find all the
 % cells in a stack, these will be in different positions and aligned.
@@ -123,6 +123,7 @@ positionROI2    = positionROI;
 
 final_cells = [];
 final_dist  = [];
+final_rank  = [];
 %positionROI=qqq;
 %%
 kkk=3;
@@ -135,6 +136,7 @@ for startingSlice  = 1:numSlicesProb-1
             dist_i                          = zeros(1,numSlicesProb);
             cell_i                          = zeros(1,numSlicesProb);
             cell_i(startingSlice)           = cellAtSlice;
+            rank_i(startingSlice)           = rankCells(cellAtSlice,startingSlice);
             %cell_i_2(1)                    = cellAtSlice;
             dist_i(startingSlice)           = 0 ;
             for cSlices = startingSlice: numSlicesProb-1
@@ -143,18 +145,20 @@ for startingSlice  = 1:numSlicesProb-1
                 cell_i(cSlices+1)           = match_up;
                 %cell_i_2(cSlices+1)        = match_up+cSlices*20;
                 dist_i(cSlices+1)           = min_up;
-                rank_i(cSlices+1)           = rankCells(match_up,cSlices);
+                %rank_i(cSlices+1)           = rankCells(match_up,cSlices);
             end
             
             % propagate where the distance is large to break the connection
             dist_i(cumsum(dist_i>maximum_distance)>0)   = inf;
             cell_i(cumsum(dist_i>maximum_distance)>0)   = inf;
+            %rank_i(cumsum(dist_i>maximum_distance)>0)   = inf;
             cellsToRemove                   = cell_i(cell_i<inf);
             cellsToRemove(cellsToRemove==0) =[];
             levCellsToRemove                =  find(cellsToRemove)+(startingSlice-1);
             % Accummulate cells
             final_cells = [final_cells;cell_i];
             final_dist  = [final_dist ;dist_i];
+            %final_rank  = [final_rank ;rank_i];
             %remove the cells that have been accummulated
             for counterRemove=1:numel(cellsToRemove)
                 positionROI(cellsToRemove(counterRemove),:,levCellsToRemove(counterRemove)) = inf;
@@ -166,11 +170,17 @@ end
 %% discard cases where there are 3 or less connections
 final_cells(final_cells==inf) = 0;
 final_dist(final_dist==inf)   = 0;
+%final_rank(final_rank==inf)   = 0;
 
-%%
-min_connections                 = 5;
-final_cells(sum(final_cells>0,2)<min_connections,:)  = [];
-final_dist(sum(final_dist>0,2)<(min_connections-1),:)= [];
+
+%% Keep only cells that span over a certain number of slices, 
+% At least 150 slices so that it is more than half a cell
+min_connections                 = (ceil(150/stepSlice));
+%final_rank(sum(final_cells>0,2)<min_connections,:)   = [];
+final_dist(sum(final_cells>0,2)<min_connections,:)  = [];
+
+final_cells(sum(final_cells>0,2)<min_connections,:) = [];
+
 
 %%
 
