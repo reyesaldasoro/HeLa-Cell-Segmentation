@@ -86,35 +86,38 @@ rows            = stackInfo.Width;
 cols            = stackInfo.Height;
 
 %%
-gaussFilt =  fspecial('Gaussian',3,1);
-step=4;
-probingSlices = 1:50:numSlices;
-for k=1:numel(probingSlices)
+gaussFilt           = fspecial('Gaussian',3,1);
+stepPix             = 4;
+stepSlice           = 20;
+probingSlices       = 1:stepSlice:numSlices;
+numSlicesProb       = numel(probingSlices);
+for k=1:numSlicesProb
     disp(strcat('Reading slice = ',32,num2str(k)))
     Hela_3D = ( imfilter(imread(strcat(baseDir,dir0(probingSlices(k)).name)), gaussFilt));
-    [IndividualHelaLabels,rankCells(:,k),positionROI(:,:,k)]  = detectNumberOfCells(Hela_3D(1:step:end,1:step:end),20);
+    [IndividualHelaLabels,rankCells(:,k),positionROI(:,:,k)]  = detectNumberOfCells(Hela_3D(1:stepPix:end,1:stepPix:end),20);
 end
-
+positionROI     = positionROI *stepPix;
 %%
 
 figure
 clf
 hold on
 
-for k=1:11
+for k=1:numSlicesProb
     for kk=1:20
-        text(positionROI(kk,2,k),positionROI(kk,1,k),k,num2str(kk),'color',[k/11 0 (11-k)/11])
+%        text(positionROI(kk,2,k),positionROI(kk,1,k),k,num2str(kk+(k-1)*20),'color',[k/numSlicesProb 0 (numSlicesProb-k)/numSlicesProb])
+        text(positionROI(kk,2,k),positionROI(kk,1,k),k,num2str(kk),'color',[k/numSlicesProb 0 (numSlicesProb-k)/numSlicesProb])
     end
 end
 
-axis([1 2000 1 2000 1 11])
+axis([1 8000 1 8000 1 numSlicesProb])
 grid on
 axis ij
 rotate3d on
 %% Find which cells are colocated
 % find distance between cells in level 1 and cells in level 2 
 % Since the image has been subsampled the distances are reduced, rescale
-positionROI     = positionROI *step;
+
 r1              = repmat(positionROI(:,1,1),[1,20]);
 r2              = repmat(positionROI(:,1,2),[1,20])';
 c1              = repmat(positionROI(:,2,1),[1,20]);
