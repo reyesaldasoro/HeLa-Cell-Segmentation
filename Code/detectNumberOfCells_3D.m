@@ -81,7 +81,7 @@ else
 end
 
 %%
-stackInfo       = imfinfo((strcat(baseDir,dir0(probingSlices(k)).name)));
+stackInfo       = imfinfo((strcat(baseDir,dir0(1).name)));
 rows            = stackInfo.Width;
 cols            = stackInfo.Height;
 
