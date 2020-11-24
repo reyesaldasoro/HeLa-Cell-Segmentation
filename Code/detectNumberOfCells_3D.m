@@ -1,4 +1,4 @@
-function [IndividualHelaLabels,rankCells,positionROI]        = detectNumberOfCells_3D(baseDir,numCells)
+function [IndividualHelaLabels,rankCells,positionROI]        = detectNumberOfCells_3D(baseDir,numCells,toDisplay)
 %function IndividualHelaLabels         = detectNumberOfCells_3D(baseDir,numCells)
 % This function calls iteratively detectNumberOfCells in 2D to find all the
 % cells in a stack, these will be in different positions and aligned.
@@ -81,24 +81,40 @@ else
 end
 
 %%
+% Number of cells to detect per slice
+if (~exist('numCells','var'))
+    numCells            = 20;
+end
+if (isempty(numCells))
+    numCells            = 20;
+end
+
+% To display
+if (~exist('toDisplay','var'))
+    toDisplay            = 0;
+end
+if (isempty(toDisplay))
+    toDisplay            = 0;
+end
+
 stackInfo       = imfinfo((strcat(baseDir,dir0(1).name)));
 rows            = stackInfo.Width;
 cols            = stackInfo.Height;
 
 %%
 gaussFilt           = fspecial('Gaussian',3,1);
-stepPix             = 4;
+stepPix             = 8;
 stepSlice           = 20;
 probingSlices       = 1:stepSlice:numSlices;
 numSlicesProb       = numel(probingSlices);
 for k=1:numSlicesProb
     disp(strcat('Reading slice = ',32,num2str(k)))
     Hela_3D = ( imfilter(imread(strcat(baseDir,dir0(probingSlices(k)).name)), gaussFilt));
-    [IndividualHelaLabels,rankCells(:,k),positionROI(:,:,k)]  = detectNumberOfCells(Hela_3D(1:stepPix:end,1:stepPix:end),20);
+    [IndividualHelaLabels,rankCells(:,k),positionROI(:,:,k)]  = detectNumberOfCells(Hela_3D(1:stepPix:end,1:stepPix:end),numCells);
 end
 % Since the image has been subsampled the distances are reduced, rescale
 positionROI     = positionROI *stepPix;
-
+positionROI2    = positionROI;
 %% Find which cells are colocated
 % find distance between cells in level 1 and cells in level 2 
 
@@ -107,7 +123,7 @@ positionROI     = positionROI *stepPix;
 
 final_cells = [];
 final_dist  = [];
-positionROI=qqq;
+%positionROI=qqq;
 %%
 kkk=3;
 maximum_distance    = 300;
@@ -150,7 +166,12 @@ end
 final_cells(final_cells==inf) = 0;
 final_dist(final_dist==inf)   = 0;
 
+%%
+min_connections                 = 5;
+final_cells(sum(final_cells>0,2)<min_connections,:)  = [];
+final_dist(sum(final_dist>0,2)<(min_connections-1),:)= [];
 
+%%
 
 %final_cells(final_cells==0)=0;
 kkk=5;
@@ -158,48 +179,48 @@ numFinalCells = size(final_cells,1);
 
 
 %%
-
-figure
-clf
-hold on
-
-for k=1:numSlicesProb
-    for kk=1:20
-%        text(positionROI(kk,2,k),positionROI(kk,1,k),k,num2str(kk+(k-1)*20),'color',[k/numSlicesProb 0 (numSlicesProb-k)/numSlicesProb])
-        text(positionROI(kk,2,k),positionROI(kk,1,k),k,num2str(kk),'color',[k/numSlicesProb 0 (numSlicesProb-k)/numSlicesProb])
+if toDisplay ==1
+    figure
+    clf
+    hold on
+    
+    for k=1:numSlicesProb
+        for kk=1:20
+            %        text(positionROI(kk,2,k),positionROI(kk,1,k),k,num2str(kk+(k-1)*20),'color',[k/numSlicesProb 0 (numSlicesProb-k)/numSlicesProb])
+            text(positionROI2(kk,2,k),positionROI2(kk,1,k),k,num2str(kk),'color',[k/numSlicesProb 0 (numSlicesProb-k)/numSlicesProb])
+        end
     end
-end
-
-axis([1 8000 1 8000 1 numSlicesProb])
-grid on
-axis ij
-rotate3d on
-%%
-
-currLine =[];
-for k=1:numFinalCells
-    levsToPlot = find(final_cells(k,:));
-    cellsToPlot = final_cells(k,levsToPlot);
-    clear currLine 
+    
+    axis([1 rows 1 cols 1 numSlicesProb])
+    grid on
+    axis ij
+    rotate3d on
+    %%
+    
     currLine =[];
-    for k2 =1:numel(levsToPlot)
-        currLine = [currLine;[qqq(cellsToPlot(k2),:,levsToPlot(k2)) levsToPlot(k2) ]];
+    for k=1:numFinalCells
+        levsToPlot = find(final_cells(k,:));
+        cellsToPlot = final_cells(k,levsToPlot);
+        clear currLine
+        currLine =[];
+        for k2 =1:numel(levsToPlot)
+            currLine = [currLine;[positionROI2(cellsToPlot(k2),:,levsToPlot(k2)) levsToPlot(k2) ]];
+        end
+        plot3(currLine(:,2),currLine(:,1),currLine(:,3),'linewidth',2)
     end
-    plot3(currLine(:,2),currLine(:,1),currLine(:,3),'linewidth',2)
 end
 
-
 %%
+q=1;
 
 
 
-
-r1              = repmat(positionROI(:,1,1),[1,20]);
-r2              = repmat(positionROI(:,1,2),[1,20])';
-c1              = repmat(positionROI(:,2,1),[1,20]);
-c2              = repmat(positionROI(:,2,2),[1,20])';
-dist_1_2        = sqrt((r1-r2).^2+(c1-c2).^2);
-[minDist_1_2,pairDist]     = min(round(dist_1_2),[],2);
+% r1              = repmat(positionROI(:,1,1),[1,20]);
+% r2              = repmat(positionROI(:,1,2),[1,20])';
+% c1              = repmat(positionROI(:,2,1),[1,20]);
+% c2              = repmat(positionROI(:,2,2),[1,20])';
+% dist_1_2        = sqrt((r1-r2).^2+(c1-c2).^2);
+% [minDist_1_2,pairDist]     = min(round(dist_1_2),[],2);
 % Find those cases where teh cells are less than   *** 150 *** pixels in
 % straight line 
 
