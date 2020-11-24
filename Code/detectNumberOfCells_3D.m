@@ -101,7 +101,7 @@ figure
 clf
 hold on
 
-for k=1:3
+for k=1:11
     for kk=1:20
         text(positionROI(kk,2,k),positionROI(kk,1,k),k,num2str(kk),'color',[k/11 0 (11-k)/11])
     end
