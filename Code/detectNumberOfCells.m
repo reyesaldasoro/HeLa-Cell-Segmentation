@@ -164,8 +164,8 @@ catch
     disp('error encountered')
 end
 
-positionROI(currPeak:end,:) = [];
-
+positionROI(currPeak:end,:) = [ inf ];
+rankCells  (currPeak:numCells) = [ -inf];
 
 %% Display output
 if toDisplay==1
