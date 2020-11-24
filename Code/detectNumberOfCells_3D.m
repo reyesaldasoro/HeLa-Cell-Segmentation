@@ -128,7 +128,7 @@ final_dist  = [];
 kkk=3;
 maximum_distance    = 300;
 for startingSlice  = 1:numSlicesProb-1
-    for cellAtSlice = 1:20
+    for cellAtSlice = 1:numCells
         %cellAtSlice                     = 2;
         if positionROI(cellAtSlice,1,startingSlice)<inf
             % only query if not yet processed
@@ -143,6 +143,7 @@ for startingSlice  = 1:numSlicesProb-1
                 cell_i(cSlices+1)           = match_up;
                 %cell_i_2(cSlices+1)        = match_up+cSlices*20;
                 dist_i(cSlices+1)           = min_up;
+                rank_i(cSlices+1)           = rankCells(match_up,cSlices);
             end
             
             % propagate where the distance is large to break the connection
@@ -185,8 +186,8 @@ if toDisplay ==1
     hold on
     
     for k=1:numSlicesProb
-        for kk=1:20
-            %        text(positionROI(kk,2,k),positionROI(kk,1,k),k,num2str(kk+(k-1)*20),'color',[k/numSlicesProb 0 (numSlicesProb-k)/numSlicesProb])
+        for kk=1:numCells
+            %        text(positionROI(kk,2,k),positionROI(kk,1,k),k,num2str(kk+(k-1)*numCells),'color',[k/numSlicesProb 0 (numSlicesProb-k)/numSlicesProb])
             text(positionROI2(kk,2,k),positionROI2(kk,1,k),k,num2str(kk),'color',[k/numSlicesProb 0 (numSlicesProb-k)/numSlicesProb])
         end
     end
@@ -215,10 +216,10 @@ q=1;
 
 
 
-% r1              = repmat(positionROI(:,1,1),[1,20]);
-% r2              = repmat(positionROI(:,1,2),[1,20])';
-% c1              = repmat(positionROI(:,2,1),[1,20]);
-% c2              = repmat(positionROI(:,2,2),[1,20])';
+% r1              = repmat(positionROI(:,1,1),[1,numCells]);
+% r2              = repmat(positionROI(:,1,2),[1,numCells])';
+% c1              = repmat(positionROI(:,2,1),[1,numCells]);
+% c2              = repmat(positionROI(:,2,2),[1,numCells])';
 % dist_1_2        = sqrt((r1-r2).^2+(c1-c2).^2);
 % [minDist_1_2,pairDist]     = min(round(dist_1_2),[],2);
 % Find those cases where teh cells are less than   *** 150 *** pixels in
