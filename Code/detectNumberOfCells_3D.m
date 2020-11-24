@@ -96,7 +96,67 @@ for k=1:numSlicesProb
     Hela_3D = ( imfilter(imread(strcat(baseDir,dir0(probingSlices(k)).name)), gaussFilt));
     [IndividualHelaLabels,rankCells(:,k),positionROI(:,:,k)]  = detectNumberOfCells(Hela_3D(1:stepPix:end,1:stepPix:end),20);
 end
+% Since the image has been subsampled the distances are reduced, rescale
 positionROI     = positionROI *stepPix;
+
+%% Find which cells are colocated
+% find distance between cells in level 1 and cells in level 2 
+
+
+
+
+final_cells = [];
+final_dist  = [];
+positionROI=qqq;
+%%
+kkk=3;
+maximum_distance    = 300;
+for startingSlice  = 1:numSlicesProb-1
+    for cellAtSlice = 1:20
+        %cellAtSlice                     = 2;
+        if positionROI(cellAtSlice,1,startingSlice)<inf
+            % only query if not yet processed
+            dist_i                          = zeros(1,numSlicesProb);
+            cell_i                          = zeros(1,numSlicesProb);
+            cell_i(startingSlice)           = cellAtSlice;
+            %cell_i_2(1)                    = cellAtSlice;
+            dist_i(startingSlice)           = 0 ;
+            for cSlices = startingSlice: numSlicesProb-1
+                dist_to_up                  = sqrt((positionROI(cell_i(cSlices),1,cSlices)-positionROI(:,1,cSlices+1)).^2+(positionROI(cell_i(cSlices),2,cSlices)-positionROI(:,2,cSlices+1)).^2);
+                [min_up,match_up ]          = min(dist_to_up);
+                cell_i(cSlices+1)           = match_up;
+                %cell_i_2(cSlices+1)        = match_up+cSlices*20;
+                dist_i(cSlices+1)           = min_up;
+            end
+            
+            % propagate where the distance is large to break the connection
+            dist_i(cumsum(dist_i>maximum_distance)>0)   = inf;
+            cell_i(cumsum(dist_i>maximum_distance)>0)   = inf;
+            cellsToRemove                   = cell_i(cell_i<inf);
+            cellsToRemove(cellsToRemove==0) =[];
+            levCellsToRemove                =  find(cellsToRemove)+(startingSlice-1);
+            % Accummulate cells
+            final_cells = [final_cells;cell_i];
+            final_dist  = [final_dist ;dist_i];
+            %remove the cells that have been accummulated
+            for counterRemove=1:numel(cellsToRemove)
+                positionROI(cellsToRemove(counterRemove),:,levCellsToRemove(counterRemove)) = inf;
+            end
+        end
+    end
+end
+
+%% discard cases where there are 3 or less connections
+final_cells(final_cells==inf) = 0;
+final_dist(final_dist==inf)   = 0;
+
+
+
+%final_cells(final_cells==0)=0;
+kkk=5;
+numFinalCells = size(final_cells,1);
+
+
 %%
 
 figure
@@ -114,9 +174,25 @@ axis([1 8000 1 8000 1 numSlicesProb])
 grid on
 axis ij
 rotate3d on
-%% Find which cells are colocated
-% find distance between cells in level 1 and cells in level 2 
-% Since the image has been subsampled the distances are reduced, rescale
+%%
+
+currLine =[];
+for k=1:numFinalCells
+    levsToPlot = find(final_cells(k,:));
+    cellsToPlot = final_cells(k,levsToPlot);
+    clear currLine 
+    currLine =[];
+    for k2 =1:numel(levsToPlot)
+        currLine = [currLine;[qqq(cellsToPlot(k2),:,levsToPlot(k2)) levsToPlot(k2) ]];
+    end
+    plot3(currLine(:,2),currLine(:,1),currLine(:,3),'linewidth',2)
+end
+
+
+%%
+
+
+
 
 r1              = repmat(positionROI(:,1,1),[1,20]);
 r2              = repmat(positionROI(:,1,2),[1,20])';
