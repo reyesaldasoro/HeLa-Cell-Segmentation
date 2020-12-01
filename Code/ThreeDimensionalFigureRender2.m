@@ -60,7 +60,9 @@ Hela_nuclei3 = round(Hela_nuclei3);
 
 %% Prepare for 3D display 
 % This is for the slices:
+
 [rows,cols,levs]        = size(Hela_3D);
+numFiles = levs;
 [x2d,y2d]               = meshgrid(1:rows,1:cols);
 z2d                     = ones(rows,cols);
 zz_3D = zeros(size(Hela_3D));
@@ -87,7 +89,7 @@ fstep               = 8;
 surf_Hela2          = isosurface(xx_3D(1:fstep:end,1:fstep:end,minSlice:maxSlice),...
                                  yy_3D(1:fstep:end,1:fstep:end,minSlice:maxSlice),...
                                  zz_3D(1:fstep:end,1:fstep:end,minSlice:maxSlice),...
-                        Hela_nuclei3(1:fstep:end,1:fstep:end,minSlice:maxSlice),1.5);
+                        Hela_nuclei(1:fstep:end,1:fstep:end,minSlice:maxSlice),0.5);
 
 %% Finally, let's display the surface
 figure(3)
