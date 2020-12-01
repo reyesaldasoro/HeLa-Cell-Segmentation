@@ -3,7 +3,7 @@ function [Hela_nuclei,Hela_background] = segmentNucleiHelaEM_3D(baseDir,cannyStd
 % This is the volumentric option of segmentNucleiHelaEM, it takes a stack
 % of images and process them all
 %--------------------------------------------------------------------------
-% Input         baseDir                    : 1) A folder with n images in Matlab/tiff format,it can be 2D/3D, double/uint8
+% Input         baseDir                 : 1) A folder with n images in Matlab/tiff format,it can be 2D/3D, double/uint8
 %                                       : 2) A tiff with many slices
 %               cannyStdValue           : the value of the Std of the canny edge detection
 % Output        nucleiHela              : a binary volume with 1 for nuclei, 0 background
