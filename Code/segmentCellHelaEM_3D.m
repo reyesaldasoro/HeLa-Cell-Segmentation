@@ -123,12 +123,47 @@ if numSlices ==1
     RegionsToKeep2   = Rest_cell_next(find(RegionsToKeep0));
     RegionsToKeep3  = ismember(Rest_cell,intersect(RegionsToKeep1,RegionsToKeep2));
     Hela_cell       = Hela_cell +RegionsToKeep3;
+    
+    % Finally, clean with morphological open and close
+    Hela_cell       = imclose(imopen(Hela_cell,strel('disk',9)),strel('disk',9));
+
+    
 else
     % Three dimensional case
     Hela_cell(rows,cols,numSlices)=0;
     centralSlice                        = round(numSlices/2);
+    % First go up
     for currentSlice=centralSlice+1:numSlices 
         disp(strcat('Processing slice number',32,num2str(currentSlice)))
         Hela_cell(:,:,currentSlice) = segmentCellHelaEM_3D(Hela_nuclei(:,:,currentSlice),Hela_background(:,:,currentSlice));
     end
+    % Then go down
+    for currentSlice=centralSlice:-1:1
+        disp(strcat('Processing slice number',32,num2str(currentSlice)))
+        Hela_cell(:,:,currentSlice) = segmentCellHelaEM_3D(Hela_nuclei(:,:,currentSlice),Hela_background(:,:,currentSlice));
+    end
+    
+    
+    %% Interpolate between slices
+    % A simple post-processing step is to interpolate between slices/
+    
+    Hela_cell3(rows,cols,numSlices)   = 0;
+    % interpolation between slices
+%     Hela_cell3(:,:,2:numSlices-1) = Hela_cell(:,:,1:numSlices-2)+...
+%                                     Hela_cell(:,:,2:numSlices-1)+...
+%                                     Hela_cell(:,:,3:numSlices);
+    Hela_cell3(:,:,3:numSlices-2) = Hela_cell(:,:,1:numSlices-4)+...
+                                    Hela_cell(:,:,2:numSlices-3)+...
+                                    Hela_cell(:,:,3:numSlices-2)+...
+                                    Hela_cell(:,:,4:numSlices-1)+...
+                                    Hela_cell(:,:,5:numSlices)    ;                                
+    Hela_cell3                    = round(Hela_cell3);
+    Hela_cell                     = Hela_cell3>2;
+
+    %% Morphological operation per vertical slice
+    
+    
+    
+    %%
+
 end
