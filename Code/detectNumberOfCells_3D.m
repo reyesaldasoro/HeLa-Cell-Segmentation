@@ -4,10 +4,21 @@ function [final_centroid,final_cells,final_dist]        = detectNumberOfCells_3D
 % cells in a stack, these will be in different positions and aligned.
 %--------------------------------------------------------------------------
 % Input         baseDir                 : a folder with a series of images
-%               numCells             : optional, number of cells used to stop the
-%                                      iterative process to detect cells
-% Output        IndividualHelaLabels      : a 3D matrix with a label at each level
-%                                      corresponding to the region of one cell.
+%               numCells                : optional, number of cells used to stop the
+%                                         iterative process to detect cells
+%               toPrint                 : optional to display where the
+%                                         are located
+% Output        final_centroid          : [numCell x 5 ]
+%                                         [row,col,central,low/up slices]
+%               final_cells             : [numCell x numSlicesProbed] with
+%                                         one row for every cell located
+%                                         and matched up down columns are
+%                                         the slices probed (not all are to
+%                                         speed up)
+%               final_dist              : [numCell x numSlicesProbed] same
+%                                         format as above with distance
+%                                         from background
+% 
 %--------------------------------------------------------------------------
 % 
 % This code segments the REGION where HeLa Cells are located. The images have been
