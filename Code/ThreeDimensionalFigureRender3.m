@@ -11,11 +11,6 @@ for k=1:numFiles
     Hela_3D(:,:,k) = imfilter(imread(strcat(baseDir,dir0(k).name)), gaussFilt);
 end
 
-%% Either load a previous result or run 
-%load('nucleiHelaC_2018_02_01.mat')
-%load('D:\OneDrive - City, University of London\Acad\AlanTuringStudyGroup\nucleiHela_2018_02_01.mat')
-%load('C:\Users\sbbk034\OneDrive - City, University of London\Acad\AlanTuringStudyGroup\nucleiHela_2018_02_01.mat')
-load('C:\Users\sbbk034\OneDrive - City, University of London\Documents\GitHub\HeLa-Cell-Segmentation\Code\Hela_nuclei4.mat')
 %% Calculate or read
 %[Hela_nuclei,Hela_background]   = segmentNucleiHelaEM_3D(Hela_3D);
 
@@ -36,7 +31,7 @@ Hela_nuclei3(:,:,2:289) =   Hela_nuclei2(:,:,1:288)+...
                             Hela_nuclei2(:,:,2:289)+...
                             Hela_nuclei2(:,:,3:290);
 
-Hela_nuclei3 = round(Hela_nuclei3);
+Hela_nuclei = round(Hela_nuclei3);
 
 
 %% Prepare for 3D display 
@@ -79,9 +74,10 @@ surf_Cell2          = isosurface(xx_3D(1:fstep:end,1:fstep:end,minSlice:maxSlice
                         Hela_cell(1:fstep:end,1:fstep:end,minSlice:maxSlice),0.5);
                     
 %% Finally, let's display the surface
-figure(3)
+figure(4)
 h2 =  patch(surf_Hela2);
-view(160,30)
+%view(160,30)
+view(398,43)
 lighting phong
 %camlight left
 camlight right
@@ -90,7 +86,7 @@ set(h2,'edgecolor','none')
 axis tight
 
 %%
-h3 =  patch(surf_Hela2);
+h3 =  patch(surf_Cell2);
 set(h3,'facecolor','blue')
 set(h3,'edgecolor','none')
 
@@ -112,7 +108,7 @@ colormap gray
 %%
 verSliceSurf.FaceAlpha=0.7;
 h2.FaceAlpha=0.9152;
-
+h3.FaceAlpha=0.5;
 
 %%
 % 
