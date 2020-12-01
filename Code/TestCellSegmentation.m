@@ -34,7 +34,7 @@ load('C:\Users\sbbk034\OneDrive - City, University of London\Documents\GitHub\He
 centralSlice = 126;
 %[Hela_cell(:,:,centralSlice)] = segmentCellHelaEM_3D(Hela_nuclei(:,:,centralSlice),Hela_background(:,:,centralSlice));
 
-qq(:,:,1) = (Hela_3D(:,:,centralSlice)+ 20*Hela_cell2(:,:,centralSlice))  /255;
+qq(:,:,1) = (Hela_3D(:,:,centralSlice)+ 20*Hela_cell(:,:,centralSlice))  /255;
 qq(:,:,2) = (Hela_3D(:,:,centralSlice)+ 30*Hela_nuclei(:,:,centralSlice))  /255;
 qq(:,:,3) = (Hela_3D(:,:,centralSlice)+ 100*Hela_background(:,:,centralSlice))/255;
 figure(1)
