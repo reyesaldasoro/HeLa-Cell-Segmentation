@@ -1,4 +1,4 @@
-function [Hela_cell] = segmentCellHelaEM_3D(Hela_nuclei,Hela_background)
+function [Hela_cell] = segmentCellHelaEM_3D(Hela_nuclei,Hela_background,Hela_cellPrevious)
 %function [Hela_cell] = segmentCellHelaEM_3D(Hela_nuclei,Hela_background)
 % This is the segments the CELL, i.e. the region between the background and
 % the nuclei.
@@ -132,15 +132,18 @@ else
     % Three dimensional case
     Hela_cell(rows,cols,numSlices)=0;
     centralSlice                        = round(numSlices/2);
+    % First slice, central one 
+    Hela_cell(:,:,centralSlice) = segmentCellHelaEM_3D(Hela_nuclei(:,:,centralSlice),Hela_background(:,:,centralSlice));
+   
     % First go up
     for currentSlice=centralSlice+1:numSlices 
         disp(strcat('Processing slice number',32,num2str(currentSlice)))
-        Hela_cell(:,:,currentSlice) = segmentCellHelaEM_3D(Hela_nuclei(:,:,currentSlice),Hela_background(:,:,currentSlice));
+        Hela_cell(:,:,currentSlice) = segmentCellHelaEM_3D(Hela_nuclei(:,:,currentSlice),Hela_background(:,:,currentSlice),Hela_cell(:,:,currentSlice-1));
     end
     % Then go down
-    for currentSlice=centralSlice:-1:1
+    for currentSlice=centralSlice-1:-1:1
         disp(strcat('Processing slice number',32,num2str(currentSlice)))
-        Hela_cell(:,:,currentSlice) = segmentCellHelaEM_3D(Hela_nuclei(:,:,currentSlice),Hela_background(:,:,currentSlice));
+        Hela_cell(:,:,currentSlice) = segmentCellHelaEM_3D(Hela_nuclei(:,:,currentSlice),Hela_background(:,:,currentSlice),Hela_cell(:,:,currentSlice+1));
     end
     
     
