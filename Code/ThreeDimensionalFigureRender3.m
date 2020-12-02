@@ -99,7 +99,7 @@ camlight right
 axis tight
 %% Add Slices
 
-horSlice = 68;
+horSlice = 82;
 hold on
 %horSliceSurf = surf(x2d(1:end/fstep,1:end/fstep),y2d(1:end/fstep,1:end/fstep),...
 %                horSlice*zz1(1:end/fstep,1:end/fstep),(Hela_3D(1:fstep:end,1:fstep:end,horSlice)));
