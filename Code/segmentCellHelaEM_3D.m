@@ -79,6 +79,7 @@ if numSlices ==1
         currentCellRegs     = unique(regionsCells(Hela_nuclei));
         currentCellRegs(currentCellRegs==0)=[];
     else
+        % No nuclei, requires some manipulations
         centroidsRegions = regionprops(regionsCells,'centroid','Area','MinoraxisLength');
         % Discard very narrow areas
         regionsCells = bwlabel(ismember(regionsCells,find([centroidsRegions.MinorAxisLength]>5)));
@@ -92,20 +93,37 @@ if numSlices ==1
         % Use a small range as there are cases where 
         currentCellRegs = find(distCentr<(minDist+30));
         %currentCellRegs = centralReg;
+        % If we have the previous region, keep those regions covered by an
+        % eroded version of the previous
+        if exist('Hela_cellPrevious','var')
+            % This erodes the previous cell, erodes a lot to avoid touching
+            % many regions, then selects regions that are touched by the
+            % previous, BUT when cell is very small, the background or
+            % other cells may get be very close so discard big ones
+            previousReg = regionsCells.*imerode(Hela_cellPrevious,ones(51));
+            currentCellRegs2 = unique(previousReg);
+            currentCellRegs2(currentCellRegs2==0)=[];
+            % Remove very large ones, anything larger than 50% previous
+            % case
+            previousSize = 0.5*sum(Hela_cellPrevious(:));
+            currentCellRegs3 = intersect(find([centroidsRegions.Area]<previousSize),currentCellRegs2);
+
+            currentCellRegs = union(currentCellRegs,currentCellRegs3);
+        end
     end
     % remove all other regions as well as the background and the nucleus
     currentCell         = ismember(regionsCells,currentCellRegs);
     %try
         Hela_cell1       = currentCell.*(1-Hela_background).*(1-Hela_nuclei);
         Hela_cell2       = imclose(Hela_cell1,ones(9));
-        Hela_cell       = imfill(Hela_cell2,'holes');
-        [Rest_cell,numR]= bwlabel((1-Hela_background).*(1-Hela_cell).*(1-Hela_nuclei));
+        Hela_cell3       = imfill(Hela_cell2,'holes');
+        [Rest_cell,numR]= bwlabel((1-Hela_background).*(1-Hela_cell3).*(1-Hela_nuclei));
     %catch
     %    q=1;
     %end
 
     Rest_cell_P     = regionprops(Rest_cell,'Area','Centroid','Extrema');
-    Rest_cell_next  = unique(Rest_cell.*imdilate(Hela_cell,ones(3)));
+    Rest_cell_next  = unique(Rest_cell.*imdilate(Hela_cell3,ones(3)));
     Rest_cell_next(Rest_cell_next==0)=[];
     % Keep all the regions that are contiguous to the cell and have a small
     % area (10% nucleus)
@@ -122,15 +140,21 @@ if numSlices ==1
     RegionsToKeep1  = find(1-any([top left bottom right],2));
     RegionsToKeep2   = Rest_cell_next(find(RegionsToKeep0));
     RegionsToKeep3  = ismember(Rest_cell,intersect(RegionsToKeep1,RegionsToKeep2));
-    Hela_cell       = Hela_cell +RegionsToKeep3;
+    Hela_cell4       = Hela_cell3 +RegionsToKeep3;
     
     % Finally, clean with morphological open and close
-    Hela_cell       = imclose(imopen(Hela_cell,strel('disk',9)),strel('disk',9));
+    Hela_cell5       = imclose(imopen(Hela_cell4,strel('disk',9)),strel('disk',9));
     % Remove disconnected elements
-    Hela_cell_L     = bwlabel(Hela_cell);
-    Hela_cell_P     = regionprops(Hela_cell_L,'Area');
-    [max1,max2]     = max([Hela_cell_P.Area]);
-    Hela_cell       = ismember(Hela_cell_L,max2);
+    [Hela_cell_L,nReg]     = bwlabel(Hela_cell5);
+    if nReg>1
+        Hela_cell_P = regionprops(Hela_cell_L,'Area');
+        [max1,max2]     = max([Hela_cell_P.Area]);
+        Hela_cell       = ismember(Hela_cell_L,max2);
+    else
+        Hela_cell   = (Hela_cell_L==1);
+    end
+    %imagesc(Hela_cell)
+    %drawnow
 else
     % Three dimensional case
     Hela_cell(rows,cols,numSlices)=0;
