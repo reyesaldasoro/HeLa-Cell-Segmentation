@@ -31,18 +31,26 @@ load('C:\Users\sbbk034\OneDrive - City, University of London\Documents\GitHub\He
 
 %% This works well whilst there is a nuclei, beyond that is not that good,
 % perhaps propagate surfaces down or get a vertical cut
-centralSlice = 126;
+centralSlice = 215;
 %[Hela_cell(:,:,centralSlice)] = segmentCellHelaEM_3D(Hela_nuclei(:,:,centralSlice),Hela_background(:,:,centralSlice));
 
 qq(:,:,1) = (Hela_3D(:,:,centralSlice)+ 20*Hela_cell(:,:,centralSlice))  /255;
 qq(:,:,2) = (Hela_3D(:,:,centralSlice)+ 30*Hela_nuclei(:,:,centralSlice))  /255;
 qq(:,:,3) = (Hela_3D(:,:,centralSlice)+ 100*Hela_background(:,:,centralSlice))/255;
-figure(1)
+figure(11)
 imagesc(qq)
 
 %%
-
-
-
+figure(1)
+k=1065;
+imagesc(squeeze(Hela_3D(k,:,:)+200*(Hela_cell(k,:,:)>0.5)))
+colormap gray
+figure(2)
+imagesc(squeeze(Hela_3D(k,:,:)+200*(Hela_cell3(k,:,:)>0.3)))
+colormap gray
+figure(3)
+imagesc(squeeze(Hela_3D(k,:,:)+200*(Hela_cell5(k,:,:)>0.3)))
+colormap gray
+%%
 
 segmentCellHelaEM_3D(Hela_nuclei(:,:,centralSlice),Hela_background(:,:,centralSlice));
