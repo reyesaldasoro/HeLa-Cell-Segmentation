@@ -53,8 +53,8 @@ function [Hela_cell] = segmentCellHelaEM_3D(Hela_nuclei,Hela_background,Hela_cel
 %
 %--------------------------------------------------------------------------
 %% Parse input parameters
-if (nargin~= 2)
-    disp('Two input parameters required')
+if (nargin<2)
+    disp('Minimum two input parameters required')
     return
 end
 
@@ -126,8 +126,11 @@ if numSlices ==1
     
     % Finally, clean with morphological open and close
     Hela_cell       = imclose(imopen(Hela_cell,strel('disk',9)),strel('disk',9));
-
-    
+    % Remove disconnected elements
+    Hela_cell_L     = bwlabel(Hela_cell);
+    Hela_cell_P     = regionprops(Hela_cell_L,'Area');
+    [max1,max2]     = max([Hela_cell_P.Area]);
+    Hela_cell       = ismember(Hela_cell_L,max2);
 else
     % Three dimensional case
     Hela_cell(rows,cols,numSlices)=0;
