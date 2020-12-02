@@ -37,11 +37,11 @@ Hela_nuclei = round(Hela_nuclei3);
 %% Prepare for 3D display 
 % This is for the slices:
 
-[rows,cols,levs]        = size(Hela_3D);
+[rows,cols,levs]        = size(Hela_cell);
 numFiles = levs;
 [x2d,y2d]               = meshgrid(1:rows,1:cols);
 z2d                     = ones(rows,cols);
-zz_3D = zeros(size(Hela_3D));
+zz_3D = zeros(rows,cols,levs);
 for k=1:numFiles
     zz_3D(:,:,k)        = ones(rows,cols)*k;
 end
@@ -62,35 +62,41 @@ yy_3D                   = repmat(y2d,[1 1 numFiles]);
 maxSlice            = 289;
 minSlice            = 1;
 fstep               = 8;
+%%
 surf_Hela2          = isosurface(xx_3D(1:fstep:end,1:fstep:end,minSlice:maxSlice),...
                                  yy_3D(1:fstep:end,1:fstep:end,minSlice:maxSlice),...
                                  zz_3D(1:fstep:end,1:fstep:end,minSlice:maxSlice),...
                         Hela_nuclei(1:fstep:end,1:fstep:end,minSlice:maxSlice),0.5);
                     
- %%                   
+%% 
+[rows,cols,levs]        = size(Hela_cell);
+maxSlice            = levs;
+minSlice            = 1;
+fstep               = 8;
 surf_Cell2          = isosurface(xx_3D(1:fstep:end,1:fstep:end,minSlice:maxSlice),...
                                  yy_3D(1:fstep:end,1:fstep:end,minSlice:maxSlice),...
                                  zz_3D(1:fstep:end,1:fstep:end,minSlice:maxSlice),...
-                        Hela_cell(1:fstep:end,1:fstep:end,minSlice:maxSlice),0.5);
+                        Hela_cell3(1:fstep:end,1:fstep:end,minSlice:maxSlice),0.3);
                     
 %% Finally, let's display the surface
 figure(4)
 h2 =  patch(surf_Hela2);
 %view(160,30)
-view(398,43)
-lighting phong
-%camlight left
-camlight right
+
+
 set(h2,'facecolor','red')
 set(h2,'edgecolor','none')
-axis tight
+
 
 %%
 h3 =  patch(surf_Cell2);
 set(h3,'facecolor','blue')
 set(h3,'edgecolor','none')
-
-
+view(398,43)
+lighting phong
+%camlight left
+camlight right
+axis tight
 %% Add Slices
 
 horSlice = 68;
