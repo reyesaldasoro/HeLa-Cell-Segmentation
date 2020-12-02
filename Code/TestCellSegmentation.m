@@ -33,13 +33,15 @@ load('C:\Users\sbbk034\OneDrive - City, University of London\Documents\GitHub\He
 % perhaps propagate surfaces down or get a vertical cut
 centralSlice = 215;
 %[Hela_cell(:,:,centralSlice)] = segmentCellHelaEM_3D(Hela_nuclei(:,:,centralSlice),Hela_background(:,:,centralSlice));
-
-qq(:,:,1) = (Hela_3D(:,:,centralSlice)+ 20*Hela_cell(:,:,centralSlice))  /255;
-qq(:,:,2) = (Hela_3D(:,:,centralSlice)+ 30*Hela_nuclei(:,:,centralSlice))  /255;
-qq(:,:,3) = (Hela_3D(:,:,centralSlice)+ 100*Hela_background(:,:,centralSlice))/255;
 figure(11)
-imagesc(qq)
-
+for centralSlice=247 %1:300
+    qq(:,:,1) = (Hela_3D(:,:,centralSlice)+ 20*Hela_cell(:,:,centralSlice))  /255;
+    qq(:,:,2) = (Hela_3D(:,:,centralSlice)+ 30*Hela_nuclei(:,:,centralSlice))  /255;
+    qq(:,:,3) = (Hela_3D(:,:,centralSlice)+ 100*Hela_background(:,:,centralSlice))/255;
+    pause(0.1)
+    imagesc(qq)
+    title(strcat('Slice:',32,num2str(centralSlice)))
+end
 %%
 figure(1)
 k=1065;
