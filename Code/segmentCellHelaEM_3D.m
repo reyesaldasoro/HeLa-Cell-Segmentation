@@ -161,7 +161,7 @@ else
     Hela_cell                     = Hela_cell3>2;
 
     %% Morphological operation per vertical slice
-    
+    Hela_cell=smooth3(Hela_cell);
     
     
     %%
