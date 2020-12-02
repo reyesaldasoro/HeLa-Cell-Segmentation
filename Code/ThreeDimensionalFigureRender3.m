@@ -76,10 +76,10 @@ fstep               = 8;
 surf_Cell2          = isosurface(xx_3D(1:fstep:end,1:fstep:end,minSlice:maxSlice),...
                                  yy_3D(1:fstep:end,1:fstep:end,minSlice:maxSlice),...
                                  zz_3D(1:fstep:end,1:fstep:end,minSlice:maxSlice),...
-                        Hela_cell3(1:fstep:end,1:fstep:end,minSlice:maxSlice),0.3);
+                        Hela_cell(1:fstep:end,1:fstep:end,minSlice:maxSlice),0.3);
                     
 %% Finally, let's display the surface
-figure(4)
+figure(6)
 h2 =  patch(surf_Hela2);
 %view(160,30)
 
