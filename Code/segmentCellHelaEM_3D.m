@@ -101,12 +101,13 @@ if numSlices ==1
             % previous, BUT when cell is very small, the background or
             % other cells may get be very close so discard big ones
             previousReg = regionsCells.*imerode(Hela_cellPrevious,ones(51));
+            previousReg_P=regionprops(previousReg,'Area');
             currentCellRegs2 = unique(previousReg);
             currentCellRegs2(currentCellRegs2==0)=[];
-            % Remove very large ones, anything larger than 50% previous
+            % Remove very large ones, anything larger than 70% previous
             % case
             previousSize = 0.5*sum(Hela_cellPrevious(:));
-            currentCellRegs3 = intersect(find([centroidsRegions.Area]<previousSize),currentCellRegs2);
+            currentCellRegs3 = intersect(find([previousReg_P.Area]<previousSize),currentCellRegs2);
 
             currentCellRegs = union(currentCellRegs,currentCellRegs3);
         end
@@ -153,20 +154,20 @@ if numSlices ==1
     else
         Hela_cell   = (Hela_cell_L==1);
     end
-    %imagesc(Hela_cell)
-    %drawnow
+    imagesc(Hela_cell+2*Hela_background)
+    drawnow
 else
     % Three dimensional case
     Hela_cell(rows,cols,numSlices)=0;
-    centralSlice                        = round(numSlices/2);
+    centralSlice                        =  round(numSlices/2);
     % First slice, central one 
     Hela_cell(:,:,centralSlice) = segmentCellHelaEM_3D(Hela_nuclei(:,:,centralSlice),Hela_background(:,:,centralSlice));
    
     % First go up
-    for currentSlice=centralSlice+1:numSlices 
-        disp(strcat('Processing slice number',32,num2str(currentSlice)))
-        Hela_cell(:,:,currentSlice) = segmentCellHelaEM_3D(Hela_nuclei(:,:,currentSlice),Hela_background(:,:,currentSlice),Hela_cell(:,:,currentSlice-1));
-    end
+    %for currentSlice=centralSlice+1:numSlices 
+    %    disp(strcat('Processing slice number',32,num2str(currentSlice)))
+    %    Hela_cell(:,:,currentSlice) = segmentCellHelaEM_3D(Hela_nuclei(:,:,currentSlice),Hela_background(:,:,currentSlice),Hela_cell(:,:,currentSlice-1));
+    %end
     % Then go down
     for currentSlice=centralSlice-1:-1:1
         disp(strcat('Processing slice number',32,num2str(currentSlice)))
