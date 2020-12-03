@@ -37,7 +37,7 @@ function [Hela_nuclei,Hela_background] = segmentNucleiHelaEM_3D(baseDir,cannyStd
 %
 % Usual disclaimer
 %--------------------------------------------------------------------------
-%
+%     
 %     Copyright (C) 2017  Constantino Carlos Reyes-Aldasoro
 %
 %     This code is free software: you can redistribute it and/or modify
