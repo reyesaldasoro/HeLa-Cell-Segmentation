@@ -66,7 +66,7 @@ All the data is available.
 <ul>
 <li> The 8000x8000 data sets are freely available through EMPIAR: http://dx.doi.org/10.6019/EMPIAR-10094
 <li> The cropped images at 2000x2000 data sets are available through EMPIAR: https://dx.doi.org/10.6019/EMPIAR-10478
-<li> The ground truth is avaialbe through Zenodo: https://doi.org/10.5281/zenodo.3874949
+<li> The ground truth is available through Zenodo: https://doi.org/10.5281/zenodo.3874949
 </ul>
 <br>
 
