@@ -192,6 +192,8 @@ for startingSlice  = 1:numSlicesProb-1
 end
 
 %% discard cases where there are 3 or less connections
+% Each row corresponds to a chain of cells, the columns correspond to the
+% level (i.e. the slice where it belongs)
 final_cells(final_cells==inf) = 0;
 final_dist(final_dist==inf)   = 0;
 %final_rank(final_rank==inf)   = 0;
@@ -206,12 +208,10 @@ final_cells(sum(final_cells>0,2)<min_connections,:) = [];
 
 
 %%
-
 %final_cells(final_cells==0)=0;
-
 numFinalCells = size(final_cells,1);
 
-%%
+%% centroid [row column central_slice initial_slice final_slice]
 final_centroid=zeros(numFinalCells,5);
     %currLine =[];
     for k=1:numFinalCells
