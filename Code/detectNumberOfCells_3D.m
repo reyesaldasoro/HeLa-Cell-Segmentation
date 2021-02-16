@@ -122,13 +122,18 @@ numSlicesProb       = numel(probingSlices);
 % the slices will be subsampled (as they are 8,000 x 8,000
 stepPix             = 4;
 % these variables will store the rank of the cells detected per slice and
-% location
+% location 
+% RANKCELLS has 1 column per slice read and every row will have
+% the rank (i.e. largest cell). 
 rankCells           = zeros(numCells,numSlicesProb);
+% POSITIONROI has one level per slice with r,c locations at ever
 positionROI         = zeros(numCells,2,numSlicesProb);
 for k=1:numSlicesProb
     % iterate over slices, read, filter and detect cells per slice
     disp(strcat('Reading slice = ',32,num2str(k)))
     Hela_3D = ( imfilter(imread(strcat(baseDir,dir0(probingSlices(k)).name)), gaussFilt));
+    % extra parameter not read is a [rows,cols,numCells] matrix with the
+    % location of each cell as a mask
     [~,rankCells(:,k),positionROI(:,:,k)]  = detectNumberOfCells(Hela_3D(1:stepPix:end,1:stepPix:end),numCells);
 end
 % Since the image has been subsampled the distances are reduced, rescale
