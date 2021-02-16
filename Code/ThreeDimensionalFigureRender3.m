@@ -43,6 +43,7 @@ numFiles = levs;
 z2d                     = ones(rows,cols);
 zz_3D = zeros(rows,cols,levs);
 for k=1:numFiles
+    disp(k)
     zz_3D(:,:,k)        = ones(rows,cols)*k;
 end
 xx_3D                   = repmat(x2d,[1 1 numFiles]);
