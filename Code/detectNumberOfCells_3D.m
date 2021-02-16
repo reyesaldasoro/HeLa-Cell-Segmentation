@@ -259,8 +259,24 @@ if toDisplay ==1
         plot3(currLine(:,2),currLine(:,1),currLine(:,3),'linewidth',2)
     end
 end
+%% Final step, determine the coordinates of ROIs so that they are 2,000 x 2,000 x 300
+final_centroid2     = final_centroid;
+% if centroids are closer than 1000 pixels from edge, shift (could discard)
+final_centroid2(:,1) = max (final_centroid2(:,1),1001);
+final_centroid2(:,1) = min (final_centroid2(:,1),rows-999);
+final_centroid2(:,2) = max (final_centroid2(:,2),1001);
+final_centroid2(:,2) = min (final_centroid2(:,2),cols-999);
+% now adjust the z-level
+final_centroid2(:,3) = max (final_centroid2(:,3),151);
+final_centroid2(:,3) = min (final_centroid2(:,3),numSlices-149);
 
-%%
+% determine the coordinates
+final_coords (:,1) = max(1,      final_centroid2(:,1)      -1000);
+final_coords (:,2) = min(rows,   final_centroid2(:,1)      +999);
+final_coords (:,3) = max(1,      final_centroid2(:,2)      -1000);
+final_coords (:,4) = min(rows,   final_centroid2(:,2)      +999);
+final_coords (:,5) = max(1,      final_centroid2(:,3)      -150);
+final_coords (:,6) = min(rows,   final_centroid2(:,3)      +149);
 
 
 
