@@ -1,4 +1,4 @@
-function [final_centroid,final_cells,final_dist]        = detectNumberOfCells_3D(baseDir,numCells,toDisplay)
+function [final_coords,final_centroid,final_cells,final_dist]        = detectNumberOfCells_3D(baseDir,numCells,toDisplay)
 %function IndividualHelaLabels         = detectNumberOfCells_3D(baseDir,numCells)
 % This function calls iteratively detectNumberOfCells in 2D to find all the
 % cells in a stack, these will be in different positions and aligned.
