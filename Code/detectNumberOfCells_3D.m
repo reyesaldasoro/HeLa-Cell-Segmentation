@@ -141,22 +141,20 @@ positionROI     = positionROI *stepPix;
 positionROI2    = positionROI;
 %% Find which cells are colocated
 % find distance between cells in level 1 and cells in level 2 
-
-
-
-
 final_cells = [];
 final_dist  = [];
 %final_rank  = [];
 %positionROI=qqq;
-%%
-
+%% Link cells between slices
+% there is a maximum distance to be accepted
 maximum_distance    = 300;
+% Iterate over slices
 for startingSlice  = 1:numSlicesProb-1
+    % Iterate over the cells present at current slice
     for cellAtSlice = 1:numCells
         %cellAtSlice                     = 2;
         if positionROI(cellAtSlice,1,startingSlice)<inf
-            % only query if not yet processed
+            % only query if not yet processed, when processed, dist -> inf
             dist_i                          = zeros(1,numSlicesProb);
             cell_i                          = zeros(1,numSlicesProb);
             cell_i(startingSlice)           = cellAtSlice;
@@ -164,8 +162,10 @@ for startingSlice  = 1:numSlicesProb-1
             %cell_i_2(1)                    = cellAtSlice;
             dist_i(startingSlice)           = 0 ;
             for cSlices = startingSlice: numSlicesProb-1
+                % now iterate over all slices ABOVE current selected cell
                 dist_to_up                  = sqrt((positionROI(cell_i(cSlices),1,cSlices)-positionROI(:,1,cSlices+1)).^2+(positionROI(cell_i(cSlices),2,cSlices)-positionROI(:,2,cSlices+1)).^2);
                 [min_up,match_up ]          = min(dist_to_up);
+                % this will contain the chain of cells that are linked
                 cell_i(cSlices+1)           = match_up;
                 %cell_i_2(cSlices+1)        = match_up+cSlices*20;
                 dist_i(cSlices+1)           = min_up;
