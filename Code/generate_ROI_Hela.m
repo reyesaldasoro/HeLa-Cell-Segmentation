@@ -5,13 +5,9 @@ function generate_ROI_Hela (baseDir,final_coords,final_centroid)
 % 512 pixels as obtained from an electron microscope scanning Hela Cells
 %--------------------------------------------------------------------------
 % Input         baseDir                 : a folder with a series of images
-%               numCells                : optional, number of cells used to stop the
-%                                         iterative process to detect cells
-%               toPrint                 : optional to display where the
-%                                         are located
-% Output        final_centroid          : [numCell x 5 ]
+%               final_centroid          : [numCell x 5 ]
 %                                         [row,col,central,low/up slices]
-%               final_cells             : [numCell x numSlicesProbed] with
+%               final_coords            : [numCell x 6] row init:finwith
 %                                         one row for every cell located
 %                                         and matched up down columns are
 %                                         the slices probed (not all are to
@@ -123,22 +119,26 @@ for k           = 1:numSlices
     % iterate over slices, read, filter and detect cells per slice
     disp(strcat('Reading slice = ',32,num2str(k),' of cell =',32,num2str(currCell)))
     Hela_3D                 = imfilter(imread(strcat(baseDir,dir0((k)).name)), gaussFilt,'replicate');
-    Hela_MASK               = zeros(rows,cols);
+    %Hela_MASK               = zeros(rows,cols);
     for currCell            = 1:numCells
-       % disp(currCell)
-        rr                  = final_coords(currCell,1):final_coords(currCell,2);
-        cc                  = final_coords(currCell,3):final_coords(currCell,4);
-        Hela_ROI            = Hela_3D(rr,cc);
-        %Hela_MASK(rr,cc,1)    = currCell;
-        %imagesc(Hela_3D.*uint8(Hela_MASK==currCell))
-        %drawnow
-        %save current slice
-        foldername          = strcat('Hela_ROI_',num2str(currCell),'_',num2str(numCells),'_',num2str(final_centroid(currCell,1)),'_',num2str(final_centroid(currCell,2)),'_',num2str(final_centroid(currCell,3)));
-        filename            = strcat('ROI_',num2str(final_centroid(currCell,1)),'_',num2str(final_centroid(currCell,2)),'_',num2str(final_centroid(currCell,3)),'_z',num2str(k,'%3.4d'),'.tif');
-        savefile            = strcat(foldername,filesep,filename);
-        %save(filename,Hela_ROI)
-        imwrite(Hela_ROI,savefile)
-    end  
+        % only process if within limits of the z stack
+        if ((k>=final_coords(currCell,5))&(k<=final_coords(currCell,6)))
+            % disp(currCell)
+            rr                  = final_coords(currCell,1):final_coords(currCell,2);
+            cc                  = final_coords(currCell,3):final_coords(currCell,4);
+            Hela_ROI            = Hela_3D(rr,cc);
+            %Hela_MASK(rr,cc,1)    = currCell;
+            %imagesc(Hela_3D.*uint8(Hela_MASK==currCell))
+            %drawnow
+            %save current slice
+            foldername          = strcat('Hela_ROI_',num2str(currCell),'_',num2str(numCells),'_',num2str(final_centroid(currCell,1)),'_',num2str(final_centroid(currCell,2)),'_',num2str(final_centroid(currCell,3)));
+            filename            = strcat('ROI_',num2str(final_centroid(currCell,1)),'_',num2str(final_centroid(currCell,2)),'_',num2str(final_centroid(currCell,3)),'_z',num2str(k,'%3.4d'),'.tif');
+            savefile            = strcat(foldername,filesep,filename);
+            %save(filename,Hela_ROI)
+            imwrite(Hela_ROI,savefile)
+        end
+        
+    end
 end
 
 
