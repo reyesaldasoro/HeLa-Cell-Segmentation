@@ -90,7 +90,7 @@ else
     return
 end
 
-%%
+%% Main parameters, number of cells, rows/cols per slice
 % Number of cells to detect per slice
 if (~exist('numCells','var'))
     numCells            = 20;
@@ -106,17 +106,23 @@ end
 if (isempty(toDisplay))
     toDisplay            = 0;
 end
-
+% Find the dimensions of the first slice, as only tifs were read, there are
+% no directories or else in the stack, otherwise you can use a mid slice
 stackInfo       = imfinfo((strcat(baseDir,dir0(1).name)));
 rows            = stackInfo.Width;
 cols            = stackInfo.Height;
-
-%%
+%% Processing settings,
+% A gaussian to remove noise of slices to read
 gaussFilt           = fspecial('Gaussian',3,1);
-stepPix             = 4;
+% slices are fairly similar so only a subset will be probed for cells,
+% default is to read every 20 slices, which for 518 leaves 26 
 stepSlice           = 20;
 probingSlices       = 1:stepSlice:numSlices;
 numSlicesProb       = numel(probingSlices);
+% the slices will be subsampled (as they are 8,000 x 8,000
+stepPix             = 4;
+% these variables will store the rank of the cells detected per slice and
+% location
 rankCells           = zeros(numCells,numSlicesProb);
 positionROI         = zeros(numCells,2,numSlicesProb);
 for k=1:numSlicesProb
