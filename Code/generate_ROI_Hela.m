@@ -132,7 +132,7 @@ for k           = 1:numSlices
             %drawnow
             %save current slice
             foldername          = strcat('Hela_ROI_',num2str(currCell),'_',num2str(numCells),'_',num2str(final_centroid(currCell,1)),'_',num2str(final_centroid(currCell,2)),'_',num2str(final_centroid(currCell,3)));
-            filename            = strcat('ROI_',num2str(final_centroid(currCell,1)),'_',num2str(final_centroid(currCell,2)),'_',num2str(final_centroid(currCell,3)),'_z',num2str(k,'%3.4d'),'.tif');
+            filename            = strcat('ROI_',num2str(final_centroid(currCell,1)),'_',num2str(final_centroid(currCell,2)),'_',num2str(final_centroid(currCell,3)),'_z',num2str(1+k-final_coords(currCell,5),'%3.4d'),'.tif');
             savefile            = strcat(foldername,filesep,filename);
             %save(filename,Hela_ROI)
             imwrite(Hela_ROI,savefile)
