@@ -71,21 +71,20 @@ function [final_centroid,final_cells,final_dist]        = detectNumberOfCells_3D
 if isa(baseDir,'char')
         % check if it is a file or a folder
     if isfolder(baseDir)
-        % It is a folder, take the central slice
-              
+        % It is a folder,               
         if (baseDir(end)~=filesep)
+            % check if the baseDir ends with / or \
             baseDir = strcat(baseDir,filesep);
         end
+        % Read the directory IT HAS TO BE a tif or tiff to work
         dir0        = dir (strcat(baseDir,'*.tif*'));
-        
-
+        % calculate the number of slices,
         numSlices                   = size(dir0,1);
-
     else
-        % It is a file, read 
-
+        % It is a file, read NOT WORKING at the moment, only in folders
+        disp('This function processes multiple slices inside a folder');
+        return
     end
-    
 else
     disp('This function processes multiple slices inside a folder');
     return
