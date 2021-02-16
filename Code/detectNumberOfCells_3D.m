@@ -126,6 +126,7 @@ stepPix             = 4;
 rankCells           = zeros(numCells,numSlicesProb);
 positionROI         = zeros(numCells,2,numSlicesProb);
 for k=1:numSlicesProb
+    % iterate over slices, read, filter and detect cells per slice
     disp(strcat('Reading slice = ',32,num2str(k)))
     Hela_3D = ( imfilter(imread(strcat(baseDir,dir0(probingSlices(k)).name)), gaussFilt));
     [~,rankCells(:,k),positionROI(:,:,k)]  = detectNumberOfCells(Hela_3D(1:stepPix:end,1:stepPix:end),numCells);
