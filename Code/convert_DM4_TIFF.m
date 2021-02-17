@@ -5,6 +5,8 @@ close all
 baseDir             = 'D:\Acad\Crick\Hela8000\';
 outputDir           = 'D:\Acad\Crick\Hela8000_tiff\';
 
+
+
 dir0                = dir(strcat(baseDir,'*dm4'));
 
 numImages           = size(dir0,1);
