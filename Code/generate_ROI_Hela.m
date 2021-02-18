@@ -1,4 +1,4 @@
-function generate_ROI_Hela (baseDir,final_coords,final_centroid)
+function listFolders = generate_ROI_Hela (baseDir,final_coords,final_centroid)
 % function generate_ROI_Hela (baseDir,final_coords)
 % A function to generate a series of regions of interest (i.e. cropped
 % regions of 2,000 x 2,000 x 300) from a larger region of 8,000 x 8,000 x
@@ -110,8 +110,10 @@ gaussFilt           = fspecial('Gaussian',3,1);
 % end
 %% Processing option 2: read and save one image per ROI
 % first, create the folders
+listFolders{numCells} =[];
 for currCell            = 1:numCells
     foldername          = strcat('Hela_ROI_',num2str(currCell),'_',num2str(numCells),'_',num2str(final_centroid(currCell,1)),'_',num2str(final_centroid(currCell,2)),'_',num2str(final_centroid(currCell,3)));
+    listFolders{currCell} =foldername;
     mkdir(foldername)
 end
 %% Now save all slices
