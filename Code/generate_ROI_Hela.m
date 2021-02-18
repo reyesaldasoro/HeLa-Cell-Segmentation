@@ -119,7 +119,7 @@ end
 %% Now save all slices
 for k           = 1:numSlices
     % iterate over slices, read, filter and detect cells per slice
-    disp(strcat('Reading slice = ',32,num2str(k),' of cell =',32,num2str(currCell)))
+    disp(strcat('Reading slice = ',32,num2str(k),'/',num2str(numSlices))) %  of cell =',32,num2str(currCell)))
     Hela_3D                 = imfilter(imread(strcat(baseDir,dir0((k)).name)), gaussFilt,'replicate');
     %Hela_MASK               = zeros(rows,cols);
     for currCell            = 1:numCells
