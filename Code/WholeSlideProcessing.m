@@ -4,11 +4,12 @@ tic;
 t1=toc;
 %%
 tic
-listFolders = generate_ROI_Hela (baseDir,final_coords,final_centroid);
+listFolders         = generate_ROI_Hela (baseDir,final_coords,final_centroid);
 t2=toc;
 %%
+k=1;
 tic
-Hela_background 	= segmentBackgroundHelaEM(Hela);
+Hela_background 	= segmentBackgroundHelaEM(listFolders{1});
 Hela_nuclei     	= segmentNucleiHelaEM(Hela);    
 
 t3=toc;
