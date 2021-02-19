@@ -8,7 +8,7 @@ function [Hela_nuclei,Hela_background] = segmentNucleiHelaEM_3D(baseDir,cannyStd
 %               cannyStdValue           : the value of the Std of the canny edge detection
 % Output        nucleiHela              : a binary volume with 1 for nuclei, 0 background
 %--------------------------------------------------------------------------
-%z\zzzzz
+%
 % This code segments the nuclei of HeLa Cells that have been acquired with Electron
 % Microscopy at The Crick Institute by Chris Peddie, Anne Weston, Lucy Collinson and
 % provided to the Data Study Group at the Alan Turing Insititute by Martin Jones.
