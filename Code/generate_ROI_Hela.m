@@ -110,7 +110,7 @@ gaussFilt           = fspecial('Gaussian',3,1);
 % end
 %% Processing option 2: read and save one image per ROI
 % first, create the folders
-listFolders{numCells} =[];
+listFolders{numCells,1} =[];
 for currCell            = 1:numCells
     foldername          = strcat('Hela_ROI_',num2str(currCell),'_',num2str(numCells),'_',num2str(final_centroid(currCell,1)),'_',num2str(final_centroid(currCell,2)),'_',num2str(final_centroid(currCell,3)));
     listFolders{currCell,1} =foldername;
