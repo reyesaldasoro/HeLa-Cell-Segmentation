@@ -158,8 +158,8 @@ for currentSlice=centralSlice:-1:1
         disp('no nuclei detected')
     end
 end
-
-
+% This will no longer be needed, so delete to avoid out of memory problems
+clear Hela_3D
 
 %% Interpolate between slices
 % A simple post-processing step is to interpolate between slices/
