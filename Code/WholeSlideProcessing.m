@@ -8,8 +8,8 @@ tic
 listFolders         = generate_ROI_Hela (baseDir,final_coords,final_centroid);
 numFolders          = size(listFolders,1);
 t2=toc;
-%
-for k=1:numFolders
+%%
+for k=7:numFolders
     tic
     [Hela_nuclei,Hela_background]     	= segmentNucleiHelaEM_3D(listFolders{1});
     [Hela_cell]                         = segmentCellHelaEM_3D(Hela_nuclei,Hela_background);
