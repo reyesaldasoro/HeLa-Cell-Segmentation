@@ -154,8 +154,8 @@ if numSlices ==1
     else
         Hela_cell   = (Hela_cell_L==1);
     end
-    imagesc(Hela_cell+2*Hela_background)
-    drawnow
+    %imagesc(Hela_cell+2*Hela_background)
+    %drawnow
 else
     % Three dimensional case
     Hela_cell(rows,cols,numSlices)=0;
