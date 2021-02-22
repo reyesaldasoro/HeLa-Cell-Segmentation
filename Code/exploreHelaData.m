@@ -29,3 +29,22 @@ colormap gray
 %%
 k=100;
 imagesc(Hela_nuclei(:,:,k)+2*Hela_background(:,:,k))
+
+%%
+
+%%
+dir0                = 'D:\Acad\GitHub\HeLa-Cell-Segmentation\Code';
+dir1                = dir(strcat(dir0,filesep,'Hela_RO*.mat'));
+numFiles            = size(dir1,1);
+%%
+
+for k=1:numFiles
+    currCell  = dir1(k).name(q(2)+1:q(3)-1);
+    load(dir1(k).name);
+    subplot(6,5,str2num(currCell))
+    imagesc(squeeze(Hela_background(:,1000,:)+2*Hela_nuclei(:,1000,:)))
+    title(currCell,'fontsize',20)
+end
+
+
+
