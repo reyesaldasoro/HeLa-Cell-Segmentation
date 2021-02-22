@@ -38,7 +38,7 @@ dir1                = dir(strcat(dir0,filesep,'Hela_RO*.mat'));
 numFiles            = size(dir1,1);
 %%
 
-for k=1:numFiles
+for k=25:numFiles
     disp(k)
      q=strfind(dir1(k).name,'_');
     currCell  = dir1(k).name(q(2)+1:q(3)-1);
