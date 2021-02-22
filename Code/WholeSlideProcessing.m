@@ -13,8 +13,8 @@ for k=1   %7:numFolders
     tic
     [Hela_nuclei,Hela_background]     	= segmentNucleiHelaEM_3D(listFolders{k});
     [Hela_cell]                         = segmentCellHelaEM_3D(Hela_nuclei,Hela_background);
-    Hela_cell                           = Hela_cell>0.5;
-    saveName                            = strcat(listFolders{k},'_results');
+    %Hela_cell                           = Hela_cell>0.5;
+    %saveName                            = strcat(listFolders{k},'_results');
     %save(saveName, 'Hela_nuclei', 'Hela_background','Hela_cell');
     t3(k)=toc;
 end
