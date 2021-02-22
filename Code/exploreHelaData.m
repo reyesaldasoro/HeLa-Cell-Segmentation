@@ -38,12 +38,14 @@ dir1                = dir(strcat(dir0,filesep,'Hela_RO*.mat'));
 numFiles            = size(dir1,1);
 %%
 
-for k=1:numFiles
+for k=11:numFiles
+    disp(k)
+     q=strfind(dir1(k).name,'_');
     currCell  = dir1(k).name(q(2)+1:q(3)-1);
     load(dir1(k).name);
-    subplot(6,5,str2num(currCell))
+    subplot(5,6,str2num(currCell))
     imagesc(squeeze(Hela_background(:,1000,:)+2*Hela_nuclei(:,1000,:)))
-    title(currCell,'fontsize',20)
+    title(currCell,'fontsize',10)
 end
 
 
