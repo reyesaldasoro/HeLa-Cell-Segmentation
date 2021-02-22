@@ -26,3 +26,6 @@ figure(k2)
 imagesc(squeeze(Hela(1:4:end,1750,:)))
 colormap gray
 
+%%
+k=100;
+imagesc(Hela_nuclei(:,:,k)+2*Hela_background(:,:,k))
