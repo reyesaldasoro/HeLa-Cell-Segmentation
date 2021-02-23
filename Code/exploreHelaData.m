@@ -129,10 +129,10 @@ minSlice            = 1;
 fstep               = 16;
 numFiles            = size(dir1,1);
 %%
-%figure
+figure
 numFiles            = size(dir1,1);
 cells_to_discard = [1 6 15 27 28 29 30];
-for k=1:numFiles
+for k=12% 1:numFiles
    
     q=strfind(dir1(k).name,'_');
     currCell  = str2num(dir1(k).name(q(2)+1:q(3)-1));
