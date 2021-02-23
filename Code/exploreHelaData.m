@@ -129,22 +129,24 @@ minSlice            = 1;
 fstep               = 16;
 numFiles            = size(dir1,1);
 %%
-figure
+%figure
+numFiles            = size(dir1,1);
 cells_to_discard = [1 6 15 27 28 29 30];
-for k=1:numFiles
+for k=3%:numFiles
    
     q=strfind(dir1(k).name,'_');
     currCell  = str2num(dir1(k).name(q(2)+1:q(3)-1));
+    disp(currCell)
     if ~any(intersect(currCell,cells_to_discard))
          disp(currCell)
         load(dir1(k).name);
         %subplot(5,6,(currCell))
         %imagesc(squeeze(Hela_background(:,1000,:)+2*Hela_nuclei(:,1000,:)))
         
-        if (currCell==12)|(currCell==20)
+        %if (currCell==12)|(currCell==20)
             %Hela_nuclei         = Hela_nuclei.*(1-imdilate(Hela_background,ones(39,39,23))) ;
            % Hela_nuclei         = smooth3(Hela_nuclei);
-        end
+        %end
         surf_Nuclei         = isosurface(xx_3D(1:fstep:end,1:fstep:end,minSlice:maxSlice) +final_coords(currCell,1) ,...
                                           yy_3D(1:fstep:end,1:fstep:end,minSlice:maxSlice) +final_coords(currCell,3) ,...
                                           zz_3D(1:fstep:end,1:fstep:end,minSlice:maxSlice) +final_coords(currCell,5) ,...
@@ -156,15 +158,34 @@ for k=1:numFiles
 %        set(h4,'facecolor','red')
         set(h4,'edgecolor','none')       
         %title(strcat(num2str(currCell),',',32,num2str(100*volumeCell(k),2),'%'),'fontsize',10)
-        title(strcat(num2str(currCell)))
+        %title(strcat(num2str(currCell)))
     end
     rotate3d on
 end
 %%
-        view(398,43)
-        lighting phong
-        %camlight left
-        camlight right
-        axis tight
+view(398,43)
+lighting phong
+%camlight left
+camlight right
+axis tight
+        
+       
+%%
+numFiles            = size(dir1,1);
+for k=1:numFiles
+        q=strfind(dir1(k).name,'_');
+    currCell  = str2num(dir1(k).name(q(2)+1:q(3)-1));
+    if ~any(intersect(currCell,cells_to_discard))
+        q=strfind(dir1(k).name,'_');
+        currCell  = str2num(dir1(k).name(q(2)+1:q(3)-1));
+        
+        text(0.5*final_coords(currCell,1)+0.5*final_coords(currCell,2),...
+            0.5*final_coords(currCell,3)+0.5*final_coords(currCell,4),...
+            final_coords(currCell,6)+50,num2str(currCell),...
+            'Color','red','FontSize',14)
+        
+    end
+end
 
 
+ axis([1 8000 1 8000 1 520])
