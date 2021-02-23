@@ -132,11 +132,11 @@ numFiles            = size(dir1,1);
 %figure
 numFiles            = size(dir1,1);
 cells_to_discard = [1 6 15 27 28 29 30];
-for k=3%:numFiles
+for k=1:numFiles
    
     q=strfind(dir1(k).name,'_');
     currCell  = str2num(dir1(k).name(q(2)+1:q(3)-1));
-    disp(currCell)
+    %disp(currCell)
     if ~any(intersect(currCell,cells_to_discard))
          disp(currCell)
         load(dir1(k).name);
