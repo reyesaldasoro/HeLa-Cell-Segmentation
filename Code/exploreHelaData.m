@@ -190,3 +190,7 @@ end
 
 
  axis([1 8000 1 8000 1 520])
+ 
+ %%
+ 
+ baseDir             = 'C:\Users\sbbk034\Documents\Acad\Crick\Hela8000_tiff\';
