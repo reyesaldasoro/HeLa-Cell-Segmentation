@@ -121,7 +121,7 @@ yy_3D                   = repmat(y2d,[1 1 numFiles]);
 
 maxSlice            = levs;
 minSlice            = 1;
-fstep               = 8;
+fstep               = 16;
 %%
 figure
 cells_to_discard = [1 6 15 27 28 29 30];
@@ -134,8 +134,11 @@ for k=1:numFiles
         load(dir1(k).name);
         %subplot(5,6,(currCell))
         %imagesc(squeeze(Hela_background(:,1000,:)+2*Hela_nuclei(:,1000,:)))
-        Hela_nuclei         = Hela_nuclei.*(1-imdilate(Hela_background,ones(39,39,23))) ;
-        Hela_nuclei         = smooth3(Hela_nuclei);
+        
+        if currCell==12
+            Hela_nuclei         = Hela_nuclei.*(1-imdilate(Hela_background,ones(39,39,23))) ;
+            Hela_nuclei         = smooth3(Hela_nuclei);
+        end
         surf_Nuclei         = isosurface(xx_3D(1:fstep:end,1:fstep:end,minSlice:maxSlice) +final_coords(currCell,1) ,...
                                           yy_3D(1:fstep:end,1:fstep:end,minSlice:maxSlice) +final_coords(currCell,3) ,...
                                           zz_3D(1:fstep:end,1:fstep:end,minSlice:maxSlice) +final_coords(currCell,5) ,...
@@ -143,16 +146,16 @@ for k=1:numFiles
                     
         % Finally, let's display the surface
         h4 =  patch(surf_Nuclei);
-        set(h4,'facecolor','red')
-        set(h4,'edgecolor','none')
+        h4.FaceColor=[rand(1,3)/2];
+%        set(h4,'facecolor','red')
+        set(h4,'edgecolor','none')       
+        %title(strcat(num2str(currCell),',',32,num2str(100*volumeCell(k),2),'%'),'fontsize',10)
+    end
+end
         view(398,43)
         lighting phong
         %camlight left
         camlight right
         axis tight
-        
-        %title(strcat(num2str(currCell),',',32,num2str(100*volumeCell(k),2),'%'),'fontsize',10)
-    end
-end
 
 
