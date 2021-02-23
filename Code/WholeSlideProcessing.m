@@ -22,7 +22,7 @@ end
 
 
 %%
-for k=17  %1:numFolders
+for k=[19 21 25 26]  %1:numFolders
     tic
     [Hela_nuclei,Hela_background]     	= segmentNucleiHelaEM_3D(listFolders{k});
     %[Hela_cell]                         = segmentCellHelaEM_3D(Hela_nuclei,Hela_background);
