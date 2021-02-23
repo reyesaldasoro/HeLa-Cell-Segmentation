@@ -135,7 +135,7 @@ for k=1:numFiles
         %subplot(5,6,(currCell))
         %imagesc(squeeze(Hela_background(:,1000,:)+2*Hela_nuclei(:,1000,:)))
         
-        if currCell==12
+        if (currCell==12)|(currCell==20)
             Hela_nuclei         = Hela_nuclei.*(1-imdilate(Hela_background,ones(39,39,23))) ;
             Hela_nuclei         = smooth3(Hela_nuclei);
         end
