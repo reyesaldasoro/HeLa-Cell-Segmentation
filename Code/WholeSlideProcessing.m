@@ -13,7 +13,7 @@ dir0                = 'C:\Users\sbbk034\OneDrive - City, University of London\Do
 dir1                = dir(strcat(dir0,filesep,'Hela_RO*'));
 dir2                = dir1([dir1.isdir]);
 numFolders          = size(dir2,1);
-%%
+
 for k=1:numFolders
     listFolders{k,1} = dir2(k).name;
 end
@@ -22,7 +22,7 @@ end
 
 
 %%
-for k=3  %1:numFolders
+for k=17  %1:numFolders
     tic
     [Hela_nuclei,Hela_background]     	= segmentNucleiHelaEM_3D(listFolders{k});
     %[Hela_cell]                         = segmentCellHelaEM_3D(Hela_nuclei,Hela_background);
