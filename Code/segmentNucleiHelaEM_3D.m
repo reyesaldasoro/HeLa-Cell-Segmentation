@@ -124,13 +124,16 @@ if (isempty(cannyStdValue))
 end
 
 %% Process over the whole cell
-[rows,cols,numSlices]= size(Hela_3D);
-Hela_nuclei(rows,cols,numSlices)    = 0;
+% Define the volumes
+[rows,cols,numSlices]                   = size(Hela_3D);
+Hela_nuclei(rows,cols,numSlices)        = 0;
 Hela_background(rows,cols,numSlices)    = 0;
-centralSlice                        = round(numSlices/2);
-Hela_nuclei(:,:,centralSlice)       = segmentNucleiHelaEM(Hela_3D(:,:,centralSlice));    
-Hela_background(:,:,centralSlice)   = segmentBackgroundHelaEM(Hela_3D(:,:,centralSlice));
-%%
+% Start with the central slice, this assumes the cell is centrally located,
+% this may not be the case and may need to be reconsidered
+centralSlice                            = round(numSlices/2);
+Hela_nuclei(:,:,centralSlice)           = segmentNucleiHelaEM(Hela_3D(:,:,centralSlice));    
+Hela_background(:,:,centralSlice)       = segmentBackgroundHelaEM(Hela_3D(:,:,centralSlice));
+%% iterate over all slices
 for currentSlice=centralSlice+1:numSlices 
     % Iterate from the central slice UP, display the current position
     disp(strcat('Segmenting slice number',32,num2str(currentSlice)))
@@ -145,7 +148,7 @@ for currentSlice=centralSlice+1:numSlices
 end
 
 % Go down using the central slice as a guide
-tic
+%tic
 for currentSlice=centralSlice:-1:1
     % Iterate from the central slice DOWN, display the current position
     disp(strcat('Segmenting slice number',32,num2str(currentSlice)))
@@ -160,6 +163,18 @@ for currentSlice=centralSlice:-1:1
 end
 % This will no longer be needed, so delete to avoid out of memory problems
 clear Hela_3D
+%% overlap between background and nucleus, this should not happen.
+if sum(sum(sum(Hela_background.*Hela_nuclei)))>0
+    % dilate the background and remove from nuclei
+    try
+        Hela_nuclei         = Hela_nuclei.*(1-imdilate(Hela_background,ones(39,39,23))) ;
+    catch
+        for counterS = 1:numSlices
+            Hela_nuclei(:,:,counterS)         = Hela_nuclei(:,:,counterS).*(1-imdilate(Hela_background(:,:,counterS),ones(39,39,1))) ;
+        end
+    end
+    
+end
 
 %% Interpolate between slices
 % A simple post-processing step is to interpolate between slices/
