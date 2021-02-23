@@ -95,6 +95,11 @@ end
    
    
 %%
+dir0                = 'C:\Users\sbbk034\OneDrive - City, University of London\Documents\GitHub\HeLa-Cell-Segmentation\Code';
+dir1                = dir(strcat(dir0,filesep,'Hela_RO*.mat'));
+numFiles            = size(dir1,1);
+load('final_coords.mat')
+load('Hela_ROI_1_30_876_1665_81_Nuclei.mat')
 %% Prepare for 3D display 
 % This is for the slices:
 
@@ -122,6 +127,7 @@ yy_3D                   = repmat(y2d,[1 1 numFiles]);
 maxSlice            = levs;
 minSlice            = 1;
 fstep               = 16;
+numFiles            = size(dir1,1);
 %%
 figure
 cells_to_discard = [1 6 15 27 28 29 30];
@@ -137,7 +143,7 @@ for k=1:numFiles
         
         if (currCell==12)|(currCell==20)
             %Hela_nuclei         = Hela_nuclei.*(1-imdilate(Hela_background,ones(39,39,23))) ;
-            Hela_nuclei         = smooth3(Hela_nuclei);
+           % Hela_nuclei         = smooth3(Hela_nuclei);
         end
         surf_Nuclei         = isosurface(xx_3D(1:fstep:end,1:fstep:end,minSlice:maxSlice) +final_coords(currCell,1) ,...
                                           yy_3D(1:fstep:end,1:fstep:end,minSlice:maxSlice) +final_coords(currCell,3) ,...
@@ -150,7 +156,9 @@ for k=1:numFiles
 %        set(h4,'facecolor','red')
         set(h4,'edgecolor','none')       
         %title(strcat(num2str(currCell),',',32,num2str(100*volumeCell(k),2),'%'),'fontsize',10)
+        title(strcat(num2str(currCell)))
     end
+    rotate3d on
 end
 %%
         view(398,43)
