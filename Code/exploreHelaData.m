@@ -95,14 +95,63 @@ end
    
    
 %%
-cells_to_discard = [1 6 15 27 28 29 30];
+%% Prepare for 3D display 
+% This is for the slices:
+
+[rows,cols,levs]        = size(Hela_cell);
+numFiles = levs;
+[x2d,y2d]               = meshgrid(1:rows,1:cols);
+z2d                     = ones(rows,cols);
+zz_3D = zeros(rows,cols,levs);
 for k=1:numFiles
+    disp(k)
+    zz_3D(:,:,k)        = ones(rows,cols)*k;
+end
+xx_3D                   = repmat(x2d,[1 1 numFiles]);
+yy_3D                   = repmat(y2d,[1 1 numFiles]);
+%% This is for the surface 
+% We could create the surface directly with this, but as the volume is rather large,
+% the number of faces of the surface would be rather high, it would be slow and may
+% crash in a computer with low memory. This it is better to generate the reference
+% framework to create a isosurface with fewer faces
+
+% We can now generate the isosurface of the cell, with a certain step; using fstep =1
+% would be the same as the whole surface. With 8, the results are still visually good
+% and hard to distinguish with smaller steps.
+
+maxSlice            = levs;
+minSlice            = 1;
+fstep               = 8;
+%%
+figure
+cells_to_discard = [1 6 15 27 28 29 30];
+for k=3%1:numFiles
+   
     q=strfind(dir1(k).name,'_');
     currCell  = str2num(dir1(k).name(q(2)+1:q(3)-1));
-    if ~any(intersect(15,cells_to_discard))
-    volumeCell2(currCell)= volumeCell(k);
-    subplot(5,6,(currCell))
-    title(strcat(num2str(currCell),',',32,num2str(100*volumeCell(k),2),'%'),'fontsize',10)
+    if ~any(intersect(currCell,cells_to_discard))
+         disp(currCell)
+        load(dir1(k).name);
+        %subplot(5,6,(currCell))
+        %imagesc(squeeze(Hela_background(:,1000,:)+2*Hela_nuclei(:,1000,:)))
+        Hela_nuclei         = Hela_nuclei.*(1-imdilate(Hela_background,ones(35,35,21))) ;
+        Hela_nuclei         = smooth3(Hela_nuclei);
+        surf_Nuclei          = isosurface(xx_3D(1:fstep:end,1:fstep:end,minSlice:maxSlice),...
+                                         yy_3D(1:fstep:end,1:fstep:end,minSlice:maxSlice),...
+                                         zz_3D(1:fstep:end,1:fstep:end,minSlice:maxSlice),...
+                                Hela_nuclei(1:fstep:end,1:fstep:end,minSlice:maxSlice),0.7);
+                    
+        % Finally, let's display the surface
+        h4 =  patch(surf_Nuclei);
+        set(h4,'facecolor','red')
+        set(h4,'edgecolor','none')
+        view(398,43)
+        lighting phong
+        %camlight left
+        camlight right
+        axis tight
+        
+        title(strcat(num2str(currCell),',',32,num2str(100*volumeCell(k),2),'%'),'fontsize',10)
     end
 end
 
