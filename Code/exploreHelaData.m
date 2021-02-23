@@ -132,7 +132,7 @@ numFiles            = size(dir1,1);
 figure
 numFiles            = size(dir1,1);
 cells_to_discard = [1 6 15 27 28 29 30];
-for k=12% 1:numFiles
+for k=1:numFiles
    
     q=strfind(dir1(k).name,'_');
     currCell  = str2num(dir1(k).name(q(2)+1:q(3)-1));
@@ -156,7 +156,8 @@ for k=12% 1:numFiles
         h4 =  patch(surf_Nuclei);
         h4.FaceColor=0.75*rand(1,3);
 %        set(h4,'facecolor','red')
-        set(h4,'edgecolor','none')       
+        set(h4,'edgecolor','none')     
+        handlesNuclei{currCell}=h4;
         %title(strcat(num2str(currCell),',',32,num2str(100*volumeCell(k),2),'%'),'fontsize',10)
         %title(strcat(num2str(currCell)))
     end
