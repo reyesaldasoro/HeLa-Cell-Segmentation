@@ -8,8 +8,21 @@ tic
 listFolders         = generate_ROI_Hela (baseDir,final_coords,final_centroid);
 numFolders          = size(listFolders,1);
 t2=toc;
+%% If folders already exist
+dir0                = 'C:\Users\sbbk034\OneDrive - City, University of London\Documents\GitHub\HeLa-Cell-Segmentation\Code';
+dir1                = dir(strcat(dir0,filesep,'Hela_RO*'));
+dir2                = dir1([dir1.isdir]);
+numFolders          = size(dir2,1);
 %%
-for k=2:numFolders
+for k=1:numFolders
+    listFolders{k,1} = dir2(k).name;
+end
+
+
+
+
+%%
+for k=3  %1:numFolders
     tic
     [Hela_nuclei,Hela_background]     	= segmentNucleiHelaEM_3D(listFolders{k});
     %[Hela_cell]                         = segmentCellHelaEM_3D(Hela_nuclei,Hela_background);
