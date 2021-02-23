@@ -7,7 +7,7 @@ dir2                = dir1([dir1.isdir]);
 numFolders          = size(dir2,1);
 
 for k=1:numFolders
-    listFolders{k} = dir2(k).name;
+    listFolders{k,1} = dir2(k).name;
 end
 
 
@@ -98,7 +98,7 @@ end
 %% Prepare for 3D display 
 % This is for the slices:
 
-[rows,cols,levs]        = size(Hela_cell);
+[rows,cols,levs]        = size(Hela_nuclei);
 numFiles = levs;
 [x2d,y2d]               = meshgrid(1:rows,1:cols);
 z2d                     = ones(rows,cols);
