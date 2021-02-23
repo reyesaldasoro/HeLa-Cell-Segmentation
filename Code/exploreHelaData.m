@@ -146,7 +146,7 @@ for k=1:numFiles
                     
         % Finally, let's display the surface
         h4 =  patch(surf_Nuclei);
-        h4.FaceColor=[rand(1,3)/2];
+        h4.FaceColor=0.75*rand(1,3);
 %        set(h4,'facecolor','red')
         set(h4,'edgecolor','none')       
         %title(strcat(num2str(currCell),',',32,num2str(100*volumeCell(k),2),'%'),'fontsize',10)
