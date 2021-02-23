@@ -125,7 +125,7 @@ fstep               = 8;
 %%
 figure
 cells_to_discard = [1 6 15 27 28 29 30];
-for k=3%1:numFiles
+for k=1:numFiles
    
     q=strfind(dir1(k).name,'_');
     currCell  = str2num(dir1(k).name(q(2)+1:q(3)-1));
@@ -136,10 +136,10 @@ for k=3%1:numFiles
         %imagesc(squeeze(Hela_background(:,1000,:)+2*Hela_nuclei(:,1000,:)))
         Hela_nuclei         = Hela_nuclei.*(1-imdilate(Hela_background,ones(39,39,23))) ;
         Hela_nuclei         = smooth3(Hela_nuclei);
-        surf_Nuclei          = isosurface(xx_3D(1:fstep:end,1:fstep:end,minSlice:maxSlice),...
-                                         yy_3D(1:fstep:end,1:fstep:end,minSlice:maxSlice),...
-                                         zz_3D(1:fstep:end,1:fstep:end,minSlice:maxSlice),...
-                                Hela_nuclei(1:fstep:end,1:fstep:end,minSlice:maxSlice),0.7);
+        surf_Nuclei         = isosurface(xx_3D(1:fstep:end,1:fstep:end,minSlice:maxSlice) +final_coords(currCell,1) ,...
+                                          yy_3D(1:fstep:end,1:fstep:end,minSlice:maxSlice) +final_coords(currCell,3) ,...
+                                          zz_3D(1:fstep:end,1:fstep:end,minSlice:maxSlice) +final_coords(currCell,5) ,...
+                                    Hela_nuclei(1:fstep:end,1:fstep:end,minSlice:maxSlice),0.7);
                     
         % Finally, let's display the surface
         h4 =  patch(surf_Nuclei);
@@ -151,7 +151,7 @@ for k=3%1:numFiles
         camlight right
         axis tight
         
-        title(strcat(num2str(currCell),',',32,num2str(100*volumeCell(k),2),'%'),'fontsize',10)
+        %title(strcat(num2str(currCell),',',32,num2str(100*volumeCell(k),2),'%'),'fontsize',10)
     end
 end
 
