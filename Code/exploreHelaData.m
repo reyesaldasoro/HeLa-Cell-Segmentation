@@ -38,17 +38,24 @@ dir0                = 'C:\Users\sbbk034\OneDrive - City, University of London\Do
 dir1                = dir(strcat(dir0,filesep,'Hela_RO*.mat'));
 numFiles            = size(dir1,1);
 %%
-figure
-for k=1:numFiles
+%figure
+for k=9%1:numFiles
     disp(k)
      q=strfind(dir1(k).name,'_');
     currCell  = dir1(k).name(q(2)+1:q(3)-1);
     load(dir1(k).name);
     subplot(5,6,str2num(currCell))
-    imagesc(squeeze(Hela_background(:,1200,:)+2*Hela_nuclei(:,1200,:)))
+    imagesc(squeeze(Hela_background(:,1000,:)+2*Hela_nuclei(:,1000,:)))
     title(currCell,'fontsize',10)
-    volumeCell = sum(sum(sum(Hela_nuclei)))/2000/2000/300;
+    volumeCell(k) = sum(sum(sum(Hela_nuclei)))/2000/2000/300;
 end
-
+%%
+for k=1:numFiles
+      q=strfind(dir1(k).name,'_');
+    currCell  = str2num(dir1(k).name(q(2)+1:q(3)-1));
+    volumeCell2(currCell)= volumeCell(k);
+     subplot(5,6,(currCell))
+    title(strcat(num2str(currCell),',',32,num2str(100*volumeCell(k),2),'%'),'fontsize',10)
+end
 
 
