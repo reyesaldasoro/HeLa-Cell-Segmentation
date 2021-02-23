@@ -134,7 +134,7 @@ for k=3%1:numFiles
         load(dir1(k).name);
         %subplot(5,6,(currCell))
         %imagesc(squeeze(Hela_background(:,1000,:)+2*Hela_nuclei(:,1000,:)))
-        Hela_nuclei         = Hela_nuclei.*(1-imdilate(Hela_background,ones(35,35,21))) ;
+        Hela_nuclei         = Hela_nuclei.*(1-imdilate(Hela_background,ones(39,39,23))) ;
         Hela_nuclei         = smooth3(Hela_nuclei);
         surf_Nuclei          = isosurface(xx_3D(1:fstep:end,1:fstep:end,minSlice:maxSlice),...
                                          yy_3D(1:fstep:end,1:fstep:end,minSlice:maxSlice),...
