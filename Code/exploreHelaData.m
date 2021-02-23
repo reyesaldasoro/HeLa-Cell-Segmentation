@@ -136,7 +136,7 @@ for k=1:numFiles
         %imagesc(squeeze(Hela_background(:,1000,:)+2*Hela_nuclei(:,1000,:)))
         
         if (currCell==12)|(currCell==20)
-            Hela_nuclei         = Hela_nuclei.*(1-imdilate(Hela_background,ones(39,39,23))) ;
+            %Hela_nuclei         = Hela_nuclei.*(1-imdilate(Hela_background,ones(39,39,23))) ;
             Hela_nuclei         = smooth3(Hela_nuclei);
         end
         surf_Nuclei         = isosurface(xx_3D(1:fstep:end,1:fstep:end,minSlice:maxSlice) +final_coords(currCell,1) ,...
@@ -152,6 +152,7 @@ for k=1:numFiles
         %title(strcat(num2str(currCell),',',32,num2str(100*volumeCell(k),2),'%'),'fontsize',10)
     end
 end
+%%
         view(398,43)
         lighting phong
         %camlight left
