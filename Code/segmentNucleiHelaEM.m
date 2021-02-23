@@ -161,8 +161,8 @@ else
     % with the segmentation, as the segmentations are going up and down, it is
     % necessary to erode, however, if the erosion is too much, it will remove
     % everything
-    
-    Nuclei_0                    = Hela_Centroid4.*imerode(previousSegmentation,ones(20));
+    %Nuclei_0                    = Hela_Centroid4.*imerode(previousSegmentation,ones(20));
+    Nuclei_0                    = Hela_Centroid4.*imerode(previousSegmentation,ones(3));
     Nuclei_0P                   = regionprops(Nuclei_0,'area');
     %regionsToKeep               = unique(Nuclei_0);
     regionsToKeep               = find([Nuclei_0P.Area]>100);
