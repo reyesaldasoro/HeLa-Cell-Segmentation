@@ -8,7 +8,7 @@ dir1                = dir(strcat(dir0,filesep,'Hela_RO*.mat'));
 numFiles            = size(dir1,1);
 %% Prepare for 3D display 
 load('final_coords.mat')
-load('Hela_ROI_1_30_876_1665_81_Nuclei.mat')
+load(dir1(3).name)
 
 % This is for the slices to create the surfaces 
 [rows,cols,levs]        = size(Hela_nuclei);
@@ -47,7 +47,7 @@ jet2    = jet;
 jet3    = jet2(round(linspace(1,256,numFiles)),:);
 [a,b]   = sort(rand(numFiles,1));
 
-for k=16%:numFiles  
+for k=1:numFiles  
     % Usual issue when reading the folders 10, 11, ... 19, 2, 20 ...
     % calculate the correct order (next time, save 1 as 01, 2 as 02, etc
     q           = strfind(dir1(k).name,'_');
@@ -63,9 +63,9 @@ for k=16%:numFiles
         %title(strcat(num2str(currCell)))
 
         % ***** display all the cells as surfaces in one 3D plot ****       
-        surf_Nuclei         = isosurface(xx_3D(1:fstep:end,1:fstep:end,minSlice:maxSlice) +final_coords(currCell,1) ,...
-                                          yy_3D(1:fstep:end,1:fstep:end,minSlice:maxSlice) +final_coords(currCell,3) ,...
-                                          zz_3D(1:fstep:end,1:fstep:end,minSlice:maxSlice) +final_coords(currCell,5) ,...
+        surf_Nuclei          = isosurface(yy_3D(1:fstep:end,1:fstep:end,minSlice:maxSlice)  +final_coords(k,1) ,...
+                                          xx_3D(1:fstep:end,1:fstep:end,minSlice:maxSlice) +final_coords(k,3) ,...
+                                          zz_3D(1:fstep:end,1:fstep:end,minSlice:maxSlice) +final_coords(k,5) ,...
                                     Hela_nuclei(1:fstep:end,1:fstep:end,minSlice:maxSlice),0.7);
                     
         % Finally, let's display the surface, allocate random colours
@@ -90,7 +90,7 @@ grid on
 
 %% Insert a slice!
 % Read first slice
-currSlice               = imfilter(imread(strcat(baseDir,filesep,dirTiffs(120).name)),ones(3)/9);
+currSlice               = imfilter(imread(strcat(baseDir,filesep,dirTiffs(1).name)),ones(3)/9);
 [rowsWhole,colsWhole]   = size(currSlice);
 axis([1 rowsWhole 1 colsWhole 1 numTiffs])
 [x2dWhole,y2dWhole]     = meshgrid(1:rowsWhole,1:colsWhole);
@@ -100,17 +100,18 @@ hold on
 fstep                   = 4;
 currSliceSurf           = surf(x2dWhole(1:fstep:end,1:fstep:end),...
                                y2dWhole(1:fstep:end,1:fstep:end),...
-                               120*z2dWhole(1:fstep:end,1:fstep:end),...
-                               currSlice(1:fstep:end,1:fstep:end),'edgecolor','none');
+                               z2dWhole(1:fstep:end,1:fstep:end),...
+                               currSlice(1:fstep:end,1:fstep:end)','edgecolor','none');
+                           
+colormap gray
 %%
-for cSlices     = 1:40:numTiffs
+for cSlices     = 120 %1:40:numTiffs-50
     disp(cSlices)
-    currSlice           = imfilter(imread(strcat(baseDir,filesep,dirTiffs(cSlices).name)),ones(3)/9);
+    currSlice           = imfilter(imread(strcat(baseDir,filesep,dirTiffs(cSlices).name)),ones(5)/25);
     currSliceSurf.CData = currSlice(1:fstep:end,1:fstep:end)';
-    currSliceSurf.ZD
-    
-    ata = cSlices*z2dWhole(1:fstep:end,1:fstep:end);
+    currSliceSurf.ZData = cSlices*z2dWhole(1:fstep:end,1:fstep:end);
     pause(0.1)
+    
 end
                          
                          
