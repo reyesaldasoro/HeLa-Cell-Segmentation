@@ -42,6 +42,11 @@ figure
 numFiles            = size(dir1,1);
 cells_to_discard = [1 6 15 27 28 29 30];  % these cells are close to the edges, discard for now
 
+% Colours
+jet2    = jet;
+jet3    = jet2(round(linspace(1,256,numFiles)),:);
+[a,b]   = sort(rand(numFiles,1));
+
 for k=1:numFiles  
     % Usual issue when reading the folders 10, 11, ... 19, 2, 20 ...
     % calculate the correct order (next time, save 1 as 01, 2 as 02, etc
@@ -65,7 +70,10 @@ for k=1:numFiles
                     
         % Finally, let's display the surface, allocate random colours
         h4                  = patch(surf_Nuclei);
-        h4.FaceColor        = 0.75*rand(1,3);
+        %h4.FaceColor        = 'red';
+        %h4.FaceColor        = 0.75*rand(1,3);
+        
+        h4.FaceColor        = jet3(b(k),:);
         h4.EdgeColor        = 'none';
         % keep all the handles
         handlesNuclei{currCell}=h4;
@@ -75,13 +83,33 @@ end
 %%
 view(398,43)
 lighting phong
-%camlight left
+camlight left
 camlight right
 %axis tight
+grid on
 
+%% Insert a slice!
+% Read first slice
+currSlice               = imfilter(imread(strcat(baseDir,filesep,dirTiffs(1).name)),ones(3)/9);
+[rowsWhole,colsWhole]   = size(currSlice);
 axis([1 8000 1 8000 1 numTiffs])
-        
-       
+[x2dWhole,y2dWhole]     = meshgrid(1:rowsWhole,1:colsWhole);
+z2dWhole                     = ones(rowsWhole,colsWhole);
+%%
+currSliceSurf           = surf(x2dWhole(1:fstep:end,1:fstep:end),...
+                               y2dWhole(1:fstep:end,1:fstep:end),...
+                               z2dWhole(1:fstep:end,1:fstep:end),...
+                              currSlice(1:fstep:end,1:fstep:end)','edgecolor','none');
+%%
+for cSlices     = 1:20:numTiffs
+    disp(cSlices)
+    currSlice           = imfilter(imread(strcat(baseDir,filesep,dirTiffs(cSlices).name)),ones(3)/9);
+    currSliceSurf.CData = currSlice(1:fstep:end,1:fstep:end)';
+    currSliceSurf.ZData = cSlices*z2dWhole(1:fstep:end,1:fstep:end);
+    pause(0.1)
+end
+                         
+                         
 %% This is to add numbers to the cells, this is optional and not always necessary
 numFiles            = size(dir1,1);
 for k=1:numFiles
