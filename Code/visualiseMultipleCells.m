@@ -97,21 +97,24 @@ axis([1 rowsWhole 1 colsWhole 1 numTiffs])
 z2dWhole                     = ones(rowsWhole,colsWhole);
 %%
 hold on
-fstep                   = 4;
+fstep                   = 8;
 currSliceSurf           = surf(x2dWhole(1:fstep:end,1:fstep:end),...
                                y2dWhole(1:fstep:end,1:fstep:end),...
                                z2dWhole(1:fstep:end,1:fstep:end),...
                                currSlice(1:fstep:end,1:fstep:end)','edgecolor','none');
                            
 colormap gray
-%%
-for cSlices     = 120 %1:40:numTiffs-50
+%% Create a video with the slices up and down
+clear F
+counterVideo=1;
+for cSlices     = [ (1:10:numTiffs-50) (numTiffs-60:-1:1)]
     disp(cSlices)
     currSlice           = imfilter(imread(strcat(baseDir,filesep,dirTiffs(cSlices).name)),ones(5)/25);
     currSliceSurf.CData = currSlice(1:fstep:end,1:fstep:end)';
     currSliceSurf.ZData = cSlices*z2dWhole(1:fstep:end,1:fstep:end);
-    pause(0.1)
-    
+    drawnow;
+    F(counterVideo) = getframe(gcf);
+    counterVideo = counterVideo+1;
 end
                          
                          
