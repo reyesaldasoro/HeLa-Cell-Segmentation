@@ -98,10 +98,10 @@ z2dWhole                     = ones(rowsWhole,colsWhole);
 %%
 currSliceSurf           = surf(x2dWhole(1:fstep:end,1:fstep:end),...
                                y2dWhole(1:fstep:end,1:fstep:end),...
-                               z2dWhole(1:fstep:end,1:fstep:end),...
-                              currSlice(1:fstep:end,1:fstep:end)','edgecolor','none');
+                               cSlices*z2dWhole(1:fstep:end,1:fstep:end),...
+                              currSlice(1:fstep:end,1:fstep:end),'edgecolor','none');
 %%
-for cSlices     = 1:20:numTiffs
+for cSlices     = 1:40:numTiffs
     disp(cSlices)
     currSlice           = imfilter(imread(strcat(baseDir,filesep,dirTiffs(cSlices).name)),ones(3)/9);
     currSliceSurf.CData = currSlice(1:fstep:end,1:fstep:end)';
