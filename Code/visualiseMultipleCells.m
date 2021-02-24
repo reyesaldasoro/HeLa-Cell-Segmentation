@@ -81,10 +81,10 @@ for k=1:numFiles
     rotate3d on
 end
 %%
-view(398,43)
-hLight0 = lighting('phong');
+view(74,47)
+ lighting('phong');
 hLight1 = camlight ('left');
-hLight2 = camlight ('right');
+%hLight2 = camlight ('right');
 %axis tight
 grid on
 
