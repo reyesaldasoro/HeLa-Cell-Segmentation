@@ -132,7 +132,25 @@ for cAngle = 0:2:360
         F(counterVideo) = getframe(gcf);
     counterVideo = counterVideo+1;
 end
+%% Create a video rotating and slices up and down
 
+clear F
+counterVideo=1;
+cAngle = 0;
+    view(cAngle,20)
+for cSlices     = [(1:5:numTiffs-40) (numTiffs-45:-5:1)]
+    disp(cSlices)
+    currSlice           = imfilter(imread(strcat(baseDir,filesep,dirTiffs(cSlices).name)),ones(5)/25);
+    currSliceSurf.CData = currSlice(1:fstep:end,1:fstep:end)';
+    currSliceSurf.ZData = cSlices*z2dWhole(1:fstep:end,1:fstep:end);
+    drawnow;
+    for k=0:5
+        cAngle = cAngle+1;
+        view(cAngle,20)
+        F(counterVideo) = getframe(gcf);
+        counterVideo = counterVideo+1;
+    end
+end
 
 
 %%
