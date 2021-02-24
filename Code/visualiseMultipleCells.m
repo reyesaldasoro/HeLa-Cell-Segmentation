@@ -106,8 +106,8 @@ currSliceSurf           = surf(x2dWhole(1:fstep:end,1:fstep:end),...
 colormap gray
 %% Create a video with the slices up and down
 clear F
-counterVideo=49;
-for cSlices     = [ (numTiffs-60:-10:1)]
+counterVideo=1;
+for cSlices     = [(1:10:numTiffs-60) (numTiffs-60:-10:1)]
     disp(cSlices)
     currSlice           = imfilter(imread(strcat(baseDir,filesep,dirTiffs(cSlices).name)),ones(5)/25);
     currSliceSurf.CData = currSlice(1:fstep:end,1:fstep:end)';
@@ -116,7 +116,26 @@ for cSlices     = [ (numTiffs-60:-10:1)]
     F(counterVideo) = getframe(gcf);
     counterVideo = counterVideo+1;
 end
-                         
+%%
+
+  v = VideoWriter('Hela8000_video_1', 'MPEG-4');
+            open(v);
+            writeVideo(v,F);
+            close(v);
+%%
+ [imGif,mapGif] = rgb2ind(F(1).cdata,256,'nodither');
+    numFrames = size(F,2);
+
+    imGif(1,1,1,numFrames) = 0;
+    for k = 2:numFrames 
+      imGif(:,:,1,k) = rgb2ind(F(k).cdata,mapGif,'nodither');
+    end
+    %%
+
+    imwrite(imGif,mapGif,'Hela8000_video_2.gif',...
+            'DelayTime',0,'LoopCount',inf) %g443800
+
+
                          
 %% This is to add numbers to the cells, this is optional and not always necessary
 numFiles            = size(dir1,1);
