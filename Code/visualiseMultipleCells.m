@@ -116,9 +116,27 @@ for cSlices     = [(1:10:numTiffs-60) (numTiffs-60:-10:1)]
     F(counterVideo) = getframe(gcf);
     counterVideo = counterVideo+1;
 end
-%%
+%% Create a video rotating, need to move the %light position
+%hLight1.Position(3)=600;
+    hLight1.Position(1)=4000;
+    hLight1.Position(2)=4000;
+    view(0,20)
+clear F
+counterVideo=1;
+for cAngle = 0:2:360
+    view(cAngle,20)
+    %hLight1.Position(1)=4000-5000*cos(pi*cAngle/180);
+    %hLight1.Position(2)=4000+5000*sin(pi*cAngle/180);
+    
+    drawnow
+        F(counterVideo) = getframe(gcf);
+    counterVideo = counterVideo+1;
+end
 
-  v = VideoWriter('Hela8000_video_1', 'MPEG-4');
+
+
+%%
+  v = VideoWriter('Hela8000_video_2a', 'MPEG-4');
             open(v);
             writeVideo(v,F);
             close(v);
@@ -132,7 +150,7 @@ end
     end
     %%
 
-    imwrite(imGif,mapGif,'Hela8000_video_2.gif',...
+    imwrite(imGif,mapGif,'Hela8000_video_2b.gif',...
             'DelayTime',0,'LoopCount',inf) %g443800
 
 
