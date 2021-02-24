@@ -106,8 +106,8 @@ currSliceSurf           = surf(x2dWhole(1:fstep:end,1:fstep:end),...
 colormap gray
 %% Create a video with the slices up and down
 clear F
-counterVideo=1;
-for cSlices     = [ (1:10:numTiffs-50) (numTiffs-60:-1:1)]
+counterVideo=49;
+for cSlices     = [ (numTiffs-60:-10:1)]
     disp(cSlices)
     currSlice           = imfilter(imread(strcat(baseDir,filesep,dirTiffs(cSlices).name)),ones(5)/25);
     currSliceSurf.CData = currSlice(1:fstep:end,1:fstep:end)';
