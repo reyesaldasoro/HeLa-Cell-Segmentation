@@ -159,16 +159,17 @@ end
             writeVideo(v,F);
             close(v);
 %%
- [imGif,mapGif] = rgb2ind(F(1).cdata,256,'nodither');
+fStep = 1;
+ [imGif,mapGif] = rgb2ind(F(1).cdata(1:fStep:end,1:fStep:end,:),256,'nodither');
     numFrames = size(F,2);
 
-    imGif(1,1,1,numFrames) = 0;
-    for k = 2:numFrames 
-      imGif(:,:,1,k) = rgb2ind(F(k).cdata,mapGif,'nodither');
+    imGif(1,1,1,floor(numFrames/fStep)) = 0;
+    for k = 2:fStep:numFrames 
+      imGif(:,:,1,k/fStep) = rgb2ind(F(k).cdata(1:fStep:end,1:fStep:end,:),mapGif,'nodither');
     end
     %%
 
-    imwrite(imGif,mapGif,'Hela8000_video_3b.gif',...
+    imwrite(imGif,mapGif,'Hela8000_video_3d.gif',...
             'DelayTime',0,'LoopCount',inf) %g443800
 
 
