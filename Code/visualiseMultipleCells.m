@@ -154,7 +154,7 @@ end
 
 
 %%
-  v = VideoWriter('Hela8000_video_2a', 'MPEG-4');
+  v = VideoWriter('Hela8000_video_3a', 'MPEG-4');
             open(v);
             writeVideo(v,F);
             close(v);
@@ -168,7 +168,7 @@ end
     end
     %%
 
-    imwrite(imGif,mapGif,'Hela8000_video_2b.gif',...
+    imwrite(imGif,mapGif,'Hela8000_video_3b.gif',...
             'DelayTime',0,'LoopCount',inf) %g443800
 
 
