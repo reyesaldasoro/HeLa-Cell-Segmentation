@@ -47,7 +47,7 @@ jet2    = jet;
 jet3    = jet2(round(linspace(1,256,numFiles)),:);
 [a,b]   = sort(rand(numFiles,1));
 
-for k=1:numFiles  
+for k=16%:numFiles  
     % Usual issue when reading the folders 10, 11, ... 19, 2, 20 ...
     % calculate the correct order (next time, save 1 as 01, 2 as 02, etc
     q           = strfind(dir1(k).name,'_');
@@ -82,30 +82,34 @@ for k=1:numFiles
 end
 %%
 view(398,43)
-lighting phong
-camlight left
-camlight right
+hLight0 = lighting('phong');
+hLight1 = camlight ('left');
+hLight2 = camlight ('right');
 %axis tight
 grid on
 
 %% Insert a slice!
 % Read first slice
-currSlice               = imfilter(imread(strcat(baseDir,filesep,dirTiffs(1).name)),ones(3)/9);
+currSlice               = imfilter(imread(strcat(baseDir,filesep,dirTiffs(120).name)),ones(3)/9);
 [rowsWhole,colsWhole]   = size(currSlice);
-axis([1 8000 1 8000 1 numTiffs])
+axis([1 rowsWhole 1 colsWhole 1 numTiffs])
 [x2dWhole,y2dWhole]     = meshgrid(1:rowsWhole,1:colsWhole);
 z2dWhole                     = ones(rowsWhole,colsWhole);
 %%
+hold on
+fstep                   = 4;
 currSliceSurf           = surf(x2dWhole(1:fstep:end,1:fstep:end),...
                                y2dWhole(1:fstep:end,1:fstep:end),...
-                               cSlices*z2dWhole(1:fstep:end,1:fstep:end),...
-                              currSlice(1:fstep:end,1:fstep:end),'edgecolor','none');
+                               120*z2dWhole(1:fstep:end,1:fstep:end),...
+                               currSlice(1:fstep:end,1:fstep:end),'edgecolor','none');
 %%
 for cSlices     = 1:40:numTiffs
     disp(cSlices)
     currSlice           = imfilter(imread(strcat(baseDir,filesep,dirTiffs(cSlices).name)),ones(3)/9);
     currSliceSurf.CData = currSlice(1:fstep:end,1:fstep:end)';
-    currSliceSurf.ZData = cSlices*z2dWhole(1:fstep:end,1:fstep:end);
+    currSliceSurf.ZD
+    
+    ata = cSlices*z2dWhole(1:fstep:end,1:fstep:end);
     pause(0.1)
 end
                          
