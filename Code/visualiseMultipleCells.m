@@ -75,6 +75,7 @@ for k=1:numFiles
         
         h4.FaceColor        = jet3(b(k),:);
         h4.EdgeColor        = 'none';
+        h4.FaceAlpha        = 0.7;
         % keep all the handles
         handlesNuclei{currCell}=h4;
     end
@@ -129,23 +130,33 @@ for cAngle = 0:2:360
     %hLight1.Position(2)=4000+5000*sin(pi*cAngle/180);
     
     drawnow
-        F(counterVideo) = getframe(gcf);
+     %   F(counterVideo) = getframe(gcf);
     counterVideo = counterVideo+1;
 end
 %% Create a video rotating and slices up and down
+h0=gcf;
+h0.Color=[1 1 1];
+h1=gca;
+h1.CameraPositionMode='manual';
+h1.PlotBoxAspectRatio=[5 5 1];
+h1.DataAspectRatio=[5 5 1];
+% Send the light to above the centre to avoid shadows when turning
+hLight1.Position(1)=4000;
+hLight1.Position(2)=4000;
+hLight1.Position(3)=60000;
 
 clear F
 counterVideo=1;
 cAngle = 0;
     view(cAngle,20)
-for cSlices     = [(1:5:numTiffs-40) (numTiffs-45:-5:1)]
+for cSlices     = [(1:15:numTiffs-40) (numTiffs-40:-15:1)]
     disp(cSlices)
     currSlice           = imfilter(imread(strcat(baseDir,filesep,dirTiffs(cSlices).name)),ones(5)/25);
     currSliceSurf.CData = currSlice(1:fstep:end,1:fstep:end)';
     currSliceSurf.ZData = cSlices*z2dWhole(1:fstep:end,1:fstep:end);
     drawnow;
-    for k=0:5
-        cAngle = cAngle+1;
+    for k=0:20
+        cAngle = cAngle+0.5;
         view(cAngle,20)
         F(counterVideo) = getframe(gcf);
         counterVideo = counterVideo+1;
