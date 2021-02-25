@@ -112,7 +112,7 @@ gaussFilt           = fspecial('Gaussian',3,1);
 % first, create the folders
 listFolders{numCells,1} =[];
 for currCell            = 1:numCells
-    foldername          = strcat('Hela_ROI_',num2str(currCell),'_',num2str(numCells),'_',num2str(final_centroid(currCell,1)),'_',num2str(final_centroid(currCell,2)),'_',num2str(final_centroid(currCell,3)));
+    foldername          = strcat('Hela_ROI_',num2str(currCell,'%02u'),'_',num2str(numCells),'_',num2str(final_centroid(currCell,1)),'_',num2str(final_centroid(currCell,2)),'_',num2str(final_centroid(currCell,3)));
     listFolders{currCell,1} =foldername;
     mkdir(foldername)
 end
@@ -133,7 +133,7 @@ for k           = 1:numSlices
             %imagesc(Hela_3D.*uint8(Hela_MASK==currCell))
             %drawnow
             %save current slice
-            foldername          = strcat('Hela_ROI_',num2str(currCell),'_',num2str(numCells),'_',num2str(final_centroid(currCell,1)),'_',num2str(final_centroid(currCell,2)),'_',num2str(final_centroid(currCell,3)));
+            foldername          = strcat('Hela_ROI_',num2str(currCell,'%02u'),'_',num2str(numCells),'_',num2str(final_centroid(currCell,1)),'_',num2str(final_centroid(currCell,2)),'_',num2str(final_centroid(currCell,3)));
             filename            = strcat('ROI_',num2str(final_centroid(currCell,1)),'_',num2str(final_centroid(currCell,2)),'_',num2str(final_centroid(currCell,3)),'_z',num2str(1+k-final_coords(currCell,5),'%3.4d'),'.tif');
             savefile            = strcat(foldername,filesep,filename);
             %save(filename,Hela_ROI)
