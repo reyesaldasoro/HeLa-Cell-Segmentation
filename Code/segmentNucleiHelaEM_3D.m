@@ -167,10 +167,10 @@ clear Hela_3D
 if sum(sum(sum(Hela_background.*Hela_nuclei)))>0
     % dilate the background and remove from nuclei
     try
-        Hela_nuclei         = Hela_nuclei.*(1-imdilate(Hela_background,ones(39,39,23))) ;
+        Hela_nuclei                     = Hela_nuclei.*(1-imdilate(Hela_background,ones(39,39,23))) ;
     catch
         for counterS = 1:numSlices
-            Hela_nuclei(:,:,counterS)         = Hela_nuclei(:,:,counterS).*(1-imdilate(Hela_background(:,:,counterS),ones(39,39,1))) ;
+            Hela_nuclei(:,:,counterS)   = Hela_nuclei(:,:,counterS).*(1-imdilate(Hela_background(:,:,counterS),ones(39,39,1))) ;
         end
     end
     
@@ -199,6 +199,8 @@ end
 Hela_nuclei3                    = round(Hela_nuclei3);
 Hela_nuclei                     = Hela_nuclei3>1;
 clear Hela_nuclei3;
+% The 3D Median Filter may be better than the previous interpolation
+Hela_nuclei                     = medfilt3(Hela_nuclei,[3 3 13]);
 %%
 Hela_background3(rows,cols,numSlices)   = 0;
 % interpolation between slices
