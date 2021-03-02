@@ -210,7 +210,7 @@ end
 Hela_cell= medfilt3(Hela_cell,[3 3 13]);
 %% ensure there is only one region, remove small bits
 [q]=bwlabeln(Hela_cell);q2=regionprops(q,'Area');
-[a,b]=sort([q2.Area],'descend');
+[~,b]=sort([q2.Area],'descend');
 Hela_cell = q==(b(1));
 
 end
