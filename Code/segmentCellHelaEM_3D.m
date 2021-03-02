@@ -206,10 +206,11 @@ if sum(sum(sum(Hela_background.*Hela_cell)))>0
     end
     
 end
+%% a vertical median filter may be more effective than the previous interpolation and smoothing, and faster
+Hela_cell= medfilt3(Hela_cell,[3 3 13]);
 %% ensure there is only one region, remove small bits
 [q]=bwlabeln(Hela_cell);q2=regionprops(q,'Area');
 [a,b]=sort([q2.Area],'descend');
 Hela_cell = q==(b(1));
-%% a vertical median filter may be more effective than the previous interpolation and smoothing, and faster
-Hela_cell= medfilt3(Hela_cell,[3 3 13]);
+
 end
