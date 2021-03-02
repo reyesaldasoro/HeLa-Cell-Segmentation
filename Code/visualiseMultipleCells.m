@@ -4,11 +4,12 @@ dirTiffs            = dir(strcat(baseDir,filesep,'*.tif*'));
 numTiffs            = size(dirTiffs,1);   
 %% Folder with the saved segmentations
 dir0                = 'C:\Users\sbbk034\OneDrive - City, University of London\Documents\GitHub\HeLa-Cell-Segmentation\Code';
-dir1                = dir(strcat(dir0,filesep,'Hela_RO*.mat'));
-numFiles            = size(dir1,1);
+dir_nuclei          = dir(strcat(dir0,filesep,'Hela_RO*_Nu*.mat'));
+dir_cell            = dir(strcat(dir0,filesep,'Hela_RO*_Ce*.mat'));
+numFiles            = size(dir_nuclei,1);
 %% Prepare for 3D display 
 load('final_coords.mat')
-load(dir1(3).name)
+load(dir_nuclei(3).name)
 %%
 % This is for the slices to create the surfaces 
 [rows,cols,levs]        = size(Hela_nuclei);
@@ -39,7 +40,7 @@ fstep               = 16;
 
 %%
 figure
-numFiles            = size(dir1,1);
+numFiles            = size(dir_nuclei,1);
 cells_to_discard = [1 6 15 27 28 29 30];  % these cells are close to the edges, discard for now
 
 % Colours
@@ -50,12 +51,12 @@ jet3    = jet2(round(linspace(1,256,numFiles)),:);
 for k=1:numFiles  
     % Usual issue when reading the folders 10, 11, ... 19, 2, 20 ...
     % calculate the correct order (next time, save 1 as 01, 2 as 02, etc
-    q           = strfind(dir1(k).name,'_');
-    currCell    = str2num(dir1(k).name(q(2)+1:q(3)-1));
+    q           = strfind(dir_nuclei(k).name,'_');
+    currCell    = str2num(dir_nuclei(k).name(q(2)+1:q(3)-1));
     %disp(currCell)
     if ~any(intersect(currCell,cells_to_discard))
         disp(currCell)
-        load(dir1(k).name);
+        load(dir_nuclei(k).name);
         % ***** display all the cells as subplots with one slice ****
         %subplot(5,6,(currCell))
         %imagesc(squeeze(Hela_background(:,1000,:)+2*Hela_nuclei(:,1000,:)))
@@ -188,13 +189,13 @@ fStep2= 2;
 
                          
 %% This is to add numbers to the cells, this is optional and not always necessary
-numFiles            = size(dir1,1);
+numFiles            = size(dir_nuclei,1);
 for k=1:numFiles
-    q=strfind(dir1(k).name,'_');
-    currCell  = str2num(dir1(k).name(q(2)+1:q(3)-1));
+    q=strfind(dir_nuclei(k).name,'_');
+    currCell  = str2num(dir_nuclei(k).name(q(2)+1:q(3)-1));
     if ~any(intersect(currCell,cells_to_discard))
-        q=strfind(dir1(k).name,'_');
-        currCell  = str2num(dir1(k).name(q(2)+1:q(3)-1));
+        q=strfind(dir_nuclei(k).name,'_');
+        currCell  = str2num(dir_nuclei(k).name(q(2)+1:q(3)-1));
         % create the text at the middle of the volume and a few slices above
         % the edge of the cell volume
         handleText(k) = text(0.5*final_coords(currCell,1)+0.5*final_coords(currCell,2),...
@@ -204,8 +205,8 @@ for k=1:numFiles
     else
         % These are the cells that were not displayed, not really necessary
         % except for analysis
-        q=strfind(dir1(k).name,'_');
-        currCell  = str2num(dir1(k).name(q(2)+1:q(3)-1));
+        q=strfind(dir_nuclei(k).name,'_');
+        currCell  = str2num(dir_nuclei(k).name(q(2)+1:q(3)-1));
         
         handleText(k) = text(0.5*final_coords(currCell,1)+0.5*final_coords(currCell,2),...
             0.5*final_coords(currCell,3)+0.5*final_coords(currCell,4),...
