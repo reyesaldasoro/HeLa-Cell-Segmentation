@@ -164,10 +164,10 @@ else
     Hela_cell(:,:,centralSlice) = segmentCellHelaEM_3D(Hela_nuclei(:,:,centralSlice),Hela_background(:,:,centralSlice));
    
     % First go up
-    %for currentSlice=centralSlice+1:numSlices 
-    %    disp(strcat('Processing slice number',32,num2str(currentSlice)))
-    %    Hela_cell(:,:,currentSlice) = segmentCellHelaEM_3D(Hela_nuclei(:,:,currentSlice),Hela_background(:,:,currentSlice),Hela_cell(:,:,currentSlice-1));
-    %end
+    for currentSlice=centralSlice+1:numSlices 
+        disp(strcat('Processing slice number',32,num2str(currentSlice)))
+        Hela_cell(:,:,currentSlice) = segmentCellHelaEM_3D(Hela_nuclei(:,:,currentSlice),Hela_background(:,:,currentSlice),Hela_cell(:,:,currentSlice-1));
+    end
     % Then go down
     for currentSlice=centralSlice-1:-1:1
         disp(strcat('Processing slice number',32,num2str(currentSlice)))
@@ -175,26 +175,26 @@ else
     end
     
     
-    %% Interpolate between slices
-    % A simple post-processing step is to interpolate between slices/
+%     %% Interpolate between slices
+%     % A simple post-processing step is to interpolate between slices/
+%     
+%     Hela_cell3(rows,cols,numSlices)   = 0;
+%     % interpolation between slices
+% %     Hela_cell3(:,:,2:numSlices-1) = Hela_cell(:,:,1:numSlices-2)+...
+% %                                     Hela_cell(:,:,2:numSlices-1)+...
+% %                                     Hela_cell(:,:,3:numSlices);
+%     Hela_cell3(:,:,3:numSlices-2) = Hela_cell(:,:,1:numSlices-4)+...
+%                                     Hela_cell(:,:,2:numSlices-3)+...
+%                                     Hela_cell(:,:,3:numSlices-2)+...
+%                                     Hela_cell(:,:,4:numSlices-1)+...
+%                                     Hela_cell(:,:,5:numSlices)    ;                                
+%     Hela_cell3                    = round(Hela_cell3);
+%     Hela_cell                     = Hela_cell3>2;
+% 
+%     %% Morphological operation per vertical slice
+%     Hela_cell=smooth3(Hela_cell);
+%     
     
-    Hela_cell3(rows,cols,numSlices)   = 0;
-    % interpolation between slices
-%     Hela_cell3(:,:,2:numSlices-1) = Hela_cell(:,:,1:numSlices-2)+...
-%                                     Hela_cell(:,:,2:numSlices-1)+...
-%                                     Hela_cell(:,:,3:numSlices);
-    Hela_cell3(:,:,3:numSlices-2) = Hela_cell(:,:,1:numSlices-4)+...
-                                    Hela_cell(:,:,2:numSlices-3)+...
-                                    Hela_cell(:,:,3:numSlices-2)+...
-                                    Hela_cell(:,:,4:numSlices-1)+...
-                                    Hela_cell(:,:,5:numSlices)    ;                                
-    Hela_cell3                    = round(Hela_cell3);
-    Hela_cell                     = Hela_cell3>2;
-
-    %% Morphological operation per vertical slice
-    Hela_cell=smooth3(Hela_cell);
-    
-    
-    %%
-
+    %% a vertical median filter may be more effective than the previous interpolation and smoothing, and faster
+    Hela_cell= medfilt3(Hela_cell,[3 3 13]);
 end
