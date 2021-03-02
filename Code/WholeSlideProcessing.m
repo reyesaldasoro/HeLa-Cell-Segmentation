@@ -23,7 +23,7 @@ dir3                = dir1(~[dir1.isdir]);
 
 numFolders          = size(dir2,1);
 load('final_coords.mat')
-%%
+
 for k=1:numFolders
     listFolders{k,1} = dir2(k).name;
 end
@@ -37,13 +37,20 @@ for k=[19 21 25 26]  %1:numFolders
     t3(k)=toc;
 end
 %% Iterate over all folders to extract the cell
-for k=1:numFolders
-    tic
-    load(dir3(k).name);
-    [Hela_cell]                         = segmentCellHelaEM_3D(Hela_nuclei,Hela_background);
-    Hela_cell                           = Hela_cell>0.5;
-    saveName                            = strcat(listFolders{k},'_Cell');
-    save(saveName, 'Hela_cell');
-    t4(k)=toc;
+
+
+for k=2%:numFolders
+    cells_to_discard = [1 6 15 27 28 29 30];
+    %tic
+    if ~any(intersect(k,cells_to_discard))
+        load(dir3(k).name);
+        %imagesc(squeeze(Hela_background(:,1000,:)+2*Hela_nuclei(:,1000,:)))
+        
+        [Hela_cell]                         = segmentCellHelaEM_3D(Hela_nuclei,Hela_background);
+        %Hela_cell                           = Hela_cell>0.5;
+        %saveName                            = strcat(listFolders{k},'_Cell');
+        %save(saveName, 'Hela_cell');
+        %t4(k)=toc;
+    end
 end
 
