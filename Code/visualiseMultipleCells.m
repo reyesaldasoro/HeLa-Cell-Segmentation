@@ -9,7 +9,7 @@ numFiles            = size(dir1,1);
 %% Prepare for 3D display 
 load('final_coords.mat')
 load(dir1(3).name)
-
+%%
 % This is for the slices to create the surfaces 
 [rows,cols,levs]        = size(Hela_nuclei);
 numSlices               = levs;
@@ -66,7 +66,7 @@ for k=1:numFiles
         surf_Nuclei          = isosurface(yy_3D(1:fstep:end,1:fstep:end,minSlice:maxSlice)  +final_coords(k,1) ,...
                                           xx_3D(1:fstep:end,1:fstep:end,minSlice:maxSlice) +final_coords(k,3) ,...
                                           zz_3D(1:fstep:end,1:fstep:end,minSlice:maxSlice) +final_coords(k,5) ,...
-                                    Hela_nuclei(1:fstep:end,1:fstep:end,minSlice:maxSlice),0.7);
+                                    Hela_cell(1:fstep:end,1:fstep:end,minSlice:maxSlice),0.7);
                     
         % Finally, let's display the surface, allocate random colours
         h4                  = patch(surf_Nuclei);
