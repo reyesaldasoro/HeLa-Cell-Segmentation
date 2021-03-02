@@ -194,7 +194,22 @@ else
 %     %% Morphological operation per vertical slice
 %     Hela_cell=smooth3(Hela_cell);
 %     
+%% overlap between background and cell, this should not happen.
+if sum(sum(sum(Hela_background.*Hela_cell)))>0
+    % dilate the background and remove from nuclei
+    try
+        Hela_cell                     = Hela_cell.*(1-imdilate(Hela_background,ones(9,9,3))) ;
+    catch
+        for counterS = 1:numSlices
+            Hela_cell(:,:,counterS)   = Hela_cell(:,:,counterS).*(1-imdilate(Hela_background(:,:,counterS),ones(9,9,1))) ;
+        end
+    end
     
-    %% a vertical median filter may be more effective than the previous interpolation and smoothing, and faster
-    Hela_cell= medfilt3(Hela_cell,[3 3 13]);
+end
+%% ensure there is only one region, remove small bits
+[q]=bwlabeln(Hela_cell);q2=regionprops(q,'Area');
+[a,b]=sort([q2.Area],'descend');
+Hela_cell = q==(b(1));
+%% a vertical median filter may be more effective than the previous interpolation and smoothing, and faster
+Hela_cell= medfilt3(Hela_cell,[3 3 13]);
 end
