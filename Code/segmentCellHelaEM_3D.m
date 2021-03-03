@@ -186,7 +186,7 @@ else
     % Then go down
     for currentSlice=centralSlice-1:-1:1
         disp(strcat('Processing slice number',32,num2str(currentSlice)))
-        Hela_cell(:,:,currentSlice) = segmentCellHelaEM_3D(Hela_nuclei(:,:,currentSlice),Hela_background(:,:,currentSlice)|General_background,Hela_cell(:,:,currentSlice-1),Hela_cell(:,:,currentSlice+1));
+        Hela_cell(:,:,currentSlice) = segmentCellHelaEM_3D(Hela_nuclei(:,:,currentSlice),Hela_background(:,:,currentSlice)|General_background,Hela_cell(:,:,currentSlice+1));
     end
     
     
@@ -222,10 +222,12 @@ if sum(sum(sum(Hela_background.*Hela_cell)))>0
     
 end
 %% a vertical median filter may be more effective than the previous interpolation and smoothing, and faster
-Hela_cell= medfilt3(Hela_cell,[3 3 13]);
+Hela_cell           = medfilt3(Hela_cell,[3 3 13]);
 %% ensure there is only one region, remove small bits
-[q]=bwlabeln(Hela_cell);q2=regionprops(q,'Area');
-[~,b]=sort([q2.Area],'descend');
-Hela_cell = q==(b(1));
-
+[q]                 = bwlabeln(Hela_cell);
+q2                  = regionprops(q,'Area');
+if size(q2,1)>1
+    [~,b]           = sort([q2.Area],'descend');
+    Hela_cell       = q==(b(1));
+end
 end
