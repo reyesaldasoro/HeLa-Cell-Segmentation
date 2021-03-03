@@ -159,14 +159,29 @@ if numSlices ==1
 else
     % Three dimensional case
     Hela_cell(rows,cols,numSlices)=0;
-    centralSlice                        =  round(numSlices/2);
+    centralSlice                        = 75;% round(numSlices/2);
+    
+    % In some cases the background is not correctly detected, especially
+    % when cells are very close to the edges. Even with a small specs of
+    % background around the nuclei the cell is correctly limited, but when
+    % there is no background on one side, the cell extends to the edge of
+    % the ROI. To avoid this problem, a general view of the background can
+    % be obtained by summing over all slices.
+    Background_Projection               = sum(Hela_background,3);
+    % Any region that is background in 66% of the slices must be
+    % background, erode a bit from there
+    General_background                  = imerode(Background_Projection>(0.66*numSlices), ones(9));
+    %
+    
     % First slice, central one 
-    Hela_cell(:,:,centralSlice) = segmentCellHelaEM_3D(Hela_nuclei(:,:,centralSlice),Hela_background(:,:,centralSlice));
+    Hela_cell(:,:,centralSlice) = segmentCellHelaEM_3D(Hela_nuclei(:,:,centralSlice),Hela_background(:,:,centralSlice)|General_background);
    
     % First go up
     for currentSlice=centralSlice+1:numSlices 
         disp(strcat('Processing slice number',32,num2str(currentSlice)))
-        Hela_cell(:,:,currentSlice) = segmentCellHelaEM_3D(Hela_nuclei(:,:,currentSlice),Hela_background(:,:,currentSlice),Hela_cell(:,:,currentSlice-1));
+        Hela_cell(:,:,currentSlice) = segmentCellHelaEM_3D(Hela_nuclei(:,:,currentSlice),Hela_background(:,:,currentSlice)|General_background,Hela_cell(:,:,currentSlice-1));
+       % imagesc(Hela_background(:,:,currentSlice)+2*Hela_cell(:,:,currentSlice))
+        
     end
     % Then go down
     for currentSlice=centralSlice-1:-1:1
