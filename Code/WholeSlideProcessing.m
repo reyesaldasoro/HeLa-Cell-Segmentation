@@ -41,6 +41,8 @@ dir0                = 'C:\Users\sbbk034\OneDrive - City, University of London\Do
 dir1                = dir(strcat(dir0,filesep,'Hela_RO*'));
 dir2                = dir1([dir1.isdir]);
 dir3                = dir1(~[dir1.isdir]);
+dir_nuclei          = dir(strcat(dir0,filesep,'Hela_RO*_Nu*.mat'));
+dir_cell            = dir(strcat(dir0,filesep,'Hela_RO*_Ce*.mat'));
 
 numFolders          = size(dir2,1);
 
@@ -48,11 +50,11 @@ for k=1:numFolders
     listFolders{k,1} = dir2(k).name;
 end
 %%
-for k=3:numFolders
+for k=1:numFolders
     cells_to_discard = [1 6 15 27 28 29 30];
     tic
     if ~any(intersect(k,cells_to_discard))
-        load(dir3(k).name);
+        load(dir_nuclei(k).name);
         %imagesc(squeeze(Hela_background(:,1000,:)+2*Hela_nuclei(:,1000,:)))
         
         [Hela_cell]                         = segmentCellHelaEM_3D(Hela_nuclei,Hela_background);
