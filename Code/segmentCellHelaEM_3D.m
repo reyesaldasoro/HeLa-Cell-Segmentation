@@ -212,7 +212,7 @@ else
 %     Hela_cell=smooth3(Hela_cell);
 %     
 %% a vertical median filter may be more effective than the previous interpolation and smoothing, and faster
-Hela_cell           = medfilt3(Hela_cell,[3 3 13]);
+Hela_cell           = medfilt3(Hela_cell,[3 3 15]);
 %% overlap between background and cell, this should not happen.
 if sum(sum(sum(Hela_background.*Hela_cell)))>0
     % dilate the background and remove from nuclei
