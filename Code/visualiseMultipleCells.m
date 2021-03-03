@@ -270,5 +270,17 @@ end
 %    29.0000    0.0047          % discard [6853,2802,*421*]
 %    30.0000    0.8341          % discard [2051,3944,*441*]
    
- 
+ handlesCell{k}.Visible='on';
+handlesNuclei{k}.Visible='on';
+handlesCell{k}.FaceAlpha=0.2;
+
+%%
+k=5;
+handlesCell{k}.Visible='off';
+handlesNuclei{k}.Visible='off';
+%%
+
+ currentSlice = 166;
+imagesc( (Hela_background(:,:,currentSlice))+2*Hela_cell2(:,:,currentSlice)+3*Hela_nuclei(:,:,currentSlice))
+
  
