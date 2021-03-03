@@ -177,16 +177,18 @@ else
     Hela_cell(:,:,centralSlice) = segmentCellHelaEM_3D(Hela_nuclei(:,:,centralSlice),Hela_background(:,:,centralSlice)|General_background);
    
     % First go up
-    for currentSlice=centralSlice+1:numSlices 
+    for currentSlice=centralSlice+1:155%numSlices 
         disp(strcat('Processing slice number',32,num2str(currentSlice)))
         Hela_cell(:,:,currentSlice) = segmentCellHelaEM_3D(Hela_nuclei(:,:,currentSlice),Hela_background(:,:,currentSlice)|General_background,Hela_cell(:,:,currentSlice-1));
-        %imagesc(Hela_background(:,:,currentSlice)+2*Hela_cell(:,:,currentSlice))
-        
+        imagesc(Hela_background(:,:,currentSlice)+2*Hela_cell(:,:,currentSlice)+3*Hela_nuclei(:,:,currentSlice))
+        qqq=1;
     end
     % Then go down
-    for currentSlice=centralSlice-1:-1:1
+    for currentSlice=centralSlice-1:-1:130
         disp(strcat('Processing slice number',32,num2str(currentSlice)))
         Hela_cell(:,:,currentSlice) = segmentCellHelaEM_3D(Hela_nuclei(:,:,currentSlice),Hela_background(:,:,currentSlice)|General_background,Hela_cell(:,:,currentSlice+1));
+         imagesc(Hela_background(:,:,currentSlice)+2*Hela_cell(:,:,currentSlice)+3*Hela_nuclei(:,:,currentSlice))
+        qqq=1;
     end
     
     
@@ -209,6 +211,8 @@ else
 %     %% Morphological operation per vertical slice
 %     Hela_cell=smooth3(Hela_cell);
 %     
+%% a vertical median filter may be more effective than the previous interpolation and smoothing, and faster
+Hela_cell           = medfilt3(Hela_cell,[3 3 13]);
 %% overlap between background and cell, this should not happen.
 if sum(sum(sum(Hela_background.*Hela_cell)))>0
     % dilate the background and remove from nuclei
@@ -221,8 +225,7 @@ if sum(sum(sum(Hela_background.*Hela_cell)))>0
     end
     
 end
-%% a vertical median filter may be more effective than the previous interpolation and smoothing, and faster
-Hela_cell           = medfilt3(Hela_cell,[3 3 13]);
+
 %% ensure there is only one region, remove small bits
 [q]                 = bwlabeln(Hela_cell);
 q2                  = regionprops(q,'Area');
