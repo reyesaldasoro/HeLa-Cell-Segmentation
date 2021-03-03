@@ -59,7 +59,13 @@ for k=1:numFiles_nuc
     if ~any(intersect(currCell,cells_to_discard))
         disp(currCell)
         load(dir_nuclei(k).name);
-        load(dir_cell(k).name);
+        % find the corresponding cell to the nuclei
+        for k2=1:numFiles_cell
+            if ~isempty(strfind([dir_cell(k2).name],strcat('_',num2str(currCell),'_')))
+%                disp(k2)
+                load(dir_cell(k2).name);
+            end
+        end
         % ***** display all the cells as subplots with one slice ****
         %subplot(5,6,(currCell))
         %imagesc(squeeze(Hela_background(:,1000,:)+2*Hela_nuclei(:,1000,:)))
