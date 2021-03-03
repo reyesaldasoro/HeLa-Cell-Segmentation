@@ -159,7 +159,7 @@ if numSlices ==1
 else
     % Three dimensional case
     Hela_cell(rows,cols,numSlices)=0;
-    centralSlice                        = 75;% round(numSlices/2);
+    centralSlice                        = round(numSlices/2);
     
     % In some cases the background is not correctly detected, especially
     % when cells are very close to the edges. Even with a small specs of
@@ -180,13 +180,13 @@ else
     for currentSlice=centralSlice+1:numSlices 
         disp(strcat('Processing slice number',32,num2str(currentSlice)))
         Hela_cell(:,:,currentSlice) = segmentCellHelaEM_3D(Hela_nuclei(:,:,currentSlice),Hela_background(:,:,currentSlice)|General_background,Hela_cell(:,:,currentSlice-1));
-       % imagesc(Hela_background(:,:,currentSlice)+2*Hela_cell(:,:,currentSlice))
+        %imagesc(Hela_background(:,:,currentSlice)+2*Hela_cell(:,:,currentSlice))
         
     end
     % Then go down
     for currentSlice=centralSlice-1:-1:1
         disp(strcat('Processing slice number',32,num2str(currentSlice)))
-        Hela_cell(:,:,currentSlice) = segmentCellHelaEM_3D(Hela_nuclei(:,:,currentSlice),Hela_background(:,:,currentSlice),Hela_cell(:,:,currentSlice+1));
+        Hela_cell(:,:,currentSlice) = segmentCellHelaEM_3D(Hela_nuclei(:,:,currentSlice),Hela_background(:,:,currentSlice)|General_background,Hela_cell(:,:,currentSlice-1),Hela_cell(:,:,currentSlice+1));
     end
     
     
