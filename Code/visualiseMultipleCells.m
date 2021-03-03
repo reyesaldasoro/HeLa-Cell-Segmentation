@@ -6,7 +6,9 @@ numTiffs            = size(dirTiffs,1);
 dir0                = 'C:\Users\sbbk034\OneDrive - City, University of London\Documents\GitHub\HeLa-Cell-Segmentation\Code';
 dir_nuclei          = dir(strcat(dir0,filesep,'Hela_RO*_Nu*.mat'));
 dir_cell            = dir(strcat(dir0,filesep,'Hela_RO*_Ce*.mat'));
-numFiles            = size(dir_nuclei,1);
+numFiles_nuc        = size(dir_nuclei,1);
+numFiles_cell       = size(dir_cell,1);
+
 %% Prepare for 3D display 
 load('final_coords.mat')
 load(dir_nuclei(3).name)
@@ -40,15 +42,15 @@ fstep               = 16;
 
 %%
 figure
-numFiles            = size(dir_nuclei,1);
-cells_to_discard = [1 6 15 27 28 29 30];  % these cells are close to the edges, discard for now
+numFiles_nuc            = size(dir_nuclei,1);
+cells_to_discard        = [1 6 15 27 28 29 30];  % these cells are close to the edges, discard for now
 
 % Colours
 jet2    = jet;
-jet3    = jet2(round(linspace(1,256,numFiles)),:);
-[a,b]   = sort(rand(numFiles,1));
-
-for k=1:numFiles  
+jet3    = jet2(round(linspace(1,256,numFiles_nuc)),:);
+[a,b]   = sort(rand(numFiles_nuc,1));
+[c,d]   = sort(rand(numFiles_nuc,1));
+for k=1:numFiles_nuc  
     % Usual issue when reading the folders 10, 11, ... 19, 2, 20 ...
     % calculate the correct order (next time, save 1 as 01, 2 as 02, etc
     q           = strfind(dir_nuclei(k).name,'_');
@@ -57,6 +59,7 @@ for k=1:numFiles
     if ~any(intersect(currCell,cells_to_discard))
         disp(currCell)
         load(dir_nuclei(k).name);
+        load(dir_cell(k).name);
         % ***** display all the cells as subplots with one slice ****
         %subplot(5,6,(currCell))
         %imagesc(squeeze(Hela_background(:,1000,:)+2*Hela_nuclei(:,1000,:)))
@@ -67,18 +70,29 @@ for k=1:numFiles
         surf_Nuclei          = isosurface(yy_3D(1:fstep:end,1:fstep:end,minSlice:maxSlice)  +final_coords(k,1) ,...
                                           xx_3D(1:fstep:end,1:fstep:end,minSlice:maxSlice) +final_coords(k,3) ,...
                                           zz_3D(1:fstep:end,1:fstep:end,minSlice:maxSlice) +final_coords(k,5) ,...
-                                    Hela_cell(1:fstep:end,1:fstep:end,minSlice:maxSlice),0.7);
+                                    Hela_nuclei(1:fstep:end,1:fstep:end,minSlice:maxSlice),0.7);
+        surf_Cell          = isosurface(yy_3D(1:fstep:end,1:fstep:end,minSlice:maxSlice)  +final_coords(k,1) ,...
+                                          xx_3D(1:fstep:end,1:fstep:end,minSlice:maxSlice) +final_coords(k,3) ,...
+                                          zz_3D(1:fstep:end,1:fstep:end,minSlice:maxSlice) +final_coords(k,5) ,...
+                                     Hela_cell(1:fstep:end,1:fstep:end,minSlice:maxSlice),0.7);
                     
         % Finally, let's display the surface, allocate random colours
         h4                  = patch(surf_Nuclei);
-        %h4.FaceColor        = 'red';
-        %h4.FaceColor        = 0.75*rand(1,3);
-        
         h4.FaceColor        = jet3(b(k),:);
         h4.EdgeColor        = 'none';
         h4.FaceAlpha        = 0.7;
+        h5                  = patch(surf_Cell);
+        h5.FaceColor        = jet3(d(k),:);
+        h5.EdgeColor        = 'none';
+        h5.FaceAlpha        = 0.7;
+        
+        %h4.FaceColor        = 'red';
+        %h4.FaceColor        = 0.75*rand(1,3);
+        
         % keep all the handles
         handlesNuclei{currCell}=h4;
+        handlesCell  {currCell}=h5;
+        
     end
     rotate3d on
 end
@@ -189,8 +203,8 @@ fStep2= 2;
 
                          
 %% This is to add numbers to the cells, this is optional and not always necessary
-numFiles            = size(dir_nuclei,1);
-for k=1:numFiles
+numFiles_nuc            = size(dir_nuclei,1);
+for k=1:numFiles_nuc
     q=strfind(dir_nuclei(k).name,'_');
     currCell  = str2num(dir_nuclei(k).name(q(2)+1:q(3)-1));
     if ~any(intersect(currCell,cells_to_discard))
