@@ -18,14 +18,18 @@ load(dir_nuclei(3).name)
 numSlices               = levs;
 [x2d,y2d]               = meshgrid(1:rows,1:cols);
 z2d                     = ones(rows,cols);
+xx_3D                   = zeros(rows,cols,levs);
+yy_3D                   = zeros(rows,cols,levs);
 zz_3D                   = zeros(rows,cols,levs);
 
 for k=1:numSlices
     disp(k)
     zz_3D(:,:,k)        = ones(rows,cols)*k;
+    xx_3D(:,:,k)        = x2d;
+    yy_3D(:,:,k)        = y2d;    
 end
-xx_3D                   = repmat(x2d,[1 1 numSlices]);
-yy_3D                   = repmat(y2d,[1 1 numSlices]);
+%xx_3D                   = repmat(x2d,[1 1 numSlices]);
+%yy_3D                   = repmat(y2d,[1 1 numSlices]);
 %% This is for the surface 
 % We could create the surface directly with this, but as the volume is rather large,
 % the number of faces of the surface would be rather high, it would be slow and may
@@ -50,7 +54,10 @@ jet2    = jet;
 jet3    = jet2(round(linspace(1,256,numFiles_nuc)),:);
 [a,b]   = sort(rand(numFiles_nuc,1));
 [c,d]   = sort(rand(numFiles_nuc,1));
-for k=1:numFiles_nuc  
+
+%%
+figure
+for k=6%1:numFiles_nuc  
     % Usual issue when reading the folders 10, 11, ... 19, 2, 20 ...
     % calculate the correct order (next time, save 1 as 01, 2 as 02, etc
     q           = strfind(dir_nuclei(k).name,'_');
@@ -60,12 +67,12 @@ for k=1:numFiles_nuc
         disp(currCell)
         load(dir_nuclei(k).name);
         % find the corresponding cell to the nuclei
-        for k2=1:numFiles_cell
-            if ~isempty(strfind([dir_cell(k2).name],strcat('_',num2str(currCell),'_')))
-%                disp(k2)
-                load(dir_cell(k2).name);
-            end
-        end
+        %for k2=1:numFiles_cell
+        %    if ~isempty(strfind([dir_cell(k2).name],strcat('_',num2str(currCell),'_')))
+        %        disp(k2)
+                load(dir_cell(k).name);
+        %    end
+        %end
         % ***** display all the cells as subplots with one slice ****
         %subplot(5,6,(currCell))
         %imagesc(squeeze(Hela_background(:,1000,:)+2*Hela_nuclei(:,1000,:)))
@@ -101,6 +108,7 @@ for k=1:numFiles_nuc
         
     end
     rotate3d on
+    title(dir_nuclei(k).name,'interpreter','none')
 end
 %%
 view(74,47)
@@ -112,7 +120,8 @@ grid on
 
 %% Insert a slice!
 % Read first slice
-currSlice               = imfilter(imread(strcat(baseDir,filesep,dirTiffs(1).name)),ones(3)/9);
+SliceToRead             = 100;
+currSlice               = imfilter(imread(strcat(baseDir,filesep,dirTiffs(SliceToRead).name)),ones(3)/9);
 [rowsWhole,colsWhole]   = size(currSlice);
 axis([1 rowsWhole 1 colsWhole 1 numTiffs])
 [x2dWhole,y2dWhole]     = meshgrid(1:rowsWhole,1:colsWhole);
@@ -122,7 +131,7 @@ hold on
 fstep                   = 8;
 currSliceSurf           = surf(x2dWhole(1:fstep:end,1:fstep:end),...
                                y2dWhole(1:fstep:end,1:fstep:end),...
-                               z2dWhole(1:fstep:end,1:fstep:end),...
+                               SliceToRead*z2dWhole(1:fstep:end,1:fstep:end),...
                                currSlice(1:fstep:end,1:fstep:end)','edgecolor','none');
                            
 colormap gray
