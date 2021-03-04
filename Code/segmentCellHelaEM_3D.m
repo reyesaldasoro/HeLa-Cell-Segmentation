@@ -143,8 +143,14 @@ if numSlices ==1
     RegionsToKeep3  = ismember(Rest_cell,intersect(RegionsToKeep1,RegionsToKeep2));
     Hela_cell4       = Hela_cell3 +RegionsToKeep3;
     
-    % Finally, clean with morphological open and close
-    Hela_cell5       = imclose(imopen(Hela_cell4,strel('disk',9)),strel('disk',9));
+    % Finally, clean with morphological open and close and limit to things
+    % that were close to the previous cell (if exists)
+    if exist('Hela_cellPrevious')
+        Hela_cell5       = imclose(imopen(Hela_cell4.*imdilate(Hela_cellPrevious,ones(20)),strel('disk',9)),strel('disk',9));
+    else
+        Hela_cell5       = imclose(imopen(Hela_cell4,strel('disk',9)),strel('disk',9));
+    end
+    
     % Remove disconnected elements
     [Hela_cell_L,nReg]     = bwlabel(Hela_cell5);
     if nReg>1
@@ -170,7 +176,7 @@ else
     Background_Projection               = sum(Hela_background,3);
     % Any region that is background in 66% of the slices must be
     % background, erode a bit from there
-    General_background                  = imerode(Background_Projection>(0.66*numSlices), ones(9));
+    General_background                  = imerode(Background_Projection>(0.66*numSlices), ones(3));
     %
     
     % First slice, central one 
@@ -180,8 +186,10 @@ else
     for currentSlice=centralSlice+1:numSlices 
         disp(strcat('Processing slice number',32,num2str(currentSlice)))
         Hela_cell(:,:,currentSlice) = segmentCellHelaEM_3D(Hela_nuclei(:,:,currentSlice),Hela_background(:,:,currentSlice)|General_background,Hela_cell(:,:,currentSlice-1));
-        %imagesc(Hela_background(:,:,currentSlice)+2*Hela_cell(:,:,currentSlice)+3*Hela_nuclei(:,:,currentSlice))
-        %qqq=1;
+       % imagesc(Hela_background(:,:,currentSlice)+2*Hela_cell(:,:,currentSlice)+3*Hela_nuclei(:,:,currentSlice))
+       % if (currentSlice==220)
+       %     qqq=1;
+       % end
     end
     % Then go down
     for currentSlice=centralSlice-1:-1:1
