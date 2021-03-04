@@ -57,7 +57,7 @@ jet3    = jet2(round(linspace(1,256,numFiles_nuc)),:);
 
 %%
 figure
-for k=6%1:numFiles_nuc  
+for k=8%1:numFiles_nuc  
     % Usual issue when reading the folders 10, 11, ... 19, 2, 20 ...
     % calculate the correct order (next time, save 1 as 01, 2 as 02, etc
     q           = strfind(dir_nuclei(k).name,'_');
