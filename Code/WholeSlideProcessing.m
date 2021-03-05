@@ -50,7 +50,7 @@ numFolders          = size(dir_nuclei,1);
 %     listFolders{k,1} = dir2(k).name;
 % end
 %%
-for k=20%1:numFolders
+for k=1:numFolders
     % These cells have been removed from the drive, process all
     %cells_to_discard = [1 6 15 27 28 29 30];
     
