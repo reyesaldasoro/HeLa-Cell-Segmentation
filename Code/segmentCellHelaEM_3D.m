@@ -200,12 +200,12 @@ else
     for currentSlice=centralSlice+1:numSlices 
         %disp(strcat('Processing slice number',32,num2str(currentSlice)))
         Hela_cell(:,:,currentSlice) = segmentCellHelaEM_3D(Hela_nuclei(:,:,currentSlice),Hela_background(:,:,currentSlice)|General_background,Hela_cell(:,:,currentSlice-1));
-        if rem(currentSlice,10)==0
-             imagesc(Hela_background(:,:,currentSlice)+2*Hela_cell(:,:,currentSlice)+3*Hela_nuclei(:,:,currentSlice))
-            title(currentSlice)
-             qqq=1;
-             drawnow;
-        end
+        %if rem(currentSlice,10)==0
+        %     imagesc(Hela_background(:,:,currentSlice)+2*Hela_cell(:,:,currentSlice)+3*Hela_nuclei(:,:,currentSlice))
+        %    title(currentSlice)
+        %     qqq=1;
+        %     drawnow;
+        %end
     end
     % Then go down
     for currentSlice=centralSlice-1:-1:1
