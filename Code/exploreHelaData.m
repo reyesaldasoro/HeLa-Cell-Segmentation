@@ -203,3 +203,33 @@ end
  %%
  
  baseDir             = 'C:\Users\sbbk034\Documents\Acad\Crick\Hela8000_tiff\';
+
+ 
+ %%
+ 
+ currentSlice = 120;
+
+imagesc(1*Hela_background(:,:,currentSlice)+2*Hela_nuclei(:,:,currentSlice)+3*Hela_cell(:,:,currentSlice))
+
+
+%%
+
+cell_P  = regionprops(Hela_cell,'Area','centroid');
+rr      = sqrt((yy_3D-cell_P.Centroid(1)).^2 +(xx_3D-cell_P.Centroid(2)).^2 +(zz_3D-cell_P.Centroid(3)).^2  );
+
+%%
+
+currentSlice = 210;
+subplot(211)
+temp = rr(:,:,currentSlice).*Hela_cell(:,:,currentSlice);
+temp2 = temp(:);
+temp2(temp==0)=[];
+[yradius,xradius]=hist(temp2,100);
+imagesc(temp)
+subplot(212)
+plot(xradius,yradius)
+
+%%
+segmentCellHelaEM_3D(Hela_nuclei(:,:,currentSlice),Hela_background(:,:,currentSlice),Hela_cell(:,:,currentSlice-1))
+
+
