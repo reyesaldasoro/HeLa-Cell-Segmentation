@@ -100,9 +100,9 @@ if numSlices ==1
             % many regions, then selects regions that are touched by the
             % previous, BUT when cell is very small, the background or
             % other cells may get be very close so discard big ones
-            previousReg = regionsCells.*imerode(Hela_cellPrevious,ones(51));
-            previousReg_P=regionprops(previousReg,'Area');
-            currentCellRegs2 = unique(previousReg);
+            previousReg         = regionsCells.*imerode(Hela_cellPrevious,ones(51));
+            previousReg_P       = regionprops(previousReg,'Area');
+            currentCellRegs2    = unique(previousReg);
             currentCellRegs2(currentCellRegs2==0)=[];
             % Remove very large ones, anything larger than 70% previous
             % case
@@ -112,8 +112,22 @@ if numSlices ==1
             currentCellRegs = union(currentCellRegs,currentCellRegs3);
         end
     end
+    % Do not accept any regions that touch edges of ROI, these are spill
+    % overs
+    topRow              = unique(regionsCells(1,:));    
+    bottomRow           = unique(regionsCells(end,:));
+    leftColumn          = unique(regionsCells(:,1));
+    rightColumn         = unique(regionsCells(:,end));
+    
+    cellRegionsEdges    = unique([topRow bottomRow leftColumn' rightColumn']);
     % remove all other regions as well as the background and the nucleus
-    currentCell         = ismember(regionsCells,currentCellRegs);
+    % only if you do not remove all regions (central region may go to the
+    % edge)
+    regionsNotRemoved   = setdiff(currentCellRegs,cellRegionsEdges);
+    if isempty(regionsNotRemoved)
+        regionsNotRemoved = currentCellRegs;
+    end
+    currentCell         = ismember(regionsCells,regionsNotRemoved);
     %try
         Hela_cell1       = currentCell.*(1-Hela_background).*(1-Hela_nuclei);
         Hela_cell2       = imclose(Hela_cell1,ones(9));
@@ -145,7 +159,7 @@ if numSlices ==1
     
     % Finally, clean with morphological open and close and limit to things
     % that were close to the previous cell (if exists)
-    if exist('Hela_cellPrevious')
+    if (exist('Hela_cellPrevious','var'))&(sum(Hela_cellPrevious(:))>0)
         Hela_cell5       = imclose(imopen(Hela_cell4.*imdilate(Hela_cellPrevious,ones(20)),strel('disk',9)),strel('disk',9));
     else
         Hela_cell5       = imclose(imopen(Hela_cell4,strel('disk',9)),strel('disk',9));
@@ -188,7 +202,9 @@ else
         Hela_cell(:,:,currentSlice) = segmentCellHelaEM_3D(Hela_nuclei(:,:,currentSlice),Hela_background(:,:,currentSlice)|General_background,Hela_cell(:,:,currentSlice-1));
         if rem(currentSlice,10)==0
              imagesc(Hela_background(:,:,currentSlice)+2*Hela_cell(:,:,currentSlice)+3*Hela_nuclei(:,:,currentSlice))
-            qqq=1;
+            title(currentSlice)
+             qqq=1;
+             drawnow;
         end
     end
     % Then go down
