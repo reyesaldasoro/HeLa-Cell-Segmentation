@@ -164,7 +164,7 @@ if numSlices ==1
     else
         Hela_cell5       = imclose(imopen(Hela_cell4,strel('disk',9)),strel('disk',9));
     end
-    
+     Hela_cell5       = imfill(Hela_cell5,'holes');
     % Remove disconnected elements
     [Hela_cell_L,nReg]     = bwlabel(Hela_cell5);
     if nReg>1
@@ -213,6 +213,13 @@ else
         Hela_cell(:,:,currentSlice) = segmentCellHelaEM_3D(Hela_nuclei(:,:,currentSlice),Hela_background(:,:,currentSlice)|General_background,Hela_cell(:,:,currentSlice+1));
        %  imagesc(Hela_background(:,:,currentSlice)+2*Hela_cell(:,:,currentSlice)+3*Hela_nuclei(:,:,currentSlice))
        % qqq=1;
+%         if rem(currentSlice,10)==0
+%              imagesc(Hela_background(:,:,currentSlice)+2*Hela_cell(:,:,currentSlice)+3*Hela_nuclei(:,:,currentSlice))
+%             title(currentSlice)
+%              qqq=1;
+%              drawnow;
+%         end
+       
     end
     
     
