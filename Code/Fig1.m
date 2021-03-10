@@ -97,4 +97,5 @@ set(gcf,'position',[ 500  400  900  300])
  h121.Position = [0.05 0.08 0.44 0.8];
  h122.Position = [0.54 0.08 0.44 0.8];
 
-
+%%
+print('-dpng','-r400',filename)
