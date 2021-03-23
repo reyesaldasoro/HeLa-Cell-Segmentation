@@ -1,3 +1,6 @@
+clear all
+close all
+
 %% Define the base directory where the data (8000x8000 slices) is stored
 baseDir                         = 'C:\Users\sbbk034\Documents\Acad\Crick\Hela8000_tiff\';
 
