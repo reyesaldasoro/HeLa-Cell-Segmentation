@@ -70,4 +70,41 @@ h333(9).Position    = [0.68    0.02    xWidth   yHeight];
 %%
 filename ='Fig2.png';
 print('-dpng','-r300',filename)
+%%  Zoom in
+xx = [100.5 1300.5];
+yy = [1100.5 1740.5];
 
+h333(1).XLim=xx;
+h333(2).XLim=xx;
+h333(3).XLim=xx;
+h333(1).YLim=yy;
+h333(2).YLim=yy;
+h333(3).YLim=yy;
+
+%%
+xx = [200.5 1000.5];
+yy = [100.5 900.5];
+
+h333(4).XLim=xx;
+h333(5).XLim=xx;
+h333(6).XLim=xx;
+h333(4).YLim=yy;
+h333(5).YLim=yy;
+h333(6).YLim=yy;
+
+
+%%
+
+xx = [200.5 1100.5];
+yy = [1100.5 1900.5];
+
+h333(7).XLim=xx;
+h333(8).XLim=xx;
+h333(9).XLim=xx;
+h333(7).YLim=yy;
+h333(8).YLim=yy;
+h333(9).YLim=yy;
+%%
+%%
+filename ='Fig2B.png';
+print('-dpng','-r300',filename)
