@@ -1,4 +1,4 @@
-function [IndividualHelaLabels,rankCells,positionROI]        = detectNumberOfCells(hela,numCells,helaBackground,toDisplay)
+function [IndividualHelaLabels,rankCells,positionROI,helaDistFromBackground2,helaBoundary,helaBackground]        = detectNumberOfCells(hela,numCells,helaBackground,toDisplay)
 %function IndividualHelaLabels         = detectNumberOfCells(hela,numCells)
 %--------------------------------------------------------------------------
 % Input         Hela                 : an image in Tiff or Matlab format preferably 2D,
@@ -120,6 +120,7 @@ positionROI                         = zeros(numCells,2);
 % for each of the cells
 %
 helaDistFromBackground              = bwdist(helaBackground);
+helaDistFromBackground2              = helaDistFromBackground;
 %% find the maximum value of the distances (i.e. size of the largest cell) and discard
 % those that are less than 50% that size, as they are not in that plane most likely
 maxPeakAbs                          = max(max(helaDistFromBackground));
@@ -169,10 +170,27 @@ rankCells  (currPeak:numCells) = [ -inf];
 
 %% Display output
 if toDisplay==1
+    maxDist = max(helaDistFromBackground2(:));
     figure
+    imagesc(helaDistFromBackground2+helaBackground*maxDist/2)
+    colormap gray
+    figure  
     imagesc(hela2.*(1-helaBoundary))
     for counterROI = 1:currPeak-1
         text(positionROI(counterROI,2),positionROI(counterROI,1),num2str(counterROI),'fontsize',20,'color','r')
     end
     colormap gray
+    figure
+    
+    hela3(:,:,2) = hela2/255 .*(1-helaBoundary) ;
+    hela3(:,:,3) = hela2/255.*(1-helaBoundary)+0.2*helaBackground;
+    
+    
+    hela3(:,:,1) = hela2/255.*(1-helaBoundary) + 1*((helaDistFromBackground2/maxDist).^3)  ;
+    hela3(hela3>1)=1;
+    imagesc(hela3);
+    for counterROI = 1:currPeak-1
+        text(positionROI(counterROI,2),positionROI(counterROI,1),num2str(counterROI),'fontsize',20,'color','r')
+    end
+    
 end
