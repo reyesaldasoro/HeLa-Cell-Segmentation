@@ -1,4 +1,4 @@
-function [Hela_cell] = segmentCellHelaEM_3D(Hela_nuclei,Hela_background,Hela_cellPrevious)
+function [Hela_cell,Hela_steps] = segmentCellHelaEM_3D(Hela_nuclei,Hela_background,Hela_cellPrevious)
 %function [Hela_cell] = segmentCellHelaEM_3D(Hela_nuclei,Hela_background)
 % This is the segments the CELL, i.e. the region between the background and
 % the nuclei.
@@ -176,6 +176,12 @@ if numSlices ==1
     end
     %imagesc(Hela_cell+2*Hela_background)
     %drawnow
+    Hela_steps(:,:,1) = Hela_background_dist;
+    Hela_steps(:,:,2) = regionsCells;
+    Hela_steps(:,:,3) = currentCell;
+    Hela_steps(:,:,4) = Hela_cell3;
+    Hela_steps(:,:,5) = Hela_cell4;
+    
 else
     % Three dimensional case
     Hela_cell(rows,cols,numSlices)=0;
