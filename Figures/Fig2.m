@@ -1,110 +1,56 @@
-% Fig2
+% Fig1b.m 
 clear all
 close all
-load('Results_ROI_1656_6756_329_2021_03_09B.mat')
-baseDir_data    = 'C:\Users\sbbk034\OneDrive - City, University of London\Acad\AlanTuringStudyGroup\Crick_Data\ROIS\ROI_1656-6756-329';
-
 %%
-dir_data        = dir(strcat(baseDir_data,filesep,'*.t*'));
-    current_GT2=current_GT;
-    current_GT2(current_GT2==1)=1;
-    current_GT2(current_GT2==3)=0;
-    current_GT2(current_GT2==4)=0;
-    current_GT2(current_GT2==5)=1;    
-slicesToPlot = [70 115 200];
-% Ground truth
-for k=1:3
-    currentSlice   = slicesToPlot(k);
-    currentImage = imfilter(imread(strcat(baseDir_data,filesep,dir_data(currentSlice).name)),ones(5)/25);
-    composite(:,:,1) = currentImage+50*uint8(current_GT(:,:,currentSlice)==5);
-    composite(:,:,2) = currentImage+50*uint8(current_GT(:,:,currentSlice)==2);
-    composite(:,:,3) = currentImage;
-    h333(3*k-2)=subplot(3,3,3*k-2);
-    imagesc(composite)
+baseDir                         = 'C:\Users\sbbk034\Documents\Acad\Crick\Hela8000_tiff\';
+dir0            = dir (strcat(baseDir,'*.tif*'));
+gaussFilt       = fspecial('Gaussian',3,1);
+k               = 220;
+Hela_3D         = ( imfilter(imread(strcat(baseDir,dir0((k)).name)), gaussFilt));
+%%
+% the slices will be subsampled (as they are 8,000 x 8,000
+stepPix             = 4;
+numCells            = 20;
+[IndividualHelaLabels,rankCells,positionROI,helaDistFromBackground2,helaBoundary,helaBackground]   = detectNumberOfCells(Hela_3D(1:stepPix:end,1:stepPix:end),numCells);
+hela2                               = double(imfilter(Hela_3D,fspecial('gaussian',5,3)));
+    maxDist = max(helaDistFromBackground2(:));
+%%
+
+h121 = subplot(121);
+    imagesc(helaDistFromBackground2+helaBackground*maxDist/2)
+    colormap gray
+%     figure  
+%     imagesc(hela2(1:stepPix:end,1:stepPix:end).*(1-helaBoundary))
+%     for counterROI = 1:numCells
+%         text(positionROI(counterROI,2),positionROI(counterROI,1),num2str(counterROI),'fontsize',20,'color','r')
+%     end
+%     colormap gray
+%     figure
+
+
+    title('(a)','fontsize',18)
     axis off
-    % set(gca,'position',[0 0 1 1 ]);axis off
-end
-% results
-for k=1:3
-    currentSlice   = slicesToPlot(k);
-    currentImage = imfilter(imread(strcat(baseDir_data,filesep,dir_data(currentSlice).name)),ones(5)/25);
     
-    composite(:,:,1) = currentImage+50*uint8(Hela_cell(:,:,currentSlice)-Hela_nuclei(:,:,currentSlice));
-    composite(:,:,2) = currentImage+50*uint8(Hela_nuclei(:,:,currentSlice));
-    composite(:,:,3) = currentImage;
-    h333(3*k-1)=subplot(3,3,3*k-1);
-    imagesc(composite)
+h122 = subplot(122);    
+    hela3(:,:,2) = hela2(1:stepPix:end,1:stepPix:end)/255 .*(1-helaBoundary) ;
+    hela3(:,:,3) = hela2(1:stepPix:end,1:stepPix:end)/255.*(1-helaBoundary)+0.2*helaBackground;
+    
+    
+    hela3(:,:,1) = hela2(1:stepPix:end,1:stepPix:end)/255.*(1-helaBoundary) + 1*((helaDistFromBackground2/maxDist).^3)  ;
+    hela3(hela3>1)=1;
+    imagesc(hela3);
+    for counterROI = 1:numCells
+        text(positionROI(counterROI,2),positionROI(counterROI,1),num2str(counterROI),'fontsize',20,'color','r')
+    end
+    
+    title('(b)','fontsize',18)
     axis off
-end
-for k=1:3
-
-    currentSlice   = slicesToPlot(k);
-    h333(3*k)=subplot(3,3,3*k);
-    imagesc(double(Hela_cell(:,:,currentSlice)+Hela_nuclei(:,:,currentSlice))-double(current_GT2(:,:,currentSlice)))
-    axis off 
-end
-colormap gray
 %%
-h333(1).Title.String='Ground Truth';
-h333(2).Title.String='Segmentation';
-h333(3).Title.String='Comparison ';
- h333(1).Title.FontSize=15;
- h333(2).Title.FontSize=15;
- h333(3).Title.FontSize=15;
+set(gcf,'position',[ 500  200  900  450])
+
+
+
+ h121.Position = [0.05 0.08 0.44 0.8];
+ h122.Position = [0.54 0.08 0.44 0.8];
  
-set(gcf,'position',[ 500  200  900  500])
-xWidth = 0.31;
-yHeight = 0.29;
-h333(1).Position    = [0.02    0.66    xWidth   yHeight];
-h333(4).Position    = [0.02    0.34    xWidth   yHeight];
-h333(7).Position    = [0.02    0.02    xWidth   yHeight];
-
-h333(2).Position    = [0.35    0.66    xWidth   yHeight];
-h333(5).Position    = [0.35    0.34    xWidth   yHeight];
-h333(8).Position    = [0.35    0.02    xWidth   yHeight];
-
-h333(3).Position    = [0.68    0.66    xWidth   yHeight];
-h333(6).Position    = [0.68    0.34    xWidth   yHeight];
-h333(9).Position    = [0.68    0.02    xWidth   yHeight];
-
-%%
-filename ='Fig2.png';
-print('-dpng','-r300',filename)
-%%  Zoom in
-xx = [100.5 1300.5];
-yy = [1100.5 1740.5];
-
-h333(1).XLim=xx;
-h333(2).XLim=xx;
-h333(3).XLim=xx;
-h333(1).YLim=yy;
-h333(2).YLim=yy;
-h333(3).YLim=yy;
-
-%%
-xx = [200.5 1000.5];
-yy = [100.5 900.5];
-
-h333(4).XLim=xx;
-h333(5).XLim=xx;
-h333(6).XLim=xx;
-h333(4).YLim=yy;
-h333(5).YLim=yy;
-h333(6).YLim=yy;
-
-
-%%
-
-xx = [200.5 1100.5];
-yy = [1100.5 1900.5];
-
-h333(7).XLim=xx;
-h333(8).XLim=xx;
-h333(9).XLim=xx;
-h333(7).YLim=yy;
-h333(8).YLim=yy;
-h333(9).YLim=yy;
-%%
-%%
-filename ='Fig2B.png';
-print('-dpng','-r300',filename)
+ print('-dpng','-r400','Fig1b.png')
