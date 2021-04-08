@@ -48,7 +48,7 @@ imagesc(squeeze((0*Hela_cell_noNucleus(currentSlice,:,:))+1*(current_GT(currentS
 %% Ignore all previous data already calculated
 
 load('Results_ROI_1656_6756_329_2021_03_09B.mat')
-%% cell no Nucleus JI = 0.8094
+%% cell no Nucleus JI = 0.8094  Ac = 0.9629
 Hela_cell_mask      = (current_GT==5)+(current_GT==1);
 Hela_cell_noNucleus = (Hela_cell.*(1-Hela_nuclei));
 TP              =  (Hela_cell_noNucleus+(Hela_cell_mask))==2;
@@ -58,8 +58,9 @@ FN              = (-Hela_cell_noNucleus+(Hela_cell_mask))==1;
 
 
 Jaccard_Cell  = sum(TP(:))/sum(FP(:)+FN(:)+TP(:));
+Accuracy_Cell = sum(TP(:)+TN(:))/sum(TN(:)+FP(:)+FN(:)+TP(:));
 
-%% cell + Nucleus JI = 0.8711
+%% cell + Nucleus JI = 0.8711 Ac  =0.9655
 
 current_GT2=current_GT;
 current_GT2(current_GT2==5)=1;
@@ -71,10 +72,14 @@ FP              =  (Hela_cell-(current_GT2==1))==1;
 FN              = (-Hela_cell+(current_GT2==1))==1;
 
 Jaccard_Cell_Nuc  = sum(TP(:))/(sum(FP(:)+FN(:)+TP(:)));
-%% Nucleus JI = 0.9665
+Accuracy_Cell_Nuc = sum(TP(:)+TN(:))/sum(TN(:)+FP(:)+FN(:)+TP(:));
+%% Nucleus JI = 0.9665 Acc = 0.9975
 
 Jaccard_Nucleus = sum(sum(sum( Hela_nuclei.*(current_GT==2) ))) / ...
                   sum(sum(sum( Hela_nuclei|(current_GT==2) )));
+              
+Accuracy_Nucleus = sum(sum(sum(Hela_nuclei==(current_GT==2))))/prod(size(Hela_nuclei));
+
 %%
 currentSlice   = 115;
 baseDir_data    = 'C:\Users\sbbk034\OneDrive - City, University of London\Acad\AlanTuringStudyGroup\Crick_Data\ROIS\ROI_1656-6756-329';
