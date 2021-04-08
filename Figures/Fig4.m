@@ -1,22 +1,31 @@
 % Fig3.m
 clear all
 close all
+
+cd ('C:\Users\sbbk034\OneDrive - City, University of London\Documents\GitHub\HeLa-Cell-Segmentation\Code')
+
 baseDirTiff = ('C:\Users\sbbk034\OneDrive - City, University of London\Documents\GitHub\HeLa-Cell-Segmentation\Code\Hela_ROI_23_30_6816_1601_341\');
 dir0        = dir(strcat(baseDirTiff,'*.tif'));
-load('Hela_ROI_23_30_6816_1601_341_Nuclei.mat');
+load('C:\Users\sbbk034\OneDrive - City, University of London\Documents\GitHub\HeLa-Cell-Segmentation\Code\Hela_ROI_23_30_6816_1601_341_Nuclei.mat');
 
 %%
 
-currSlide = 108;
+% central slice
+%currSlide = 108;
+% higher up slice with bigger gaps
+%currSlide = 193;
+currSlide = 211;
+
 currImage = imfilter(imread(strcat(baseDirTiff,dir0(currSlide).name)),ones(5)/25);
 
 
-%%
+%
 
 [Hela_cell,Hela_steps] = segmentCellHelaEM_3D(Hela_nuclei(:,:,currSlide),Hela_background(:,:,currSlide));
 
+%imagesc(Hela_steps(:,:,4)+Hela_steps(:,:,5)+3*(Hela_background(:,:,currSlide)))
 %%
-%figure
+%
 h241                = subplot(241);
 imagesc(currImage);
 colormap gray
@@ -81,4 +90,4 @@ h247.Position = [0.025+2*aShift 0.02 aWidth aHeight];
 h248.Position = [0.025+3*aShift 0.02 aWidth aHeight];
 
  %%
-  print('-dpng','-r400','Fig4.png')
+  print('-dpng','-r400','Fig4_211.png')
