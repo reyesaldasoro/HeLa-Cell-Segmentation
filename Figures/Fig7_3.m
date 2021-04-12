@@ -78,7 +78,7 @@ view(110,15)
 hLight1 = camlight ('left');
 axis tight
 grid on
-title('(a)','fontsize',18)
+title('(c)','fontsize',18)
        h122=subplot(122);
         h4                  = patch(surf_Nuclei);
         h4.FaceColor        = 'green';
@@ -88,7 +88,7 @@ title('(a)','fontsize',18)
         h5.FaceColor        = 'blue';
         h5.EdgeColor        = 'none';
         h5.FaceAlpha        = 0.2;
-       title('(b)','fontsize',18) 
+       title('(d)','fontsize',18) 
 view(-158,38)
  lighting('phong');
 hLight2 = camlight ('left');
