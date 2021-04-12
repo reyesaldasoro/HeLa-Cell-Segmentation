@@ -1,6 +1,8 @@
 % Fig3
 clear all
 close all
+cd('C:\Users\sbbk034\OneDrive - City, University of London\Documents\GitHub\HeLa-Cell-Segmentation\Code')
+%%
 load('Results_ROI_1656_6756_329_2021_03_09B.mat')
 
 %%
@@ -34,7 +36,7 @@ end
 
 maxSlice            = levs;
 minSlice            = 1;
-
+numFiles            = numSlices;
 
 
 % Colours
@@ -109,5 +111,5 @@ h121.Position=[0.05 0.1 0.44 0.8];
 h122.Position=[0.54 0.1 0.44 0.8];
 %%
 
-filename ='Fig3.png';
+filename ='Fig7.png';
 print('-dpng','-r300',filename)
