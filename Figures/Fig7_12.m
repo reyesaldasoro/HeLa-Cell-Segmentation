@@ -68,7 +68,7 @@ figure
         h1.EdgeColor        = 'none';
         h1.FaceAlpha        = 0.7;
         h2                  = patch(surf_Cell);
-        h2.FaceColor        = 'k';
+        h2.FaceColor        = 'b';
         h2.EdgeColor        = 'none';
         h2.FaceAlpha        = 0.2;
             rotate3d on
@@ -80,17 +80,17 @@ view(8,14)
 hLight1 = camlight ('left');
 axis tight
 grid on
-title('(a)','fontsize',18)
+title('(e)','fontsize',18)
        h122=subplot(122);
         h4                  = patch(surf_Nuclei);
         h4.FaceColor        = 'y';
         h4.EdgeColor        = 'none';
         h4.FaceAlpha        = 0.7;
         h5                  = patch(surf_Cell);
-        h5.FaceColor        = 'k';
+        h5.FaceColor        = 'b';
         h5.EdgeColor        = 'none';
         h5.FaceAlpha        = 0.2;
-       title('(b)','fontsize',18) 
+       title('(f)','fontsize',18) 
 view(-173,12)
  lighting('phong');
 hLight2 = camlight ('left');
