@@ -63,18 +63,18 @@ fstep               = 8;
 figure
         h121=subplot(121);
         h1                  = patch(surf_Nuclei);
-        h1.FaceColor        = 'red';
+        h1.FaceColor        = 'c';
         h1.EdgeColor        = 'none';
         h1.FaceAlpha        = 0.7;
         h2                  = patch(surf_Cell);
-        h2.FaceColor        = 'blue';
+        h2.FaceColor        = 'k';
         h2.EdgeColor        = 'none';
         h2.FaceAlpha        = 0.2;
             rotate3d on
     %title(,'interpreter','none')
 
 %
-view(80,-5)
+view(23,11)
  lighting('phong');
 hLight1 = camlight ('left');
 axis tight
@@ -82,15 +82,15 @@ grid on
 title('(a)','fontsize',18)
        h122=subplot(122);
         h4                  = patch(surf_Nuclei);
-        h4.FaceColor        = 'red';
+        h4.FaceColor        = 'c';
         h4.EdgeColor        = 'none';
         h4.FaceAlpha        = 0.7;
         h5                  = patch(surf_Cell);
-        h5.FaceColor        = 'blue';
+        h5.FaceColor        = 'k';
         h5.EdgeColor        = 'none';
         h5.FaceAlpha        = 0.2;
        title('(b)','fontsize',18) 
-view(200,28)
+view(-82,17)
  lighting('phong');
 hLight2 = camlight ('left');
 %hLight2 = camlight ('right');
@@ -113,5 +113,5 @@ h121.Position=[0.05 0.1 0.44 0.8];
 h122.Position=[0.54 0.1 0.44 0.8];
 %%
 
-filename ='Fig7.png';
+filename ='Fig7_9.png';
 print('-dpng','-r300',filename)
