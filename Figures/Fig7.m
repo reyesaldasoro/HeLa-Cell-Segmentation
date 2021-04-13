@@ -46,8 +46,8 @@ jet3    = jet2(round(linspace(1,256,numFiles)),:);
 [c,d]   = sort(rand(numFiles,1));
 
 %%
-fstep               = 4;
-figure
+fstep               = 8;
+
         surf_Nuclei          = isosurface(yy_3D(1:fstep:end,1:fstep:end,minSlice:maxSlice)   ,...
                                           xx_3D(1:fstep:end,1:fstep:end,minSlice:maxSlice)  ,...
                                           zz_3D(1:fstep:end,1:fstep:end,minSlice:maxSlice),...
@@ -67,7 +67,7 @@ figure
         h2                  = patch(surf_Cell);
         h2.FaceColor        = 'blue';
         h2.EdgeColor        = 'none';
-        h2.FaceAlpha        = 0.2;
+        h2.FaceAlpha        = 1;
             rotate3d on
     %title(,'interpreter','none')
 
@@ -86,7 +86,7 @@ title('(a)','fontsize',18)
         h5                  = patch(surf_Cell);
         h5.FaceColor        = 'blue';
         h5.EdgeColor        = 'none';
-        h5.FaceAlpha        = 0.2;
+        h5.FaceAlpha        = 1;
        title('(b)','fontsize',18) 
 view(200,28)
  lighting('phong');
