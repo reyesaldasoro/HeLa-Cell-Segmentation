@@ -40,7 +40,7 @@ for k=1:3
 
     currentSlice   = slicesToPlot(k);
     h333(3*k)=subplot(3,3,3*k);
-    imagesc(double(Hela_cell(:,:,currentSlice)+Hela_nuclei(:,:,currentSlice))-double(current_GT2(:,:,currentSlice)))
+    imagesc(double(-Hela_cell(:,:,currentSlice)-Hela_nuclei(:,:,currentSlice))+double(current_GT2(:,:,currentSlice)))
     axis off 
 end
 colormap gray
@@ -68,7 +68,7 @@ h333(6).Position    = [0.68    0.34    xWidth   yHeight];
 h333(9).Position    = [0.68    0.02    xWidth   yHeight];
 
 %%
-filename ='Fig2.png';
+filename ='Fig5B.png';
 print('-dpng','-r300',filename)
 %%  Zoom in
 xx = [100.5 1300.5];
@@ -106,5 +106,5 @@ h333(8).YLim=yy;
 h333(9).YLim=yy;
 %%
 %%
-filename ='Fig2B.png';
+filename ='Fig6B.png';
 print('-dpng','-r300',filename)
