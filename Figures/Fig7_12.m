@@ -25,7 +25,7 @@ for k=1:numSlices
     yy_3D(:,:,k)        = y2d;    
 end
 
-%%
+
 
 %% This is for the surface 
 % We could create the surface directly with this, but as the volume is rather large,
@@ -70,7 +70,7 @@ figure
         h2                  = patch(surf_Cell);
         h2.FaceColor        = 'b';
         h2.EdgeColor        = 'none';
-        h2.FaceAlpha        = 0.2;
+        h2.FaceAlpha        = 0.9;
             rotate3d on
     %title(,'interpreter','none')
 
