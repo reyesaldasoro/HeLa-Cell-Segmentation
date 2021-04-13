@@ -60,7 +60,7 @@ fstep               = 8;
                     
 %        % Finally, let's display the surface, allocate random colours
 figure
-        h121=subplot(121);
+        h131=subplot(121);
         h1                  = patch(surf_Nuclei);
         h1.FaceColor        = 'green';
         h1.EdgeColor        = 'none';
@@ -68,7 +68,7 @@ figure
         h2                  = patch(surf_Cell);
         h2.FaceColor        = 'blue';
         h2.EdgeColor        = 'none';
-        h2.FaceAlpha        = 0.2;
+        h2.FaceAlpha        = 1;
             rotate3d on
     %title(,'interpreter','none')
 
@@ -79,7 +79,7 @@ hLight1 = camlight ('left');
 axis tight
 grid on
 title('(c)','fontsize',18)
-       h122=subplot(122);
+       h132=subplot(122);
         h4                  = patch(surf_Nuclei);
         h4.FaceColor        = 'green';
         h4.EdgeColor        = 'none';
@@ -87,7 +87,7 @@ title('(c)','fontsize',18)
         h5                  = patch(surf_Cell);
         h5.FaceColor        = 'blue';
         h5.EdgeColor        = 'none';
-        h5.FaceAlpha        = 0.2;
+        h5.FaceAlpha        = 1;
        title('(d)','fontsize',18) 
 view(-158,38)
  lighting('phong');
@@ -108,8 +108,8 @@ h2.FaceAlpha        = 0.1;
 h4.FaceAlpha        = 1;
 h5.FaceAlpha        = 0.1;
 %%
-h121.Position=[0.05 0.1 0.44 0.8];
-h122.Position=[0.54 0.1 0.44 0.8];
+h131.Position=[0.05 0.1 0.44 0.8];
+h132.Position=[0.54 0.1 0.44 0.8];
 %%
 
 filename ='Fig7_3.png';
