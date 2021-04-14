@@ -56,7 +56,38 @@ h{7}.Position = [0.025+2*aShift 0.02 aWidth aHeight];
 h{8}.Position = [0.025+3*aShift 0.02 aWidth aHeight];
 %%
 
+hMark{1} = annotation(gcf,'textbox', [0.13 0.87 0.04 0.05],'String',{'\ast'},'FitBoxToText','off','FontName','Arial','EdgeColor','none','FontSize',28);
+hMark{2} = annotation(gcf,'textbox', [0.17 0.82 0.04 0.05],'String',{'\ast'},'FitBoxToText','off','FontName','Arial','EdgeColor','none','FontSize',28);
+hMark{3} = annotation(gcf,'textbox', [0.17 0.82 0.04 0.05],'String',{'\ast'},'FitBoxToText','off','FontName','Arial','EdgeColor','none','FontSize',28);
+hMark{4} = annotation(gcf,'textbox', [0.17 0.82 0.04 0.05],'String',{'\ast'},'FitBoxToText','off','FontName','Arial','EdgeColor','none','FontSize',28);
+hMark{5} = annotation(gcf,'textbox', [0.17 0.82 0.04 0.05],'String',{'$\bigtriangleup$'},'Interpreter','latex','FitBoxToText','off','FontName','Arial','EdgeColor','none','FontSize',20);
+hMark{6} = annotation(gcf,'textbox', [0.17 0.82 0.04 0.05],'String',{'$\bigtriangleup$'},'Interpreter','latex','FitBoxToText','off','FontName','Arial','EdgeColor','none','FontSize',20);
+hMark{7} = annotation(gcf,'textbox', [0.17 0.82 0.04 0.05],'String',{'$\bigtriangleup$'},'Interpreter','latex','FitBoxToText','off','FontName','Arial','EdgeColor','none','FontSize',20);
+hMark{8} = annotation(gcf,'textbox', [0.13 0.87 0.04 0.05],'String',{'\ast'},'FitBoxToText','off','FontName','Arial','EdgeColor','none','FontSize',28);
+hMark{1}.Color='r';
+hMark{2}.Color='r';
+hMark{3}.Color='r';
+hMark{4}.Color='r';
+hMark{5}.Color=[0 1 1];
+hMark{6}.Color=[0 1 1];
+hMark{7}.Color=[0 1 1];
+hMark{8}.Color=[1 0 0];
 
+hMark{2}.Position = [0.04  0.35  0.04 0.05];
+hMark{3}.Position = [0.87  0.36  0.04 0.05];
+hMark{4}.Position = [0.34  0.88  0.04 0.05];
+hMark{5}.Position = [0.198 0.089 0.04 0.05];
+hMark{6}.Position = [0.437 0.13  0.04 0.05];
+hMark{7}.Position = [0.617 0.078 0.04 0.05];
+hMark{8}.Position = [0.28  0.12  0.04 0.05];
+
+ %hMark{4}.String='\alpha';hMark{4}.Color='g';
+
+%%
+h1.FontSize=28;
+
+
+%%
 h241.Title.String       = '(a)';
 h242.Title.String       = '(b)';
 h243.Title.String       = '(c)';
