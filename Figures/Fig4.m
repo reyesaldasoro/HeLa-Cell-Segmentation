@@ -14,7 +14,7 @@ load('C:\Users\sbbk034\OneDrive - City, University of London\Documents\GitHub\He
 %currSlide = 108;
 % higher up slice with bigger gaps
 %currSlide = 193;
-currSlide = 211;
+currSlide = 241;
 
 currImage = imfilter(imread(strcat(baseDirTiff,dir0(currSlide).name)),ones(5)/25);
 
@@ -26,6 +26,7 @@ currImage = imfilter(imread(strcat(baseDirTiff,dir0(currSlide).name)),ones(5)/25
 %imagesc(Hela_steps(:,:,4)+Hela_steps(:,:,5)+3*(Hela_background(:,:,currSlide)))
 %%
 %
+figure
 h241                = subplot(241);
 imagesc(currImage);
 colormap gray
