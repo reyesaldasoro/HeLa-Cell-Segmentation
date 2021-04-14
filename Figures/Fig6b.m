@@ -37,7 +37,6 @@ FN2              = (-Hela_cell+(current_GT2==1))==1;
 
 Jaccard_Cell_Nuc  = sum(TP2(:))/(sum(FP2(:)+FN2(:)+TP2(:)));
 Accuracy_Cell_Nuc = sum(TP2(:)+TN2(:))/sum(TN2(:)+FP2(:)+FN2(:)+TP2(:));
-%%
 
 %% Nucleus JI = 0.9665 Acc = 0.9975
 TP3              =  (Hela_nuclei+(current_GT==2))==2;
