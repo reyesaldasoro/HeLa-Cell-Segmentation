@@ -64,6 +64,12 @@ hMark{5} = annotation(gcf,'textbox', [0.17 0.82 0.04 0.05],'String',{'$\bigtrian
 hMark{6} = annotation(gcf,'textbox', [0.17 0.82 0.04 0.05],'String',{'$\bigtriangleup$'},'Interpreter','latex','FitBoxToText','off','FontName','Arial','EdgeColor','none','FontSize',20);
 hMark{7} = annotation(gcf,'textbox', [0.17 0.82 0.04 0.05],'String',{'$\bigtriangleup$'},'Interpreter','latex','FitBoxToText','off','FontName','Arial','EdgeColor','none','FontSize',20);
 hMark{8} = annotation(gcf,'textbox', [0.13 0.87 0.04 0.05],'String',{'\ast'},'FitBoxToText','off','FontName','Arial','EdgeColor','none','FontSize',28);
+hMark{9} = annotation(gcf,'textbox', [0.37 0.82 0.04 0.05],'String',{'$\diamond$'},'Interpreter','latex','FitBoxToText','off','FontName','Arial','EdgeColor','none','FontSize',20);
+hMark{10} = annotation(gcf,'textbox', [0.37 0.82 0.04 0.05],'String',{'$\diamond$'},'Interpreter','latex','FitBoxToText','off','FontName','Arial','EdgeColor','none','FontSize',20);
+hMark{11} = annotation(gcf,'textbox', [0.13 0.87 0.04 0.05],'String',{'\ast'},'FitBoxToText','off','FontName','Arial','EdgeColor','none','FontSize',28);
+
+
+
 hMark{1}.Color='r';
 hMark{2}.Color='r';
 hMark{3}.Color='r';
@@ -72,7 +78,7 @@ hMark{5}.Color=[0 1 1];
 hMark{6}.Color=[0 1 1];
 hMark{7}.Color=[0 1 1];
 hMark{8}.Color=[1 0 0];
-
+hMark{11}.Color='r';
 hMark{2}.Position = [0.04  0.35  0.04 0.05];
 hMark{3}.Position = [0.87  0.36  0.04 0.05];
 hMark{4}.Position = [0.34  0.88  0.04 0.05];
@@ -81,7 +87,8 @@ hMark{6}.Position = [0.437 0.13  0.04 0.05];
 hMark{7}.Position = [0.617 0.078 0.04 0.05];
 hMark{8}.Position = [0.28  0.12  0.04 0.05];
 
-
-
+hMark{9}.Position  = [0.534  0.650  0.04 0.05];
+hMark{10}.Position = [0.425  0.35  0.04 0.05];
+hMark{11}.Position = [0.776  0.861  0.04 0.05];
  %%
   print('-dpng','-r400','Fig10.png')
