@@ -67,6 +67,7 @@ hMark{8} = annotation(gcf,'textbox', [0.13 0.87 0.04 0.05],'String',{'\ast'},'Fi
 hMark{9} = annotation(gcf,'textbox', [0.37 0.82 0.04 0.05],'String',{'$\diamond$'},'Interpreter','latex','FitBoxToText','off','FontName','Arial','EdgeColor','none','FontSize',20);
 hMark{10} = annotation(gcf,'textbox', [0.37 0.82 0.04 0.05],'String',{'$\diamond$'},'Interpreter','latex','FitBoxToText','off','FontName','Arial','EdgeColor','none','FontSize',20);
 hMark{11} = annotation(gcf,'textbox', [0.13 0.87 0.04 0.05],'String',{'\ast'},'FitBoxToText','off','FontName','Arial','EdgeColor','none','FontSize',28);
+hMark{12} = annotation(gcf,'textbox', [0.37 0.82 0.04 0.05],'String',{'$\diamond$'},'Interpreter','latex','FitBoxToText','off','FontName','Arial','EdgeColor','none','FontSize',20);
 
 
 
@@ -90,5 +91,9 @@ hMark{8}.Position = [0.27  0.189  0.04 0.05];
 hMark{9}.Position  = [0.534  0.650  0.04 0.05];
 hMark{10}.Position = [0.425  0.35  0.04 0.05];
 hMark{11}.Position = [0.776  0.861  0.04 0.05];
+hMark{12}.Position = [0.158  0.618  0.04 0.05];
+
+
+
  %%
   print('-dpng','-r400','Fig10.png')
