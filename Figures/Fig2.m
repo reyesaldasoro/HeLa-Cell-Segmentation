@@ -15,8 +15,15 @@ numCells            = 20;
 hela2                               = double(imfilter(Hela_3D,fspecial('gaussian',5,3)));
     maxDist = max(helaDistFromBackground2(:));
 %%
+h131 = subplot(131);
+    imagesc(hela2)
 
-h121 = subplot(121);
+    title('(a)','fontsize',18)
+    hColorbar = colorbar;
+    hColorbar.Location='east';
+    axis off
+    
+    h132 = subplot(132);
     imagesc(helaDistFromBackground2+helaBackground*maxDist/2)
     colormap gray
 %     figure  
@@ -26,14 +33,15 @@ h121 = subplot(121);
 %     end
 %     colormap gray
 %     figure
+    axis off
+title('(b)','fontsize',18)
+    
 
-
-    title('(a)','fontsize',18)
     axis off
     
-h122 = subplot(122);    
+h133 = subplot(133);    
     hela3(:,:,2) = hela2(1:stepPix:end,1:stepPix:end)/255 .*(1-helaBoundary) ;
-    hela3(:,:,3) = hela2(1:stepPix:end,1:stepPix:end)/255.*(1-helaBoundary)+0.2*helaBackground;
+    hela3(:,:,3) = hela2(1:stepPix:end,1:stepPix:end)/255.*(1-helaBoundary)+0.8*helaBackground;
     
     
     hela3(:,:,1) = hela2(1:stepPix:end,1:stepPix:end)/255.*(1-helaBoundary) + 1*((helaDistFromBackground2/maxDist).^3)  ;
@@ -42,15 +50,19 @@ h122 = subplot(122);
     for counterROI = 1:numCells
         text(positionROI(counterROI,2),positionROI(counterROI,1),num2str(counterROI),'fontsize',20,'color','r')
     end
+    title('(c)','fontsize',18)
     
-    title('(b)','fontsize',18)
     axis off
 %%
-set(gcf,'position',[ 500  200  900  450])
+set(gcf,'position',[ 500  200  900  340])
 
 
-
- h121.Position = [0.05 0.08 0.44 0.8];
- h122.Position = [0.54 0.08 0.44 0.8];
+hWidth = 0.31;
+ h131.Position = [0.02 0.08 hWidth 0.8];
+ h132.Position = [0.34 0.08 hWidth 0.8];
+ h133.Position = [0.66 0.08 hWidth 0.8];
  
- print('-dpng','-r400','Fig1b.png')
+ 
+ 
+%% 
+ print('-dpng','-r400','Fig2.png')
