@@ -20,14 +20,14 @@ Segmentation, Measurement and Visualisation of Nuclear Envelope of HeLa Cells ob
 [Automatic cropping of multiple Regions of Interest](#multipleROIs)
 [Visual validation of the output](#validation)  
 [Automatic cropping of Regions of Interest](#cropping)  
-
+[Processing an entire 8,000 x 8,000 x 518 volume data set](#entire8000set)  
 
 <a name="HeLa"/>
 <h2> Segmentation of Nuclear Envelope of HeLa Cells observed with Electron Microscope </h2>
 </a>
 
 
-This code contains an image-processing pipeline for the automatic segmentation of the nuclear envelope of {\it HeLa} cells
+This code contains an image-processing pipeline for the automatic segmentation of the nuclear envelope of <i> HeLa</i> cells
 observed through Electron Microscopy. This pipeline has been tested with a 3D stack of 300 images.
 The intermediate results of neighbouring slices are further combined to improve the final results.
 Comparison with a hand-segmented  ground truth reported Jaccard similarity values between 94-98% on
@@ -66,30 +66,31 @@ All the data is available.
 <ul>
 <li> The 8000x8000 data sets are freely available through EMPIAR: http://dx.doi.org/10.6019/EMPIAR-10094
 <li> The cropped images at 2000x2000 data sets are available through EMPIAR: https://dx.doi.org/10.6019/EMPIAR-10478
-<li> The ground truth is available through Zenodo: https://doi.org/10.5281/zenodo.3874949
+<li> The 4-class ground truth (nuclear envelope, nucleus, rest of the cell, and background) is available through Zenodo: https://doi.org/10.5281/zenodo.3874949
+<li> The 5-class ground truth (1 nuclear envelope, 2 nucleus, 3 other cells, 4 background, 5 cell) is available through Zenodo: https://zenodo.org/record/4590903
 </ul>
 <br>
 
 <a name="description"/>
 <h2> Brief description </h2>
 </a>
-
-The methodology consists of several image-processing steps: low-pass filtering, edge detection and determination of super-pixels,
-distance transforms and delineation of the nuclear envelope.
-
+Semantic segmentation of (a) Nuclear envelope, and (b) cell from its neighbours as observed with Electron Microscopy in 3D. The methodology consists of several image-processing steps: low-pass filtering, edge detection and determination of super-pixels,
+distance transforms and delineation of the nuclear and cell membranes.
 
 <a name="limitations"/>
 <h2>Limitations</h2>
 </a>
 
-The algorithm assumes the following: there is a single HeLa cell of interest, the  centre of the cell is located at centre
-of a 3D stack of images,
-the nuclear envelope is darker than the nuclei or its surroundings, the background is brighter than any cellular structure.
+The algorithm relies on a background that is brighter than the cells and their structures as can be seen in the figures of this page.
 
+The algorithm to segment the nuclear envelope assumes the following: there is a single HeLa cell of interest, the  centre of the cell is located at centre
+of a 3D stack of images, the nuclear envelope is darker than the nuclei or its surroundings, the background is brighter than any cellular structure. 
+
+The algorithm will segment regions of interest to ensure that there is a single HeLa cell of interest (there may be more surrounding the cell) in each cropped region..
 
 
 <a name="running"/>
-<h2>Running the code</h2>
+<h2>Running the code for a single 2,000 x 2,000 x 300 voxel region of interest with one cell</h2>
 </a>
 
 Assuming your image is a tiff file called 'Hela.tiff' you can pass this directly to the function *segmentNucleiHelaEM* as an input argument and returns the segmentation of the nuclei with 1 and the rest with 0. The background is segmented with *segmentBackgroundHelaEM* and similarly returns a matrix with 1 for background and 0 for the rest.
@@ -318,3 +319,41 @@ Folder will be created
 
 
 ![Screenshot2](Figures/MultipleROIs.png)
+
+
+<a name="entire8000set"/>
+<h2> Processing an entire 8,000 x 8,000 x 518 volume data set </h2>
+</a>
+
+The number of cells to be identified can be pre-defined per slice and then the process is repeated for a number of slices of the 3D stack. The centroids of the cells are linked vertically to identify which centroids correspond to the same cell. The figure below illustrates the centroids at every 20 slices (i.e. 26 slices were analysed) 
+
+![Screenshot_8000_1](Figures/Fig3.png)
+
+
+The segmentation of one cell from its neighbours follows these steps: distance transformation from the background which grows around regions with cells and since there will be one larger *hill* at the centre. The distance transformation is then  segmented with a watershed algorithm. The central region is morphologically *opened* with large structural elements to remove protruding artefactual regions. This provides a fairly round cell that does not include the natural protrusions. Thus, regions that are contiguous to this central region and surrounded by background are identified and merged with the cell.
+
+
+![Screenshot_8000_1](Figures/Fig4.png)
+
+The results are quite good when the cell is surrounded by background and cautious when there are cells close to each other. The figure below shows  a comparison  between  ground  truth  and  segmentation. Left column  shows GT (green for nucleus) and cell (red). Centre column shows segmentation. Right shows comparison between GT and the results with FP in white, FN in black and both TP and TN in gray. 
+
+![Screenshot_8000_1](Figures/Fig6.png)
+
+Four  examples  of  volumetric  reconstruction  of  the  nuclear  envelope  and  the  cellmembrane of HeLa cells. In all cases, each row corresponds to a single cell observed from different view points. Left and centre columns show the cell membrane with transparency. Right column the cell membrane without transparency from the same view point as centre column. 
+
+
+
+<img src="Figures/Fig9_23b.png" alt="Fig10" width="700"/>
+<img src="Figures/Fig9_3b.png" alt="Fig10" width="700"/>
+<img src="Figures/Fig9_12b.png" alt="Fig10" width="700"/>
+<img src="Figures/Fig9_19b.png" alt="Fig10" width="700"/>
+
+
+Illustration of segmentation of 23 cells and nuclear envelopes. The cells were segmentedfrom a 8192×8192×518 voxel region.  Slice number 100 out of 518 is displayed for context.  Nuclei are solid and cell membranes are transparent. Colours have been assigned randomly for visualisation purposes.
+
+
+
+<img src="Figures/Fig10.png" alt="Fig10" width="700"/>
+
+
+
