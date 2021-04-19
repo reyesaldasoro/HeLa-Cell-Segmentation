@@ -85,6 +85,7 @@ for currCell=1:size(dirN,1)
     h2.EdgeColor        = 'none';
     h2.FaceAlpha        = 0.9;
     rotate3d on
+    title('(j)','fontsize',18)
     %title(,'interpreter','none')
     
     %
