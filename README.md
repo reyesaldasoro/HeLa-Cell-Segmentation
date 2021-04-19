@@ -93,6 +93,9 @@ The algorithm will segment regions of interest to ensure that there is a single 
 <h2>Running the code for a single 2,000 x 2,000 x 300 voxel region of interest with one cell</h2>
 </a>
 
+(If you want to start with the 8,000 x 8,000 x 518 voxel data set, skip to [Processing an entire 8,000 x 8,000 x 518 volume data set](#entire8000set)  )
+
+
 Assuming your image is a tiff file called 'Hela.tiff' you can pass this directly to the function *segmentNucleiHelaEM* as an input argument and returns the segmentation of the nuclei with 1 and the rest with 0. The background is segmented with *segmentBackgroundHelaEM* and similarly returns a matrix with 1 for background and 0 for the rest.
 
 <pre class="codeinput">
@@ -320,6 +323,8 @@ Folder will be created
 
 ![Screenshot2](Figures/MultipleROIs.png)
 
+
+[//]: # (------------------------------------------------------------------------- 8000 here below ----------------)
 
 <a name="entire8000set"/>
 <h2> Processing an entire 8,000 x 8,000 x 518 volume data set </h2>
