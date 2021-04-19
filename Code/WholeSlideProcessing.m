@@ -10,8 +10,20 @@ baseDir                         = 'C:\Users\sbbk034\Documents\Acad\Crick\Hela800
 % if it is above/below slice 150 the segmentation may not be well
 % performed. 
 tic;
-[final_coords,final_centroid,final_cells,final_dist]        = detectNumberOfCells_3D(baseDir,20,1);
+[final_coords,final_centroid,final_cells,final_dist]        = detectNumberOfCells_3D(baseDir,20,0);
 t1=toc;
+
+%% Determine if the cells are too close to the edge.
+
+margin = 700;
+MarginFromEdge=[(1:size(final_centroid,1))' ...
+      (final_centroid(:,1)).*(final_centroid(:,1)<margin)+ (8192-final_centroid(:,1)).*(final_centroid(:,1)>(8192-margin)) ...
+      (final_centroid(:,2)).*(final_centroid(:,2)<margin)+ (8192-final_centroid(:,2)).*(final_centroid(:,2)>(8192-margin))...
+      (final_centroid(:,3)).*(final_centroid(:,3)<100)+ ...
+      (-final_centroid(:,3)+518).*(final_centroid(:,3)>410)];
+
+
+
 %% With the coordinates previously determined generate the ROIs, 
 % Crop the 8000 slices to 2000 and save in separate folders
 tic
