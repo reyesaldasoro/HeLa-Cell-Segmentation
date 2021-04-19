@@ -327,33 +327,33 @@ Folder will be created
 
 The number of cells to be identified can be pre-defined per slice and then the process is repeated for a number of slices of the 3D stack. The centroids of the cells are linked vertically to identify which centroids correspond to the same cell. The figure below illustrates the centroids at every 20 slices (i.e. 26 slices were analysed) 
 
-![Screenshot_8000_1](Figures/Fig3.png)
+<img src="Figures/Fig3.png" alt="Fig3" width="600"/>
 
 
 The segmentation of one cell from its neighbours follows these steps: distance transformation from the background which grows around regions with cells and since there will be one larger *hill* at the centre. The distance transformation is then  segmented with a watershed algorithm. The central region is morphologically *opened* with large structural elements to remove protruding artefactual regions. This provides a fairly round cell that does not include the natural protrusions. Thus, regions that are contiguous to this central region and surrounded by background are identified and merged with the cell.
 
 
-![Screenshot_8000_1](Figures/Fig4.png)
+<img src="Figures/Fig4.png" alt="Fig4" width="600"/>
 
 The results are quite good when the cell is surrounded by background and cautious when there are cells close to each other. The figure below shows  a comparison  between  ground  truth  and  segmentation. Left column  shows GT (green for nucleus) and cell (red). Centre column shows segmentation. Right shows comparison between GT and the results with FP in white, FN in black and both TP and TN in gray. 
 
-![Screenshot_8000_1](Figures/Fig6.png)
+<img src="Figures/Fig6.png" alt="Fig6" width="600"/>
 
 Four  examples  of  volumetric  reconstruction  of  the  nuclear  envelope  and  the  cellmembrane of HeLa cells. In all cases, each row corresponds to a single cell observed from different view points. Left and centre columns show the cell membrane with transparency. Right column the cell membrane without transparency from the same view point as centre column. 
 
 
 
-<img src="Figures/Fig9_23b.png" alt="Fig10" width="700"/>
-<img src="Figures/Fig9_3b.png" alt="Fig10" width="700"/>
-<img src="Figures/Fig9_12b.png" alt="Fig10" width="700"/>
-<img src="Figures/Fig9_19b.png" alt="Fig10" width="700"/>
+<img src="Figures/Fig9_23b.png" alt="Fig9" width="600"/>
+<img src="Figures/Fig9_3b.png" alt="Fig9" width="600"/>
+<img src="Figures/Fig9_12b.png" alt="Fig9" width="600"/>
+<img src="Figures/Fig9_19b.png" alt="Fig9" width="600"/>
 
 
 Illustration of segmentation of 23 cells and nuclear envelopes. The cells were segmentedfrom a 8192×8192×518 voxel region.  Slice number 100 out of 518 is displayed for context.  Nuclei are solid and cell membranes are transparent. Colours have been assigned randomly for visualisation purposes.
 
 
 
-<img src="Figures/Fig10.png" alt="Fig10" width="700"/>
+<img src="Figures/Fig10.png" alt="Fig10" width="600"/>
 
 
 
