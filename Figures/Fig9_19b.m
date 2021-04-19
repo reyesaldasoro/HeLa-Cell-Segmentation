@@ -1,4 +1,4 @@
-% Fig3
+% Fig 9 generic
 clear all
 close all
 cd('C:\Users\sbbk034\OneDrive - City, University of London\Documents\GitHub\HeLa-Cell-Segmentation\Code')
@@ -49,7 +49,12 @@ jet3    = jet2(round(linspace(1,256,numFiles)),:);
 [c,d]   = sort(rand(numFiles,1));
 
 %%
-fstep               = 8;
+
+
+
+
+%%
+fstep               = 16;
 
         surf_Nuclei          = isosurface(yy_3D(1:fstep:end,1:fstep:end,minSlice:maxSlice)   ,...
                                           xx_3D(1:fstep:end,1:fstep:end,minSlice:maxSlice)  ,...
@@ -80,7 +85,7 @@ view(-173,12)
 hLight1 = camlight ('left');
 axis tight
 grid on
-title('(j)','fontsize',18)
+%title(dirN(currCell).name,'fontsize',18,'interpreter','none')
 
 
        h132=subplot(132);
@@ -92,7 +97,8 @@ title('(j)','fontsize',18)
         h5.FaceColor        = 'b';
         h5.EdgeColor        = 'none';
         h5.FaceAlpha        = 0.2;
-       title('(k)','fontsize',18) 
+title(dirN(currCell).name,'fontsize',18,'interpreter','none')
+%       title('(k)','fontsize',18) 
 view(8,14)
 
  lighting('phong');
@@ -108,7 +114,7 @@ grid on
         h6.FaceColor        = 'b';
         h6.EdgeColor        = 'none';
         h6.FaceAlpha        = 1;
-       title('(l)','fontsize',18) 
+      % title('(l)','fontsize',18) 
 view(8,14)
  lighting('phong');
 hLight3 = camlight ('left');
