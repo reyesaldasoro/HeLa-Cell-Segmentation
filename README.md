@@ -355,5 +355,9 @@ Illustration of segmentation of 23 cells and nuclear envelopes. The cells were s
 
 <img src="Figures/Fig10.png" alt="Fig10" width="600"/>
 
+Illustration of the nuclei only.
+
+<img src="Figures/Hela8000_video_3c.gif" alt="animation" width="600"/>
+
 
 
