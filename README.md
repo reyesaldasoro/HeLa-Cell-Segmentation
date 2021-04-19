@@ -324,15 +324,82 @@ Folder will be created
 ![Screenshot2](Figures/MultipleROIs.png)
 
 
-[//]: # (------------------------------------------------------------------------- 8000 here below ----------------)
+[//]: # (------------------------------------------------------------------------- 8000 here below ------------------------------------------------------------)
 
 <a name="entire8000set"/>
 <h2> Processing an entire 8,000 x 8,000 x 518 volume data set </h2>
 </a>
 
-The number of cells to be identified can be pre-defined per slice and then the process is repeated for a number of slices of the 3D stack. The centroids of the cells are linked vertically to identify which centroids correspond to the same cell. The figure below illustrates the centroids at every 20 slices (i.e. 26 slices were analysed) 
+The number of cells to be identified can be pre-defined per slice and then the process is repeated for a number of slices of the 3D stack. This is processed like this
+
+<pre class="codeinput">
+[final_coords,final_centroid,final_cells,final_dist]        = detectNumberOfCells_3D(baseDir,20,1);
+</pre>
+
+
+**baseDir** is a link to the folder that contains the 518 images, e.g.
+
+<pre class="codeinput">
+baseDir                         = 'C:\Users\sbbk034\Documents\Acad\Crick\Hela8000_tiff\';
+</pre>
+
+The number of cells to be detected per slice in this case is **20** and the final **1** is used to display the output. The algorithm has linked the 20 cells per slice into 30 cells. 
+ The function returns
+
+<pre class="codeinput">
+>> whos
+  Name                 Size            Bytes  Class     Attributes
+
+  baseDir              1x52              104  char                
+  final_cells         30x26             6240  double              
+  final_centroid      30x5              1200  double              
+  final_coords        30x6              1440  double              
+  final_dist          30x26             6240  double              
+
+>> 
+</pre>
+
+Important among these ones are:
+* the **centroids** of each cell, [row, column, z-stack position, base, top] e.g.
+ 
+<pre class="codeinput"> 
+ 1280	4303	121	1	221
+5825	2002	101	1	181
+7312	3770	121	21	221
+...
+</pre>
+
+* the **coordinates**  to be cropped of each cell, [init row, fin row,  init column fin column, init z fin z] e.g.
+
+<pre class="codeinput"> 
+1	2000	665	2664	1	300
+5005	7004	3739	5738	1	300
+280	2279	3303	5302	1	300
+...
+</pre>
+
+
+ 
+ 
+
+
+
+
+
+The centroids of the cells are linked vertically to identify which centroids correspond to the same cell. The figure below illustrates the centroids at every 20 slices (i.e. 26 slices were analysed) 
 
 <img src="Figures/Fig3.png" alt="Fig3" width="600"/>
+
+
+
+
+
+
+
+<pre class="codeinput">
+</pre>
+
+
 
 
 The segmentation of one cell from its neighbours follows these steps: distance transformation from the background which grows around regions with cells and since there will be one larger *hill* at the centre. The distance transformation is then  segmented with a watershed algorithm. The central region is morphologically *opened* with large structural elements to remove protruding artefactual regions. This provides a fairly round cell that does not include the natural protrusions. Thus, regions that are contiguous to this central region and surrounded by background are identified and merged with the cell.
