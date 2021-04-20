@@ -25,7 +25,7 @@ t2=toc;
 
 %% Determine if the cells are too close to the edge.
 
-margin = 700;
+margin = 800;
 MarginFromEdge=[(1:size(final_centroid,1))' ...
       (final_centroid(:,1)).*(final_centroid(:,1)<margin)+ (8192-final_centroid(:,1)).*(final_centroid(:,1)>(8192-margin)) ...
       (final_centroid(:,2)).*(final_centroid(:,2)<margin)+ (8192-final_centroid(:,2)).*(final_centroid(:,2)>(8192-margin))...
@@ -45,16 +45,55 @@ load('final_coords.mat')
 for k=1:numFolders
     listFolders{k,1} = dir2(k).name;
 end
-%% Iterate over all folders and visualise
+%% Iterate over all folders and visualise all volumes in one figure
 for k=1:numFolders
+    disp(k)
     currFolder  = dir2(k).name;
     currDir     = dir(strcat(dir0,filesep,currFolder,filesep,'*.tif'));
-    for k2=1:150
+    clear currSlices
+    currSlices(2000,2000,300)=0;
+    for k2=1:300
         currSlices(:,:,k2)=(imread(strcat(dir0,filesep,currFolder,filesep,currDir(k2).name)));
     end
-    midSlice    = (imread(strcat(dir0,filesep,currFolder,filesep,currDir(200).name)));
-    imagesc(midSlice)
+    %midSlice    = (imread(strcat(dir0,filesep,currFolder,filesep,currDir(200).name)));
+    %imagesc(midSlice)
+    %
+    %currSlices(1001:2000,1001:2000,:)=0;
+    %p2 = patch(isocaps(currSlices(1:16:end,1:16:end,:), 5),'FaceColor','interp','EdgeColor','none');
+    currSlices2=currSlices;
+    currSlices2(:,1001:2000,:)=[];
+    subplot(5,6,k)
+    p1 = patch(isocaps(currSlices2(1:16:end,1:16:end,:), 5),'FaceColor','interp','EdgeColor','none');
+    currSlices2=currSlices;
+    currSlices2(1001:2000,:,:)=[];
+    p2 = patch(isocaps(currSlices2(1:16:end,1:16:end,:), 5),'FaceColor','interp','EdgeColor','none');
+    colormap gray
+    view(136,40)
+    axis tight
+    axis off
+    title(strcat('(',num2str(k),')'),'fontsize',10)
+    
+    %
 end
+
+for k=1:numFolders
+    subplot(5,6,k)
+    handleAx(k)=gca;  
+    axis ij
+    view(45,45)
+end
+vertPos = 0.76:-0.19:0;%[0.8 0.6 0.4 0.2 0.0];
+horPos  = 0.01:0.165:0.89;
+for k=1:numFolders
+    handleAx(k).Position(3:4)=[0.15 0.2];
+    %  ceil([1:30]/6)  this locates the rows
+    handleAx(k).Position(2) =vertPos (ceil(k/6));
+    %  1+rem(-1+[1:30],6)  this locates the columns
+    handleAx(k).Position(1) =horPos (1+rem(-1+k,6));
+end
+filename ='Fig_allROIS.png';
+print('-dpng','-r300',filename)
+
 
 %% Iterate over all folders to extract Nuclei and Background, store as one file
 for k=[19 21 25 26]  %1:numFolders
