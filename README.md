@@ -401,21 +401,24 @@ There is a decision to process all the ROIs, there may be cells that are close t
 
 <img src="Figures/Fig_allROIS.png" alt="Fig3" width="900"/>
 
-It can be seen that there are some cells that are either low and part of the cells is not within the field of view (1,2) and some others that are rather high (29,30) and part of the cell is again outside the field of view.  In addition, there are others that, due to their proximity to the edges of the volume are not centred but rather to a side (6,14). Observing the variable **final_centroid** is possible to determine how far are the centroids from the edges. If we use a margin of 800 pixels, we can observe that 
+It can be seen that there are some cells that are either low and part of the cells is not within the field of view (1,2) and some others that are rather high (29,30) and part of the cell is again outside the field of view.  In addition, there are others that, due to their proximity to the edges of the volume are not centred but rather to a side (6,14). Observing the variable **final_centroid** is possible to determine how far are the centroids from the edges. If we use a margin of 500 pixels, we can observe that the centroids of following cells are less that the margin away in at least one dimension:
 
-
-1	0	0	81
-2	0	0	81
+<pre class="codeinput">
 6	0	417	0
-7	797	0	0
-11	0	546	0
 14	489	746	0
 15	0	432	0
 27	455	489	0
 28	588	465	97
+</pre>
+
+In addition, with respect to the top and bottom edges the following volumes are close to the edges:
+<pre class="codeinput">
+1	0	0	81
+2	0	0	81
+28	588	465	97
 29	0	0	97
 30	0	0	77
-
+</pre>
 
 
 
