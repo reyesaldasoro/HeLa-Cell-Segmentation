@@ -1,4 +1,4 @@
-function [Hela_cell,Hela_steps] = segmentCellHelaEM_3D(Hela_nuclei,Hela_background,Hela_cellPrevious)
+function [Hela_cell,Hela_steps] = segmentCellHelaEM_3D(Hela_nuclei,Hela_background,Hela_cellPrevious,centralSlice)
 %function [Hela_cell] = segmentCellHelaEM_3D(Hela_nuclei,Hela_background)
 % This is the segments the CELL, i.e. the region between the background and
 % the nuclei.
@@ -185,7 +185,16 @@ if numSlices ==1
 else
     % Three dimensional case
     Hela_cell(rows,cols,numSlices)=0;
-    centralSlice                        = round(numSlices/2);
+    
+    if (~exist('centralSlice','var'))
+        centralSlice                            = round(numSlices/2);
+    end
+    if (isempty(centralSlice))
+        centralSlice                            = round(numSlices/2);
+    end
+
+    
+   % centralSlice                        = round(numSlices/2);
     
     % In some cases the background is not correctly detected, especially
     % when cells are very close to the edges. Even with a small specs of
