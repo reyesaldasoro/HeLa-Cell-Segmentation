@@ -13,6 +13,16 @@ tic;
 [final_coords,final_centroid,final_cells,final_dist]        = detectNumberOfCells_3D(baseDir,20,0);
 t1=toc;
 
+
+
+
+%% With the coordinates previously determined generate the ROIs, 
+% Crop the 8000 slices to 2000 and save in separate folders
+tic
+listFolders         = generate_ROI_Hela (baseDir,final_coords,final_centroid);
+numFolders          = size(listFolders,1);
+t2=toc;
+
 %% Determine if the cells are too close to the edge.
 
 margin = 700;
@@ -23,13 +33,6 @@ MarginFromEdge=[(1:size(final_centroid,1))' ...
       (-final_centroid(:,3)+518).*(final_centroid(:,3)>410)];
 
 
-
-%% With the coordinates previously determined generate the ROIs, 
-% Crop the 8000 slices to 2000 and save in separate folders
-tic
-listFolders         = generate_ROI_Hela (baseDir,final_coords,final_centroid);
-numFolders          = size(listFolders,1);
-t2=toc;
 %% If folders already exist skip previous steps
 dir0                = 'C:\Users\sbbk034\OneDrive - City, University of London\Documents\GitHub\HeLa-Cell-Segmentation\Code';
 dir1                = dir(strcat(dir0,filesep,'Hela_RO*'));
@@ -41,6 +44,16 @@ load('final_coords.mat')
 
 for k=1:numFolders
     listFolders{k,1} = dir2(k).name;
+end
+%% Iterate over all folders and visualise
+for k=1:numFolders
+    currFolder  = dir2(k).name;
+    currDir     = dir(strcat(dir0,filesep,currFolder,filesep,'*.tif'));
+    for k2=1:150
+        currSlices(:,:,k2)=(imread(strcat(dir0,filesep,currFolder,filesep,currDir(k2).name)));
+    end
+    midSlice    = (imread(strcat(dir0,filesep,currFolder,filesep,currDir(200).name)));
+    imagesc(midSlice)
 end
 
 %% Iterate over all folders to extract Nuclei and Background, store as one file
