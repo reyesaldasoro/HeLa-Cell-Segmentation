@@ -1,10 +1,12 @@
-function [Hela_nuclei,Hela_background] = segmentNucleiHelaEM_3D(baseDir,cannyStdValue)
+function [Hela_nuclei,Hela_background] = segmentNucleiHelaEM_3D(baseDir,centralSlice,cannyStdValue)
 %function nucleiHela = segmentNucleiHelaEM_3D(baseDir,previousSegmentation,cannyStdValue)
 % This is the volumentric option of segmentNucleiHelaEM, it takes a stack
 % of images and process them all
 %--------------------------------------------------------------------------
 % Input         baseDir                 : 1) A folder with n images in Matlab/tiff format,it can be 2D/3D, double/uint8
 %                                       : 2) A tiff with many slices
+%               centralSlice            : in case the cell is not centred
+%                                         vertically, this is an optional parameter             
 %               cannyStdValue           : the value of the Std of the canny edge detection
 % Output        nucleiHela              : a binary volume with 1 for nuclei, 0 background
 %--------------------------------------------------------------------------
@@ -130,7 +132,14 @@ Hela_nuclei(rows,cols,numSlices)        = 0;
 Hela_background(rows,cols,numSlices)    = 0;
 % Start with the central slice, this assumes the cell is centrally located,
 % this may not be the case and may need to be reconsidered
-centralSlice                            = round(numSlices/2);
+
+if (~exist('centralSlice','var'))
+    centralSlice                            = round(numSlices/2);
+end
+if (isempty(centralSlice))
+    centralSlice                            = round(numSlices/2);
+end
+
 Hela_nuclei(:,:,centralSlice)           = segmentNucleiHelaEM(Hela_3D(:,:,centralSlice));    
 Hela_background(:,:,centralSlice)       = segmentBackgroundHelaEM(Hela_3D(:,:,centralSlice));
 %% iterate over all slices
