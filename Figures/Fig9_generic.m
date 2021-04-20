@@ -6,7 +6,7 @@ cd('C:\Users\sbbk034\OneDrive - City, University of London\Documents\GitHub\HeLa
 dirN = dir('Hela_ROI_*_Nuclei.mat');
 dirC = dir('Hela_ROI_*_Cell.mat');
 %%
-currCell=1;
+currCell=29;
 load(dirN(currCell).name);
 load(dirC(currCell).name);
 %load('Hela_ROI_19_30_5781_3527_321_Cell.mat')
@@ -57,9 +57,9 @@ jet3    = jet2(round(linspace(1,256,numFiles)),:);
 %%
 
 
-for currCell=1:size(dirN,1)
-    load(dirN(currCell).name);
-    load(dirC(currCell).name);
+for currCell=1%:size(dirN,1)
+    %load(dirN(currCell).name);
+    %load(dirC(currCell).name);
     
     
     fstep               = 16;
@@ -106,7 +106,7 @@ for currCell=1:size(dirN,1)
     h5.FaceColor        = 'b';
     h5.EdgeColor        = 'none';
     h5.FaceAlpha        = 0.2;
-    title(dirN(currCell).name,'fontsize',18,'interpreter','none')
+%    title(dirN(currCell).name,'fontsize',18,'interpreter','none')
     %       title('(k)','fontsize',18)
     view(8,14)
     
