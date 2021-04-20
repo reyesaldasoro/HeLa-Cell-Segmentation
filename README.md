@@ -399,7 +399,7 @@ The output is one folder with 300 slices each 2,000 x 2,000 pixels wide.
 
 There is a decision to process all the ROIs, there may be cells that are close to the top or bottom and thus would have only part of a cell, and similarly, the centroids may have been close to the edge of the volume.  It is possible to visualise these cells by displaying each volume. It is more practical to remove a corner to see how well located is each cell:
 
-<img src="Figures/Fig_allROIS.png" alt="Fig3" width="400"/>
+<img src="Figures/Fig_allROIS.png" alt="Fig3" width="900"/>
 
 <img src="Figures/generate_ROI_Hela.png" alt="Fig3" width="400"/>
 
