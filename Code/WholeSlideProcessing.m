@@ -127,7 +127,7 @@ for k=1:numFolders
         load(dir_nuclei(k).name);
         %imagesc(squeeze(Hela_background(:,1000,:)+2*Hela_nuclei(:,1000,:)))
         
-        [Hela_cell]                         = segmentCellHelaEM_3D(Hela_nuclei,Hela_background);
+        [Hela_cell]                         = segmentCellHelaEM_3D(Hela_nuclei,Hela_background,[],final_centroid(k,3));
         %Hela_cell                           = Hela_cell>0.5;
         saveName                            = strcat(dir_nuclei(k).name(1:end-11),'_Cell');
         save(saveName, 'Hela_cell');
