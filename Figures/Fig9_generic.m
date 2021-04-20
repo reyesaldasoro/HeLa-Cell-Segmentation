@@ -6,7 +6,7 @@ cd('C:\Users\sbbk034\OneDrive - City, University of London\Documents\GitHub\HeLa
 dirN = dir('Hela_ROI_*_Nuclei.mat');
 dirC = dir('Hela_ROI_*_Cell.mat');
 %%
-currCell=29;
+currCell=7;
 load(dirN(currCell).name);
 load(dirC(currCell).name);
 %load('Hela_ROI_19_30_5781_3527_321_Cell.mat')
