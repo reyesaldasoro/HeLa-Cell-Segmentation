@@ -220,7 +220,7 @@ There are three options to select the image to be segmented:
 >> IndividualHelaLabels       = detectNumberOfCells('DataWholeSlice',10);
 </pre>
 
-
+<!---
 
 <a name="validation"/>
 <h2>Visual validation of the output</h2>
@@ -323,7 +323,7 @@ Folder will be created
 
 
 ![Screenshot2](Figures/MultipleROIs.png)
-
+--->
 
 [//]: # (------------------------------------------------------------------------- 8000 here below ------------------------------------------------------------)
 
@@ -338,13 +338,16 @@ The number of cells to be identified can be pre-defined per slice and then the p
 </pre>
 
 
+<img src="Figures/Fig3.png" alt="Fig3" width="600"/>
+
 **baseDir** is a link to the folder that contains the 518 images, e.g.
 
 <pre class="codeinput">
 baseDir                         = 'C:\Users\sbbk034\Documents\Acad\Crick\Hela8000_tiff\';
 </pre>
 
-The number of cells to be detected per slice in this case is **20** and the final **1** is used to display the output. The algorithm has linked the 20 cells per slice into 30 cells. 
+The selected number of cells to be detected *per slice* in this case is **20** and the final **1** is used to display the output. As the slices are processed, each with 20 cells, which are not always the same in each slice, there will be more cells detected. In this case, the algorithm has detected a total of 30 cells. 
+
  The function returns
 
 <pre class="codeinput">
@@ -380,11 +383,15 @@ Important among these ones are:
 </pre>
 
 
+ The next step is to crop these cells into their own individual regions of interest so that the become a single instance of a cell.  This is done with the command generate_ROI_Hela, which is used in the following way:
  
- 
+<pre class="codeinput"> 
+listFolders         = generate_ROI_Hela (baseDir,final_coords,final_centroid);
+</pre>
 
+The output is one folder with 300 slices each 2,000 x 2,000 pixels wide.
 
-
+<img src="Figures/generate_ROI_Hela.png" alt="Fig3" width="400"/>
 
 
 The centroids of the cells are linked vertically to identify which centroids correspond to the same cell. The figure below illustrates the centroids at every 20 slices (i.e. 26 slices were analysed) 
