@@ -62,8 +62,17 @@ end
 
 if numSlices ==1
     % Two dimensional case
-    % 
+    % Count to see if nuclei is present
     areaNuclei      = sum(Hela_nuclei(:));
+    %reduce the previous cell segmentation
+    if exist('Hela_cellPrevious','var')
+        % if there is a previous cell, there cannot be background inside
+        % that cell
+        erodedPreviousCell =  imerode(Hela_cellPrevious,ones(51));
+        Hela_background    = Hela_background.*(1-erodedPreviousCell);
+    end
+    
+    
     % Find the distance transform from the background, then filter and use
     % watershed to determine where to "cut" the cell, especially when there
     % are 2 cells that are close to each other
@@ -100,7 +109,7 @@ if numSlices ==1
             % many regions, then selects regions that are touched by the
             % previous, BUT when cell is very small, the background or
             % other cells may get be very close so discard big ones
-            previousReg         = regionsCells.*imerode(Hela_cellPrevious,ones(51));
+            previousReg         = regionsCells.*erodedPreviousCell; %imerode(Hela_cellPrevious,ones(51));
             previousReg_P       = regionprops(previousReg,'Area');
             currentCellRegs2    = unique(previousReg);
             currentCellRegs2(currentCellRegs2==0)=[];
@@ -215,12 +224,13 @@ else
     for currentSlice=centralSlice+1:numSlices 
         disp(strcat('Processing slice number',32,num2str(currentSlice)))
         Hela_cell(:,:,currentSlice) = segmentCellHelaEM_3D(Hela_nuclei(:,:,currentSlice),Hela_background(:,:,currentSlice)|General_background,Hela_cell(:,:,currentSlice-1));
-        %if rem(currentSlice,10)==0
-        %     imagesc(Hela_background(:,:,currentSlice)+2*Hela_cell(:,:,currentSlice)+3*Hela_nuclei(:,:,currentSlice))
-        %    title(currentSlice)
-        %     qqq=1;
-        %     drawnow;
-        %end
+%         % This allows to display every 10 slices
+%         if rem(currentSlice,10)==0
+%              imagesc(Hela_background(:,:,currentSlice)+2*Hela_cell(:,:,currentSlice)+3*Hela_nuclei(:,:,currentSlice))
+%             title(currentSlice)
+%              qqq=1;
+%              drawnow;
+%         end
     end
     % Then go down
     for currentSlice=centralSlice-1:-1:1
