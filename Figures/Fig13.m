@@ -46,7 +46,7 @@ for SliceToRead             = 150:90:330
     end
           figure
         imagesc(composite)
-        title(strcat('Slice = ',32,num2str(SliceToRead)))
+        title(strcat('Slice = ',32,num2str(SliceToRead)),'fontsize',18)
         for k=1:30
             if (SliceToRead>=final_coords(k,5))&&(SliceToRead<=final_coords(k,6))
            % if (SliceToRead>=final_centroid(k,4))&&(SliceToRead<=final_centroid(k,5))
@@ -64,9 +64,9 @@ h1=gca;
 set(gcf,'position',[ 500  200  600  500])
 %%
 
-h1.Position=[0.07 0.05 0.92 0.9];
+h1.Position=[0.07 0.05 0.92 0.89];
 %%
-filename ='Fig13A.png';
+filename ='Fig13B.png';
 print('-dpng','-r300',filename)
 
 
