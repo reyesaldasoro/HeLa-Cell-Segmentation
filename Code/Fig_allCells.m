@@ -89,14 +89,14 @@ for currCell=1:numCells
     hLight1 = camlight ('left');
     axis tight
     grid on
-    p1 = patch(isocaps(currSlices2(1:step:end,1:step:end,:), 5),'FaceColor','interp','EdgeColor','none');
-    currSlices2=currSlices;
-    currSlices2(1001:2000,:,:)=[];
-    p2 = patch(isocaps(currSlices2(1:step:end,1:step:end,:), 5),'FaceColor','interp','EdgeColor','none');
-    colormap gray
-    view(136,40)
-    axis tight
-    axis off
+%     p1 = patch(isocaps(currSlices2(1:step:end,1:step:end,:), 5),'FaceColor','interp','EdgeColor','none');
+%     currSlices2=currSlices;
+%     currSlices2(1001:2000,:,:)=[];
+%     p2 = patch(isocaps(currSlices2(1:step:end,1:step:end,:), 5),'FaceColor','interp','EdgeColor','none');
+%     colormap gray
+%     view(136,40)
+%     axis tight
+%     axis off
     title(strcat('(',(dirN(currCell).name(10:11)),')'),'fontsize',10)
     
     %
