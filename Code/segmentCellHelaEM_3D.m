@@ -186,8 +186,8 @@ if numSlices ==1
     else
         Hela_cell   = (Hela_cell_L==1);
     end
-    imagesc(Hela_cell+2*Hela_background)
-    drawnow
+    %imagesc(Hela_cell+2*Hela_background)
+    %drawnow
     Hela_steps(:,:,1) = Hela_background_dist;
     Hela_steps(:,:,2) = regionsCells;
     Hela_steps(:,:,3) = currentCell;
@@ -228,12 +228,12 @@ else
         disp(strcat('Processing slice number',32,num2str(currentSlice)))
         Hela_cell(:,:,currentSlice) = segmentCellHelaEM_3D(Hela_nuclei(:,:,currentSlice),Hela_background(:,:,currentSlice)|General_background,Hela_cell(:,:,currentSlice-1));
         % This allows to display every 10 slices
-        if rem(currentSlice,10)==0
-             imagesc(Hela_background(:,:,currentSlice)+2*Hela_cell(:,:,currentSlice)+3*Hela_nuclei(:,:,currentSlice))
-            title(currentSlice)
-             qqq=1;
-             drawnow;
-        end
+%         if rem(currentSlice,10)==0
+%              imagesc(Hela_background(:,:,currentSlice)+2*Hela_cell(:,:,currentSlice)+3*Hela_nuclei(:,:,currentSlice))
+%             title(currentSlice)
+%              qqq=1;
+%              drawnow;
+%         end
     end
     % Then go down
     for currentSlice=centralSlice-1:-1:1
