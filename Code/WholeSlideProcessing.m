@@ -96,18 +96,21 @@ print('-dpng','-r300',filename)
 
 
 %% Iterate over all folders to extract Nuclei and Background, store as one file
-for k=[30]  %1:numFolders
+for k=[17]  %1:numFolders
     tic
-    [Hela_nuclei,Hela_background]     	= segmentNucleiHelaEM_3D(listFolders{k},(final_centroid(30,3)-final_coords(30,5)));
-    saveName                            = strcat(listFolders{k},'_Nuclei');
-    save(saveName, 'Hela_nuclei', 'Hela_background');
-    t3(k)=toc;
-    [Hela_cell]                         = segmentCellHelaEM_3D(Hela_nuclei,Hela_background,[],(final_centroid(30,3)-final_coords(30,5)));
+    [Hela_nuclei,Hela_background]     	= segmentNucleiHelaEM_3D(listFolders{k},(final_centroid(k,3)-final_coords(k,5)));
+    t3(k)=toc;tic
+    [Hela_cell]                         = segmentCellHelaEM_3D(Hela_nuclei,Hela_background,[],(final_centroid(k,3)-final_coords(k,5)));
     %Hela_cell                           = Hela_cell>0.5;
     %saveName                            = strcat(dir_nuclei(k).name(1:end-11),'_Cell');
-    saveName                            = strcat(listFolders{k},'_Cell'); 
-    save(saveName, 'Hela_cell'); 
+    t4(k)=toc;
 end
+%%
+saveName                            = strcat(listFolders{k},'_Nuclei');
+save(saveName, 'Hela_nuclei', 'Hela_background');
+saveName                            = strcat(listFolders{k},'_Cell');
+save(saveName, 'Hela_cell');
+  
 %% Iterate over all folders to extract the cell
 dir0                = 'C:\Users\sbbk034\OneDrive - City, University of London\Documents\GitHub\HeLa-Cell-Segmentation\Code';
 % dir1                = dir(strcat(dir0,filesep,'Hela_RO*'));
