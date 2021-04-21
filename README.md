@@ -395,11 +395,11 @@ listFolders         = generate_ROI_Hela (baseDir,final_coords,final_centroid);
 
 The output is one folder with 300 slices each 2,000 x 2,000 pixels wide.
 
-<img src="Figures/generate_ROI_Hela.png" alt="Fig3" width="400"/>
+<img src="Figures/generate_ROI_Hela.png" alt="generate_ROI_Hela" width="400"/>
 
 There is a decision to process all the ROIs, there may be cells that are close to the top or bottom and thus would have only part of a cell, and similarly, the centroids may have been close to the edge of the volume.  It is possible to visualise these cells by displaying each volume. It is more practical to remove a corner to see how well located is each cell:
 
-<img src="Figures/Fig_allROIS.png" alt="Fig3" width="900"/>
+<img src="Figures/Fig_allROIS.png" alt="Fig_allROIs" width="900"/>
 
 It can be seen that there are some cells that are either low and part of the cells is not within the field of view (1,2) and some others that are rather high (29,30) and part of the cell is again outside the field of view.  In addition, there are others that, due to their proximity to the edges of the volume are not centred but rather to a side (6,14). Observing the variable **final_centroid** is possible to determine how far away (i.e. absolute distance) are the centroids from the edges. If we use a margin of 500 pixels, we can observe that the centroids of following cells are less that the margin away in at least one dimension:
 
@@ -423,6 +423,10 @@ In addition, with respect to the top and bottom edges the following volumes are 
 </pre>
 
 The situation of cells that are close to the top and bottom are slightly different, here the problem is that the segmentation will not be of a complete cell but only part of it, so the segmentation may appear as a *hat* when it is in the lower section of the volume or a *bowl* if it is in the upper section. If metrics like volume are to be obtained, then these partial sections are not to be used. However, if what is of interest is an observation, rather than a quantification, then it is not a problem.
+
+The segmentation of the cells and nuclei is shown below for 25 of the 30 cells. Cells 6, 14, 15, 27, 28 were not further processed. The cells are placed in the same location as the ROIs above to help visualisation.
+
+<img src="Figures/Fig_allCells.png" alt="Fig_allCells" width="900"/>
 
 
 The segmentation of the nuclear envelope follows these steps: (a) low-pass filtering, (b) Edges detection, the edges were further dilated
@@ -483,7 +487,7 @@ Illustration of segmentation of 23 cells and nuclear envelopes. The cells were s
 
 
 
-<img src="Figures/Fig10.png" alt="Fig10" width="600"/>
+<img src="Figures/Fig12B.png" alt="Fig12" width="600"/>
 
 Illustration of the nuclei only.
 
