@@ -96,7 +96,7 @@ print('-dpng','-r300',filename)
 
 
 %% Iterate over all folders to extract Nuclei and Background, store as one file
-for k=[17]  %1:numFolders
+for k=[20]  %1:numFolders
     tic
     [Hela_nuclei,Hela_background]     	= segmentNucleiHelaEM_3D(listFolders{k},(final_centroid(k,3)-final_coords(k,5)));
     t3(k)=toc;tic
