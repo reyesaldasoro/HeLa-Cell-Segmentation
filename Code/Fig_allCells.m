@@ -120,7 +120,7 @@ for k=1:30
     if isempty(handleAx(k).Title.String)
         handleAx(k).Visible='off';
     end
-     handleAx(k).View=[68 48];
+     handleAx(k).View=[47 21];
      handleAx(k).XTickLabel='';
      handleAx(k).ZTickLabel='';
      handleAx(k).YTickLabel='';
@@ -130,5 +130,5 @@ end
 
 
 %%
-filename ='Fig_allROIS.png';
+filename ='Fig_allCells.png';
 print('-dpng','-r300',filename)
