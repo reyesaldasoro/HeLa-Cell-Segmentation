@@ -51,8 +51,8 @@ fstep               = 16;
 %%
 
 numFiles_nuc            = size(dir_nuclei,1);
-cells_to_discard        = [1 6 15 27 28 29 30];  % these cells are close to the edges, discard for now
-
+%cells_to_discard        = [1 6 15 27 28 29 30];  % these cells are close to the edges, discard for now
+cells_to_discard        = [];
 % Colours
 jet2    = jet;
 jet3    = jet2(round(linspace(1,256,numFiles_nuc)),:);
@@ -61,6 +61,7 @@ jet3    = jet2(round(linspace(1,256,numFiles_nuc)),:);
 
 %%
 figure
+fstep                   = 16;
 for k=1:numFiles_nuc 
     %figure
     % Usual issue when reading the folders 10, 11, ... 19, 2, 20 ...
@@ -134,7 +135,7 @@ axis([1 rowsWhole 1 colsWhole 1 numTiffs])
 z2dWhole                     = ones(rowsWhole,colsWhole);
 %%
 hold on
-fstep                   = 8;
+fstep                   = 4;
 currSliceSurf           = surf(x2dWhole(1:fstep:end,1:fstep:end),...
                                y2dWhole(1:fstep:end,1:fstep:end),...
                                SliceToRead*z2dWhole(1:fstep:end,1:fstep:end),...
@@ -146,12 +147,12 @@ h1=gca;
 set(gcf,'position',[ 500  200  900  500])
 %%
 
-h1.Position=[0.06 0.07 0.9 0.91];
+h1.Position=[0.045 0.05 0.95 1.045];
 %%
-view(45,20)
-filename ='Fig4a.png';
+view(50,60)
+filename ='Fig12.png';
 print('-dpng','-r300',filename)
 view(75,70)
-filename ='Fig4b.png';
+filename ='Fig12B.png';
 print('-dpng','-r300',filename)
 
