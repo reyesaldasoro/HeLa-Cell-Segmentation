@@ -89,33 +89,41 @@ for currCell=1:numCells
     hLight1 = camlight ('left');
     axis tight
     grid on
-%     p1 = patch(isocaps(currSlices2(1:step:end,1:step:end,:), 5),'FaceColor','interp','EdgeColor','none');
-%     currSlices2=currSlices;
-%     currSlices2(1001:2000,:,:)=[];
-%     p2 = patch(isocaps(currSlices2(1:step:end,1:step:end,:), 5),'FaceColor','interp','EdgeColor','none');
-%     colormap gray
-%     view(136,40)
-%     axis tight
-%     axis off
+    p1 = patch(isocaps(currSlices2(1:step:end,1:step:end,:), 5),'FaceColor','interp','EdgeColor','none');
+    currSlices2=currSlices;
+    currSlices2(1001:2000,:,:)=[];
+    p2 = patch(isocaps(currSlices2(1:step:end,1:step:end,:), 5),'FaceColor','interp','EdgeColor','none');
+    colormap gray
+    view(136,40)
+    axis tight
+    axis off
     title(strcat('(',(dirN(currCell).name(10:11)),')'),'fontsize',10)
     
     %
 end
 %%
-for k=1:numCells
+for k=1:30
     subplot(5,6,k)
     handleAx(k)=gca;  
     axis ij
     view(45,45)
 end
-vertPos = 0.76:-0.19:0;%[0.8 0.6 0.4 0.2 0.0];
-horPos  = 0.01:0.165:0.89;
-for k=1:numCells
-    handleAx(k).Position(3:4)=[0.15 0.2];
+%%
+vertPos = 0.8:-0.19:0;%[0.8 0.6 0.4 0.2 0.0];
+horPos  = 0.02:0.165:0.89;
+for k=1:30
+    handleAx(k).Position(3:4)=[0.14 0.15];
     %  ceil([1:30]/6)  this locates the rows
     handleAx(k).Position(2) =vertPos (ceil(k/6));
     %  1+rem(-1+[1:30],6)  this locates the columns
     handleAx(k).Position(1) =horPos (1+rem(-1+k,6));
+    if isempty(handleAx(k).Title.String)
+        handleAx(k).Visible='off';
+    end
+     handleAx(k).View=[68 48];
+     handleAx(k).XTickLabel='';
+     handleAx(k).ZTickLabel='';
+     handleAx(k).YTickLabel='';
 end
 %%
   set(gcf,'position',[ 400  200  900  530])
