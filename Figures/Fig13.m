@@ -17,7 +17,7 @@ numFiles_cell       = size(dir_cell,1);
 load('final_coords.mat')
 load(dir_nuclei(3).name)
 %%
-for SliceToRead             = 150:90:330
+for SliceToRead             = 60 %150:90:330
     currSlice               = imfilter(imread(strcat(baseDir,filesep,dirTiffs(SliceToRead).name)),ones(3)/9);
     [rowsWhole,colsWhole]   = size(currSlice);
     
@@ -66,7 +66,7 @@ set(gcf,'position',[ 500  200  600  500])
 
 h1.Position=[0.07 0.05 0.92 0.89];
 %%
-filename ='Fig13B.png';
+filename ='Fig13_60.png';
 print('-dpng','-r300',filename)
 
 
