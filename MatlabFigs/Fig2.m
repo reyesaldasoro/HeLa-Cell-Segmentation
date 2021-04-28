@@ -8,6 +8,8 @@ gaussFilt       = fspecial('Gaussian',3,1);
 k               = 220;
 Hela_3D         = ( imfilter(imread(strcat(baseDir,dir0((k)).name)), gaussFilt));
 %%
+cd('C:\Users\sbbk034\OneDrive - City, University of London\Documents\GitHub\HeLa-Cell-Segmentation\Code')
+
 % the slices will be subsampled (as they are 8,000 x 8,000
 stepPix             = 4;
 numCells            = 20;
@@ -16,6 +18,10 @@ hela2                               = double(imfilter(Hela_3D,fspecial('gaussian
     maxDist = max(helaDistFromBackground2(:));
 %%
 h131 = subplot(131);
+% add scale bar
+ % add a scale bar, since the voxels are 10 nm, 500 pixels are 5 microns
+    hela2(7000:7150,1000:1500)=0;
+
     imagesc(hela2)
 
     title('(a)','fontsize',18)
@@ -65,4 +71,6 @@ hWidth = 0.31;
  
  
 %% 
- print('-dpng','-r400','Fig2.png')
+cd('C:\Users\sbbk034\OneDrive - City, University of London\Documents\GitHub\HeLa-Cell-Segmentation\MatlabFigs')
+
+ print('-dpng','-r400','Fig2_scale.png')
