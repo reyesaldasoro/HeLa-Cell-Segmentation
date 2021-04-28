@@ -5,9 +5,10 @@ close all
 baseDir             = 'C:\Users\sbbk034\Documents\Acad\Crick\Hela8000_tiff\';
 dir0                = dir(strcat(baseDir,filesep,'*.t*'));
 numFiles            = size(dir0,1);
-fstep               = 8;
+
 
 %%
+fstep               = 8;
 figure
 h121 = subplot(121);
 hold on 
@@ -17,6 +18,8 @@ hold on
     z2d                     = ones(rows,cols);
 for currentSlice        = 1:100:numFiles
     currentImage        = imfilter(imread(strcat(baseDir,filesep,dir0(currentSlice).name)),ones(5)/25);
+    % add a scale bar, since the voxels are 10 nm, 500 pixels are 5 microns
+    currentImage(7000:7500,7000:7200)=0;
 
     %     currentImage(1:currentSlice*10,:) = nan;
     startX              = 1; %currentSlice*10;
@@ -53,6 +56,7 @@ end
 h122 = subplot(122);
 hold on
 %horizontal
+fstep                   = 1;
 [x2d,y2d]               = meshgrid(1:rows,1:cols);
 z2d                     = ones(rows,cols);
 currentSlice            = 100;
@@ -61,7 +65,9 @@ startX                  = 1;
     yCoord              = y2d(startX:fstep:end,1:fstep:end);
     zCoord              = z2d(startX:fstep:end,1:fstep:end);
     imageCoord          = currentData(startX:fstep:end,1:fstep:end,currentSlice);
-    hSurf = surf(xCoord,yCoord,currentSlice*zCoord,imageCoord);
+   % imageCoord(1400:1900,1800:1900)=0;
+
+     hSurf = surf(xCoord,yCoord,currentSlice*zCoord,imageCoord);
     hSurf.EdgeColor='none';
 % vertical
 
@@ -98,4 +104,5 @@ set(gcf,'position',[ 500  400  900  300])
  h122.Position = [0.54 0.08 0.44 0.8];
 
 %%
+filename = 'Fig1_scale.png';
 print('-dpng','-r400',filename)
