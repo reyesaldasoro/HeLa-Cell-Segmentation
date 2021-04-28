@@ -52,7 +52,7 @@ h333(3).Title.String='Comparison ';
  h333(2).Title.FontSize=15;
  h333(3).Title.FontSize=15;
  
-set(gcf,'position',[ 500  200  900  500])
+set(gcf,'position',[ 100  200  00  500])
 xWidth = 0.31;
 yHeight = 0.29;
 h333(1).Position    = [0.02    0.66    xWidth   yHeight];
