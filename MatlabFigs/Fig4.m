@@ -30,7 +30,7 @@ figure
 h241                = subplot(241);
 currImage(1800:1900,1400:1900)=0;
 
-imagesc(currImage);
+imagesc(repmat(currImage,[1 1 3]));
 colormap gray
 h242                = subplot(242);
 
@@ -43,7 +43,7 @@ imagesc(Hela_steps(:,:,2).*(imerode(Hela_steps(:,:,2)>0,ones(9))))
 h245                = subplot(245);
 imagesc(Hela_steps(:,:,3))
 h246                = subplot(246);
-imagesc(Hela_steps(:,:,4))
+imagesc(Hela_steps(:,:,6))
 
 h247                = subplot(247);
 imagesc(Hela_steps(:,:,4)+Hela_steps(:,:,5))
@@ -95,4 +95,4 @@ h248.Position = [0.025+3*aShift 0.02 aWidth aHeight];
  %%
  cd('C:\Users\sbbk034\OneDrive - City, University of London\Documents\GitHub\HeLa-Cell-Segmentation\MatlabFigs')
 
-  print('-dpng','-r400','Fig4_scale.png')
+  print('-dpng','-r400','Fig4_scale_hot.png')
