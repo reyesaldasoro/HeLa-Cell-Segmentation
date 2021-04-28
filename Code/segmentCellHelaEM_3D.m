@@ -193,7 +193,7 @@ if numSlices ==1
     Hela_steps(:,:,3) = currentCell;
     Hela_steps(:,:,4) = Hela_cell3;
     Hela_steps(:,:,5) = Hela_cell4;
-    
+    Hela_steps(:,:,6) = RegionsToKeep3;
 else
     % Three dimensional case
     Hela_cell(rows,cols,numSlices)=0;
