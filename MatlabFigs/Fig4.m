@@ -11,10 +11,10 @@ load('C:\Users\sbbk034\OneDrive - City, University of London\Documents\GitHub\He
 %%
 
 % central slice
-%currSlide = 108;
+currSlide = 108;
 % higher up slice with bigger gaps
 %currSlide = 193;
-currSlide = 241;
+%currSlide = 241;
 
 currImage = imfilter(imread(strcat(baseDirTiff,dir0(currSlide).name)),ones(5)/25);
 
@@ -28,6 +28,8 @@ currImage = imfilter(imread(strcat(baseDirTiff,dir0(currSlide).name)),ones(5)/25
 %
 figure
 h241                = subplot(241);
+currImage(1800:1900,1400:1900)=0;
+
 imagesc(currImage);
 colormap gray
 h242                = subplot(242);
@@ -91,4 +93,6 @@ h247.Position = [0.025+2*aShift 0.02 aWidth aHeight];
 h248.Position = [0.025+3*aShift 0.02 aWidth aHeight];
 
  %%
-  print('-dpng','-r400','Fig4_211.png')
+ cd('C:\Users\sbbk034\OneDrive - City, University of London\Documents\GitHub\HeLa-Cell-Segmentation\MatlabFigs')
+
+  print('-dpng','-r400','Fig4_scale.png')
