@@ -19,6 +19,10 @@ for k=1:3
     composite(:,:,1) = currentImage+50*uint8(current_GT(:,:,currentSlice)==5);
     composite(:,:,2) = currentImage+50*uint8(current_GT(:,:,currentSlice)==2);
     composite(:,:,3) = currentImage;
+    
+    % add a scale bar, since the voxels are 10 nm, 500 pixels are 5 microns
+    composite(1700:1750,1400:1900,:)=0;
+    
     h333(3*k-2)=subplot(3,3,3*k-2);
     imagesc(composite)
     axis off
@@ -52,7 +56,7 @@ h333(3).Title.String='Comparison ';
  h333(2).Title.FontSize=15;
  h333(3).Title.FontSize=15;
  
-set(gcf,'position',[ 100  200  00  500])
+set(gcf,'position',[ 100  100  800  650])
 xWidth = 0.31;
 yHeight = 0.29;
 h333(1).Position    = [0.02    0.66    xWidth   yHeight];
@@ -68,7 +72,9 @@ h333(6).Position    = [0.68    0.34    xWidth   yHeight];
 h333(9).Position    = [0.68    0.02    xWidth   yHeight];
 
 %%
-filename ='Fig5B.png';
+ cd('C:\Users\sbbk034\OneDrive - City, University of London\Documents\GitHub\HeLa-Cell-Segmentation\MatlabFigs')
+
+filename ='Fig6_scale.png';
 print('-dpng','-r300',filename)
 %%  Zoom in
 xx = [100.5 1300.5];
@@ -106,5 +112,5 @@ h333(8).YLim=yy;
 h333(9).YLim=yy;
 %%
 %%
-filename ='Fig6B.png';
+filename ='Fig7_scale.png';
 print('-dpng','-r300',filename)
