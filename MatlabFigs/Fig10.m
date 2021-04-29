@@ -14,6 +14,8 @@ numFiles_nuc        = size(dir_nuclei,1);
 numFiles_cell       = size(dir_cell,1);
 
 %% Prepare for 3D display 
+cd('C:\Users\sbbk034\OneDrive - City, University of London\Documents\GitHub\HeLa-Cell-Segmentation\Code')
+
 load('final_coords.mat')
 load(dir_nuclei(3).name)
 %%
@@ -147,12 +149,16 @@ h1=gca;
 set(gcf,'position',[ 500  200  900  500])
 %%
 
-h1.Position=[0.045 0.05 0.95 1.045];
+h1.Position=[0.045 0.05 0.92 1.045];
 %%
+
+ 
+cd('C:\Users\sbbk034\OneDrive - City, University of London\Documents\GitHub\HeLa-Cell-Segmentation\MatlabFigs')
+
 view(50,60)
-filename ='Fig12.png';
+filename ='Fig_3D_25cells.png';
 print('-dpng','-r300',filename)
 view(75,70)
-filename ='Fig12B.png';
+filename ='Fig_3D_25cellsB.png';
 print('-dpng','-r300',filename)
 
