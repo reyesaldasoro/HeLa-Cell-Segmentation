@@ -450,7 +450,7 @@ The segmentation of one cell from its neighbours follows these steps: distance t
 
 
 
-<img src="Figures/Fig4.png" alt="Fig4" width="600"/>
+<img src="MatlabFigs/Fig4_scale_hot.png" alt="Fig4" width="600"/>
 To process a 3D stack the commands are the following:
 
 
