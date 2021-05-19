@@ -2,6 +2,7 @@
 clear all
 close all
 
+
 %% Basic locations, Folder With TIFFS
 baseDir             = 'C:\Users\sbbk034\Documents\Acad\Crick\Hela8000_tiff\';
 dirTiffs            = dir(strcat(baseDir,filesep,'*.tif*'));
