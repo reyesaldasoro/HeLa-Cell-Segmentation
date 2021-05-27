@@ -189,53 +189,54 @@ end
 %% Interpolate between slices
 % A simple post-processing step is to interpolate between slices/
 
-Hela_nuclei3(rows,cols,numSlices)   = 0;
-% interpolation between slices
-try
-    % This requires memory to have all slices in memory and may not run in all
-    % computers
-    Hela_nuclei3(:,:,2:numSlices-1) =   Hela_nuclei(:,:,1:numSlices-2)+...
-                                        Hela_nuclei(:,:,2:numSlices-1)+...
-                                        Hela_nuclei(:,:,3:numSlices);
-catch
-    for counterS = 2:numSlices-1
-        Hela_nuclei3(:,:,counterS) =   Hela_nuclei(:,:,counterS-1)+...
-                                        Hela_nuclei(:,:,counterS)+...
-                                        Hela_nuclei(:,:,counterS+1);
-    end
-    Hela_nuclei3(:,:,1)             =   Hela_nuclei(:,:,1);
-    Hela_nuclei3(:,:,numSlices)     =   Hela_nuclei(:,:,numSlices);
-end
-Hela_nuclei3                    = round(Hela_nuclei3);
-Hela_nuclei                     = Hela_nuclei3>1;
+% Hela_nuclei3(rows,cols,numSlices)   = 0;
+% % interpolation between slices
+% try
+%     % This requires memory to have all slices in memory and may not run in all
+%     % computers
+%     Hela_nuclei3(:,:,2:numSlices-1) =   Hela_nuclei(:,:,1:numSlices-2)+...
+%                                         Hela_nuclei(:,:,2:numSlices-1)+...
+%                                         Hela_nuclei(:,:,3:numSlices);
+% catch
+%     for counterS = 2:numSlices-1
+%         Hela_nuclei3(:,:,counterS) =   Hela_nuclei(:,:,counterS-1)+...
+%                                         Hela_nuclei(:,:,counterS)+...
+%                                         Hela_nuclei(:,:,counterS+1);
+%     end
+%     Hela_nuclei3(:,:,1)             =   Hela_nuclei(:,:,1);
+%     Hela_nuclei3(:,:,numSlices)     =   Hela_nuclei(:,:,numSlices);
+% end
+% Hela_nuclei3                    = round(Hela_nuclei3);
+% Hela_nuclei                     = Hela_nuclei3>1;
 clear Hela_nuclei3;
 % The 3D Median Filter may be better than the previous interpolation
 Hela_nuclei                     = medfilt3(Hela_nuclei,[3 3 13]);
 %%
-Hela_background3(rows,cols,numSlices)   = 0;
-% interpolation between slices
-try
-    % This requires memory to have all slices in memory and may not run in all
-    % computers
-
-    Hela_background3(:,:,2:numSlices-1) =   Hela_background(:,:,1:numSlices-2)+...
-                                            Hela_background(:,:,2:numSlices-1)+...
-                                            Hela_background(:,:,3:numSlices);                               
-catch
-    for counterS = 2:numSlices-1
-        Hela_background3(:,:,counterS) =    Hela_background(:,:,counterS-1)+...
-                                            Hela_background(:,:,counterS)+...
-                                            Hela_background(:,:,counterS+1);
-    end
-    Hela_background3(:,:,1)             =   Hela_background(:,:,1);
-    Hela_background3(:,:,numSlices)     =   Hela_background(:,:,numSlices);
-end
-                                
-Hela_background3                    = round(Hela_background3);
-Hela_background                     = Hela_background3>1;
-
-clear Hela_background3
+% Hela_background3(rows,cols,numSlices)   = 0;
+% % interpolation between slices
+% try
+%     % This requires memory to have all slices in memory and may not run in all
+%     % computers
+% 
+%     Hela_background3(:,:,2:numSlices-1) =   Hela_background(:,:,1:numSlices-2)+...
+%                                             Hela_background(:,:,2:numSlices-1)+...
+%                                             Hela_background(:,:,3:numSlices);                               
+% catch
+%     for counterS = 2:numSlices-1
+%         Hela_background3(:,:,counterS) =    Hela_background(:,:,counterS-1)+...
+%                                             Hela_background(:,:,counterS)+...
+%                                             Hela_background(:,:,counterS+1);
+%     end
+%     Hela_background3(:,:,1)             =   Hela_background(:,:,1);
+%     Hela_background3(:,:,numSlices)     =   Hela_background(:,:,numSlices);
+% end
+%                                 
+% Hela_background3                    = round(Hela_background3);
+% Hela_background                     = Hela_background3>1;
+% 
+% clear Hela_background3
 % Hela_nuclei is a logical and thus uses less memory than a double, reduce
 % the background as well. Tested with logical and uint8 and uses the same
 % space in disk but since nuclei is logical, keep consistent
+Hela_background                     = medfilt3(Hela_background,[3 3 13]);
 Hela_background = (Hela_background>0);
