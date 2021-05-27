@@ -1,8 +1,14 @@
 clear all
 close all
 
-%% Define the base directory where the data (8000x8000 slices) is stored
-baseDir                         = 'C:\Users\sbbk034\Documents\Acad\Crick\Hela8000_tiff\';
+%% Define the base directories, where the code is and where the data (8000x8000 slices) is stored
+
+codeDir       = 'C:\Users\sbbk034\OneDrive - City, University of London\Documents\GitHub\HeLa-Cell-Segmentation\Code';  
+baseDir       = 'C:\Users\sbbk034\Documents\Acad\Crick\Hela8000_tiff\';
+
+cd(codeDir)
+ 
+
 
 %% Detect the number of cells to be segmented, record centroids and coordinates
 % Currently all ROIs are forced to be 2,000 x 2,000 x 300 This may not
@@ -13,8 +19,10 @@ tic;
 [final_coords,final_centroid,final_cells,final_dist]        = detectNumberOfCells_3D(baseDir,20,0);
 t1=toc;
 
+% This process takes about  ** 45 **  seconds. Data is stored in file
+% "final_coords.mat" it can be read instead.
 
-
+% load('C:\Users\sbbk034\OneDrive - City, University of London\Documents\GitHub\HeLa-Cell-Segmentation\Code\final_coords.mat')
 
 %% With the coordinates previously determined generate the ROIs, 
 % Crop the 8000 slices to 2000 and save in separate folders
