@@ -71,6 +71,14 @@ if (isempty(cannyStdValue))
     cannyStdValue            = 4;
 end
 
+% Check the existance of previousSegmentation,
+if (exist('previousSegmentation','var'))
+    if (isempty(previousSegmentation))
+        clear previousSegmentation;
+    end
+end
+
+
 % Low pass filter for future operations
 Hela_LPF                    = imfilter(Hela,fspecial('Gaussian',7,2));
 %% Find edges and distance from those edges
