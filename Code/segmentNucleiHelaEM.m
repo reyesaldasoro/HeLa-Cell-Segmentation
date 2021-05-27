@@ -111,23 +111,54 @@ Hela_Centroid3      = regionprops(Hela_Centroid2,'Area','Centroid','eccentricity
 
 if ~exist('previousSegmentation','var')
     
-    Hela_Centroid5      = regionprops(Hela_Centroid4,'Area','Centroid','eccentricity','extrema');
+    Hela_Centroid5      = regionprops(Hela_Centroid4,'Area','Centroid','eccentricity','extrema','boundingbox');
     
-    % Detect the extrema of regions
-    Hela_ExtremaMin     = min(reshape(min([Hela_Centroid5.Extrema]),[2,numR]));
-    Hela_ExtremaMax     = max(reshape(max([Hela_Centroid5.Extrema]),[2,numR]));
-    % detect the extrema that will touch the first / last columns and rows, notice that
-    % it is expected that rows and columns are equal, but this could have an impact with
-    % rectangular images
-    
-    testExtreme1        = Hela_ExtremaMin<1;
-    testExtreme2        = Hela_ExtremaMax>(min(rows,cols));
+%     % Detect the extrema of regions
+%     Hela_ExtremaMin     = min(reshape(min([Hela_Centroid5.Extrema]),[2,numR]));
+%     Hela_ExtremaMax     = max(reshape(max([Hela_Centroid5.Extrema]),[2,numR]));
+%     % detect the extrema that will touch the first / last columns and rows, notice that
+%     % it is expected that rows and columns are equal, but this could have an impact with
+%     % rectangular images  
+%     % The test for extrema work well IFF the rows and cols are equal,
+%     % otherwise it will discard things over the larger dimension even when
+%     % they are not touching extremes
+%     testExtreme_min        = Hela_ExtremaMin<1;
+%     testExtreme_max        = Hela_ExtremaMax>(min(rows,cols));
+%     
+%     testExtremes            = testExtreme_min|testExtreme_max;
+%     
+    % Arrange the extrema into a [4 x numR ] matrix with the 
+    % [minC minR maxC maxR]' x number of regions
+    Hela_Extrema            = reshape(([Hela_Centroid5.BoundingBox]),[4,numR]);
+    % Now check that each touch their respective borders
+    if rows==cols
+        % XY plane, just check edges
+        Hela_Extrema2(1,:)      =  Hela_Extrema(1,:)<1;
+        Hela_Extrema2(2,:)      =  Hela_Extrema(2,:)<1;
+        Hela_Extrema2(3,:)      = (Hela_Extrema(1,:)+Hela_Extrema(3,:))>cols;
+        Hela_Extrema2(4,:)      = (Hela_Extrema(2,:)+Hela_Extrema(4,:))>rows;
+    elseif rows>cols
+        % This can be an XY or YZ plane, do not discard the TOP/BOTTOM
+        Hela_Extrema2(1,:)      =  Hela_Extrema(1,:)<0;
+        Hela_Extrema2(2,:)      =  Hela_Extrema(2,:)<1;
+        Hela_Extrema2(3,:)      = (Hela_Extrema(1,:)+Hela_Extrema(3,:))>cols+1;
+        Hela_Extrema2(4,:)      = (Hela_Extrema(2,:)+Hela_Extrema(4,:))>rows;   
+    else
+        % This can be an XY or YZ plane, do not discard the TOP/BOTTOM
+        Hela_Extrema2(1,:)      =  Hela_Extrema(1,:)<1;
+        Hela_Extrema2(2,:)      =  Hela_Extrema(2,:)<0;
+        Hela_Extrema2(3,:)      = (Hela_Extrema(1,:)+Hela_Extrema(3,:))>cols;
+        Hela_Extrema2(4,:)      = (Hela_Extrema(2,:)+Hela_Extrema(4,:))>rows+1;           
+    end
+    % Project down 
+    testExtremes            = max(Hela_Extrema2);
     
     % discard regions in the edges and at the same time fill holes in those that are kept
     % NOTE: WITH VERY LARGE REGIONS, THIS MAY BE THE REGION IN THE CENTRE WHICH EXPANDS
     % TO THE EDGES, THIS IS ESPECIALLY THE CASE WITH LARGE VALUES OF CANNY.
+
     
-    Nuclei_0            = imfill(ismember(Hela_Centroid4,find(~(testExtreme1|testExtreme2))),'holes');
+    Nuclei_0            = imfill(ismember(Hela_Centroid4,find(~(testExtremes))),'holes');
     
     % repeat labelling process to detect small and bringther regions and keep the region in the centre
     [Nuclei_1,numN]     = bwlabel(Nuclei_0);
