@@ -19,6 +19,7 @@ tic;
 [final_coords,final_centroid,final_cells,final_dist]        = detectNumberOfCells_3D(baseDir,20,0);
 t1=toc;
 
+% **************  T I M E S ************************
 % This process takes about  ** 45 **  seconds. Data is stored in file
 % "final_coords.mat" it can be read instead.
 
@@ -28,11 +29,18 @@ t1=toc;
 % Crop the 8000 slices to 2000 and save in separate folders
 tic
 listFolders         = generate_ROI_Hela (baseDir,final_coords,final_centroid);
-numFolders          = size(listFolders,1);
 t2=toc;
 
-%% Determine if the cells are too close to the edge.
+% **************  T I M E S ************************
+% This process takes about  ** 9 **  minutes. 30 ROIs are cropped and
+% stored the 300 TIFF slices in each of the 30 folders.
+% Data is stored in folders Hela_ROI_**_30_Row_Col_Lev the folders names
+% are stored in  load('listFolders.mat')
+% load('listFolders.mat')
 
+%% Determine if the cells are too close to the edge.
+numFolders          = size(listFolders,1);
+% Margin to be included (consider that the ROI is 1-2000
 margin = 700;
 MarginFromEdge=[(1:size(final_centroid,1))' ...
       (final_centroid(:,1)).*(final_centroid(:,1)<margin)+ (8192-final_centroid(:,1)).*(final_centroid(:,1)>(8192-margin)) ...
@@ -40,6 +48,21 @@ MarginFromEdge=[(1:size(final_centroid,1))' ...
       (final_centroid(:,3)).*(final_centroid(:,3)<100)+ ...
       (-final_centroid(:,3)+518).*(final_centroid(:,3)>410)];
 
+% For current data set results are the following:
+%      1     0     0    81
+%      2     0     0    81
+%      6     0   417     0
+%     11     0   546     0
+%     14   489     0     0
+%     15     0   432     0
+%     27   455   489     0
+%     28   588   465    97
+%     29     0     0    97
+%     30     0     0    77
+% 1,2,29,30 are close to the top and bottom, thus not complete cells, but
+% can be used.
+% 6,11,14,15,27,28 are close to edges. But 11 is more than 500 Discard
+% those that are below 500
 
 %% If folders already exist skip previous steps
 dir0                = 'C:\Users\sbbk034\OneDrive - City, University of London\Documents\GitHub\HeLa-Cell-Segmentation\Code';
