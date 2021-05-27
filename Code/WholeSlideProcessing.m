@@ -124,6 +124,14 @@ for k=1:numFolders
 end
 filename ='Fig_allROIS.png';
 print('-dpng','-r300',filename)
+%% Explore tri-axis segmentation
+% Save the data and then permute and pass the variable OR modify the
+% segmentation 
+
+
+% Hela_3D_xz=permute(Hela_3D,[1 3 2]);
+
+
 
 
 %% Iterate over all folders to extract Nuclei and Background, store as one file
