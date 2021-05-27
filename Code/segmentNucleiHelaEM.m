@@ -1,4 +1,4 @@
-function [nucleiHela,avNucleiIntensity,envelopeIntensity] = segmentNucleiHelaEM(Hela,previousSegmentation,cannyStdValue)
+function [nucleiHela,avNucleiIntensity,envelopeIntensity] = segmentNucleiHelaEM(Hela,previousSegmentation,cannyStdValue,Hela_background)
 %function nucleiHela = segmentNucleiHelaEM(Hela,previousSegmentation,cannyStdValue)
 %--------------------------------------------------------------------------
 % Input         Hela                    : an image in Matlab format,it can be 2D/3D, double/uint8
@@ -77,6 +77,10 @@ if (exist('previousSegmentation','var'))
         clear previousSegmentation;
     end
 end
+% Check the existance of previousSegmentation,
+if (~exist('Hela_background','var'))
+        Hela_background=zeros(rows,cols);
+end
 
 
 % Low pass filter for future operations
@@ -104,7 +108,7 @@ else
 end
 Hela_Centroid       =  Hela_Edge+(Hela_Edge_D<dilationEdges);
 
-Hela_Centroid2      = bwlabel(Hela_Centroid==0);
+Hela_Centroid2      = (bwlabel(Hela_Centroid==0)).*(1-Hela_background);
 Hela_Centroid3      = regionprops(Hela_Centroid2,'Area','Centroid','eccentricity','extrema');
 
 [Hela_Centroid4,numR]      = bwlabel(ismember(Hela_Centroid2,find([Hela_Centroid3.Area]>10000)));
@@ -159,7 +163,7 @@ if ~exist('previousSegmentation','var')
 
     
     Nuclei_0            = imfill(ismember(Hela_Centroid4,find(~(testExtremes))),'holes');
-    
+
     % repeat labelling process to detect small and bringther regions and keep the region in the centre
     [Nuclei_1,numN]     = bwlabel(Nuclei_0);
     %Nuclei_2            = regionprops(Nuclei_1,Hela,'Area','MeanIntensity','Centroid');
