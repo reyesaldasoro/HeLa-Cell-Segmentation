@@ -140,8 +140,9 @@ if (isempty(centralSlice))
     centralSlice                            = round(numSlices/2);
 end
 
-Hela_nuclei(:,:,centralSlice)           = segmentNucleiHelaEM(Hela_3D(:,:,centralSlice));    
 Hela_background(:,:,centralSlice)       = segmentBackgroundHelaEM(Hela_3D(:,:,centralSlice));
+Hela_nuclei(:,:,centralSlice)           = segmentNucleiHelaEM(Hela_3D(:,:,centralSlice),[],cannyStdValue);    
+
 %% iterate over all slices
 for currentSlice=centralSlice+1:numSlices 
     % Iterate from the central slice UP, display the current position
@@ -150,7 +151,7 @@ for currentSlice=centralSlice+1:numSlices
     % only process the current slice if the previous contains results
     if (sum(sum(Hela_nuclei(:,:,currentSlice-1))))>0
         % Perform segmentation and save in the 3D Matrix       
-        Hela_nuclei(:,:,currentSlice)       = segmentNucleiHelaEM(    Hela_3D(:,:,currentSlice),Hela_nuclei(:,:,currentSlice-1));
+        Hela_nuclei(:,:,currentSlice)       = segmentNucleiHelaEM(    Hela_3D(:,:,currentSlice),Hela_nuclei(:,:,currentSlice-1),cannyStdValue,Hela_background(:,:,currentSlice));
     else
         disp('no nuclei detected')
     end
@@ -165,7 +166,7 @@ for currentSlice=centralSlice:-1:1
     Hela_background(:,:,currentSlice)   = segmentBackgroundHelaEM(Hela_3D(:,:,currentSlice));
     % only process the current slice if the previous contains results
     if (sum(sum(Hela_nuclei(:,:,currentSlice+1))))>0
-        Hela_nuclei(:,:,currentSlice)       = segmentNucleiHelaEM(Hela_3D(:,:,currentSlice),Hela_nuclei(:,:,currentSlice+1),5);
+        Hela_nuclei(:,:,currentSlice)       = segmentNucleiHelaEM(Hela_3D(:,:,currentSlice),Hela_nuclei(:,:,currentSlice+1),cannyStdValue,Hela_background(:,:,currentSlice));
     else
         disp('no nuclei detected')
     end
