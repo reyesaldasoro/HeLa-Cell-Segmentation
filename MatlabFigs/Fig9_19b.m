@@ -97,7 +97,7 @@ grid on
         h5.FaceColor        = 'b';
         h5.EdgeColor        = 'none';
         h5.FaceAlpha        = 0.2;
-title(dirN(currCell).name,'fontsize',18,'interpreter','none')
+%title(dirN(currCell).name,'fontsize',18,'interpreter','none')
 %       title('(k)','fontsize',18) 
 view(8,14)
 
