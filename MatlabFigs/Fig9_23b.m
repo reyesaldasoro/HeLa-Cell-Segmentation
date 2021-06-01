@@ -46,7 +46,7 @@ jet3    = jet2(round(linspace(1,256,numFiles)),:);
 [c,d]   = sort(rand(numFiles,1));
 
 %%
-fstep               = 4;
+fstep               = 16;
 
         surf_Nuclei          = isosurface(yy_3D(1:fstep:end,1:fstep:end,minSlice:maxSlice)   ,...
                                           xx_3D(1:fstep:end,1:fstep:end,minSlice:maxSlice)  ,...
