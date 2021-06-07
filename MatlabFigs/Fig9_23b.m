@@ -22,7 +22,6 @@ for k=1:numSlices
     yy_3D(:,:,k)        = y2d;    
 end
 
-%%
 
 %% This is for the surface 
 % We could create the surface directly with this, but as the volume is rather large,
@@ -131,3 +130,28 @@ h133.Position=[0.7 0.1 0.28 0.8];
 
 filename ='Fig7_b.png';
 print('-dpng','-r300',filename)
+
+%% Create GIF
+
+clear F;
+for k=2:2:360
+    h131.View=[-173+k 11];
+    h132.View=[8+k 21];
+    h133.View=[8+k 21];
+    drawnow;
+    %pause(0.1);
+    F(k/2)=getframe(h0);
+end
+%%
+clear *Gif
+[imGif,mapGif] = rgb2ind(F(11).cdata(:,1:1:end,:),256,'nodither');
+numFrames      = size(F,2);
+imGif(1,1,1,numFrames) = 0;
+for k = 1:numFrames
+    imGif(:,:,1,k) = rgb2ind(F(k).cdata(:,1:1:end,:),mapGif,'nodither');
+end
+
+%%
+imwrite(imGif,mapGif,'HelaNucleiPlasma3.gif',...
+            'DelayTime',0,'LoopCount',inf)
+
