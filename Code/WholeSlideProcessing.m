@@ -77,7 +77,7 @@ for k=1:numFolders
     listFolders{k,1} = dir2(k).name;
 end
 %% Iterate over all folders and visualise all volumes in one figure
-for k=1:numFolders
+for k=1:1%numFolders
     disp(k)
     currFolder  = dir2(k).name;
     currDir     = dir(strcat(dir0,filesep,currFolder,filesep,'*.tif'));
