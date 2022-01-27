@@ -42,8 +42,8 @@ No systematic attempt to make the code faster was made.
 This work has been published in PLOS ONE (2020) and the Journal of Imaging (2021, 2019). If you find the work or the software interesting or useful, please cite as:<br> <br>
 
 <b>C Karabağ, ML Jones, CC Reyes-Aldasoro
-Volumetric Semantic Instance Segmentation of the Plasma Membrane of HeLa Cells 
- J. Imaging 2021, 7(6), 93; https://doi.org/10.3390/jimaging7060093 
+Volumetric Semantic Instance Segmentation of the Plasma Membrane of HeLa Cells
+ J. Imaging 2021, 7(6), 93; https://doi.org/10.3390/jimaging7060093
 </b>
 <br><br>
 
@@ -68,7 +68,7 @@ A previous version was accepted as an oral presentation in the conference Medica
 <h2> Data sets </h2>
 </a>
 
-All the data is available. 
+All the data is available.
 <ul>
 <li> The 8000x8000 data sets are freely available through EMPIAR: http://dx.doi.org/10.6019/EMPIAR-10094
 <li> The cropped images at 2000x2000 data sets are available through EMPIAR: https://dx.doi.org/10.6019/EMPIAR-10478
@@ -76,6 +76,13 @@ All the data is available.
 <li> The 5-class ground truth (1 nuclear envelope, 2 nucleus, 3 other cells, 4 background, 5 cell) is available through Zenodo: https://zenodo.org/record/4590903
 </ul>
 <br>
+
+Data sets produced with this code are hosted in a parallel repository:
+<br>
+
+https://github.com/reyesaldasoro/Hela-Cell-Data
+<br>
+
 
 <a name="description"/>
 <h2> Brief description </h2>
@@ -90,7 +97,7 @@ distance transforms and delineation of the nuclear and cell membranes.
 The algorithm relies on a background that is brighter than the cells and their structures as can be seen in the figures of this page.
 
 The algorithm to segment the nuclear envelope assumes the following: there is a single HeLa cell of interest, the  centre of the cell is located at centre
-of a 3D stack of images, the nuclear envelope is darker than the nuclei or its surroundings, the background is brighter than any cellular structure. 
+of a 3D stack of images, the nuclear envelope is darker than the nuclei or its surroundings, the background is brighter than any cellular structure.
 
 The algorithm will segment regions of interest to ensure that there is a single HeLa cell of interest (there may be more surrounding the cell) in each cropped region..
 
@@ -114,7 +121,7 @@ Hela_nuclei     	= segmentNucleiHelaEM(Hela);
 </pre>
 
 To process a stack of images, you can use the extension of the previous function through *segmentNucleiHelaEM_3D*. The input argument can be either:
-1. a folder where the stack of images (these have to be *tiff* images, will analyse if there are other extension later on), one image per slice of the data, 
+1. a folder where the stack of images (these have to be *tiff* images, will analyse if there are other extension later on), one image per slice of the data,
 2. a multidimensional TIFF file,
 3. a three dimensional Matlab matrix.
 
@@ -352,7 +359,7 @@ The number of cells to be identified can be pre-defined per slice and then the p
 baseDir                         = 'C:\Users\sbbk034\Documents\Acad\Crick\Hela8000_tiff\';
 </pre>
 
-The selected number of cells to be detected *per slice* in this case is **20** and the final **1** is used to display the output. As the slices are processed, each with 20 cells, which are not always the same in each slice, there will be more cells detected. In this case, the algorithm has detected a total of 30 cells. 
+The selected number of cells to be detected *per slice* in this case is **20** and the final **1** is used to display the output. As the slices are processed, each with 20 cells, which are not always the same in each slice, there will be more cells detected. In this case, the algorithm has detected a total of 30 cells.
 
  The function returns
 
@@ -366,13 +373,13 @@ The selected number of cells to be detected *per slice* in this case is **20** a
   final_coords        30x6              1440  double              
   final_dist          30x26             6240  double              
 
->> 
+>>
 </pre>
 
 Important among these ones are:
 * the **centroids** of each cell, [row, column, z-stack position, base, top] e.g.
- 
-<pre class="codeinput"> 
+
+<pre class="codeinput">
  1280	4303	121	1	221
 5825	2002	101	1	181
 7312	3770	121	21	221
@@ -381,7 +388,7 @@ Important among these ones are:
 
 * the **coordinates**  to be cropped of each cell, [init row, fin row,  init column fin column, init z fin z] e.g.
 
-<pre class="codeinput"> 
+<pre class="codeinput">
 1	2000	665	2664	1	300
 5005	7004	3739	5738	1	300
 280	2279	3303	5302	1	300
@@ -389,13 +396,13 @@ Important among these ones are:
 </pre>
 
 
-The centroids of the cells are linked vertically to identify which centroids correspond to the same cell. The figure below illustrates the centroids at every 20 slices (i.e. 26 slices were analysed) 
+The centroids of the cells are linked vertically to identify which centroids correspond to the same cell. The figure below illustrates the centroids at every 20 slices (i.e. 26 slices were analysed)
 
 <img src="Figures/Fig3.png" alt="Fig3" width="600"/>
 
 The next step is to crop these cells into their own individual regions of interest so that the become a single instance of a cell.  This is done with the command generate_ROI_Hela, which is used in the following way:
- 
-<pre class="codeinput"> 
+
+<pre class="codeinput">
 listFolders         = generate_ROI_Hela (baseDir,final_coords,final_centroid);
 </pre>
 
@@ -417,7 +424,7 @@ It can be seen that there are some cells that are either low and part of the cel
 28	588	465	97
 </pre>
 
-There are several complications if the cell is not well centred: (a) there may be several cells and it may be that two cells could be equally valid as an instance of the cell and (b) the algorithm assumes that the cell is centred for the selection of regions. 
+There are several complications if the cell is not well centred: (a) there may be several cells and it may be that two cells could be equally valid as an instance of the cell and (b) the algorithm assumes that the cell is centred for the selection of regions.
 
 In addition, with respect to the top and bottom edges the following volumes are close to the edges:
 <pre class="codeinput">
@@ -471,15 +478,15 @@ When the cells are not vertically centred as those previously mentioned, it is p
 [Hela_nuclei,Hela_background]  = segmentNucleiHelaEM_3D(listFolders{k},(final_centroid(30,3)-final_coords(30,5)));
 [Hela_cell]                    = segmentCellHelaEM_3D(Hela_nuclei,Hela_background,[],(final_centroid(30,3)-final_coords(30,5)));
 </pre>
-  
+
 The second and fourth parameters (final_centroid(30,3)-final_coords(30,5)) indicate that the cell is not vertically centred and should be processed from that location.
 
 
-The results are quite good when the cell is surrounded by background and cautious when there are cells close to each other. The figure below shows  a comparison  between  ground  truth  and  segmentation. Left column  shows GT (green for nucleus) and cell (red). Centre column shows segmentation. Right shows comparison between GT and the results with FP in white, FN in black and both TP and TN in gray. 
+The results are quite good when the cell is surrounded by background and cautious when there are cells close to each other. The figure below shows  a comparison  between  ground  truth  and  segmentation. Left column  shows GT (green for nucleus) and cell (red). Centre column shows segmentation. Right shows comparison between GT and the results with FP in white, FN in black and both TP and TN in gray.
 
 <img src="Figures/Fig6.png" alt="Fig6" width="600"/>
 
-Four  examples  of  volumetric  reconstruction  of  the  nuclear  envelope  and  the  cellmembrane of HeLa cells. In all cases, each row corresponds to a single cell observed from different view points. Left and centre columns show the cell membrane with transparency. Right column the cell membrane without transparency from the same view point as centre column. 
+Four  examples  of  volumetric  reconstruction  of  the  nuclear  envelope  and  the  cellmembrane of HeLa cells. In all cases, each row corresponds to a single cell observed from different view points. Left and centre columns show the cell membrane with transparency. Right column the cell membrane without transparency from the same view point as centre column.
 
 
 
@@ -498,6 +505,3 @@ Illustration of segmentation of 23 cells and nuclear envelopes. The cells were s
 Illustration of the nuclei only.
 
 <img src="Figures/Hela8000_video_3c.gif" alt="animation" width="600"/>
-
-
-
