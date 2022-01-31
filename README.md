@@ -80,7 +80,7 @@ All the data is available.
 Data sets produced with this code are hosted in a parallel repository:
 <br>
 
-https://github.com/reyesaldasoro/Hela-Cell-Data
+https://github.com/reyesaldasoro/Hela_Cell_Data
 <br>
 
 
