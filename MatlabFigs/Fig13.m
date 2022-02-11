@@ -7,7 +7,9 @@ baseDir             = 'C:\Users\sbbk034\Documents\Acad\Crick\Hela8000_tiff\';
 dirTiffs            = dir(strcat(baseDir,filesep,'*.tif*'));
 numTiffs            = size(dirTiffs,1);   
 %% Folder with the saved segmentations
-dir0                = 'C:\Users\sbbk034\OneDrive - City, University of London\Documents\GitHub\HeLa-Cell-Segmentation\Code';
+%dir0                = 'C:\Users\sbbk034\OneDrive - City, University of London\Documents\GitHub\HeLa-Cell-Segmentation\Code';
+dir0                = 'C:\Users\sbbk034\OneDrive - City, University of London\Documents\GitHub\HeLa_Cell_Data\Matlab';
+
 dir_nuclei          = dir(strcat(dir0,filesep,'Hela_RO*_Nu*.mat'));
 dir_cell            = dir(strcat(dir0,filesep,'Hela_RO*_Ce*.mat'));
 numFiles_nuc        = size(dir_nuclei,1);
@@ -16,11 +18,11 @@ numFiles_cell       = size(dir_cell,1);
 %% Prepare for 3D display 
 cd('C:\Users\sbbk034\OneDrive - City, University of London\Documents\GitHub\HeLa-Cell-Segmentation\Code')
 load('final_coords.mat')
-load(dir_nuclei(3).name)
+load(strcat(dir0,filesep,dir_nuclei(3).name))
 %%
  figure
  fontsize=11;
-for SliceToRead             = 60:90:330
+for SliceToRead             = 330  %60:90:330
     currSlice               = imfilter(imread(strcat(baseDir,filesep,dirTiffs(SliceToRead).name)),ones(3)/9);
     [rowsWhole,colsWhole]   = size(currSlice);
     
@@ -37,8 +39,8 @@ for SliceToRead             = 60:90:330
         disp(strcat(num2str(SliceToRead),'-',num2str(currCell)))
         
         if (SliceToRead>=final_coords(currCell,5))&&(SliceToRead<=final_coords(currCell,6))
-            load(dir_nuclei(k).name);
-            load(dir_cell(k).name);
+            load(strcat(dir0,filesep,dir_nuclei(k).name));
+            load(strcat(dir0,filesep,dir_cell(k).name));
             rr              = final_coords(currCell,1):final_coords(currCell,2);
             cc              = final_coords(currCell,3):final_coords(currCell,4);
             nuclSlice       = Hela_nuclei(:,:,1+SliceToRead-final_coords(currCell,5));
