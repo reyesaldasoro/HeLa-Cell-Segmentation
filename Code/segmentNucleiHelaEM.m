@@ -202,13 +202,15 @@ if ~exist('previousSegmentation','var')
     
     % Second chance for larger regions, REALLY CLOSE to central region
     Nuclei_DistFromCentral                               = bwdist(Nuclei_3);
-    Nuclei_2C = regionprops(Nuclei_1,Nuclei_DistFromCentral,'Area','MinIntensity','MeanIntensity','MaxIntensity','Centroid');
+    Nuclei_2C = regionprops(Nuclei_1,Nuclei_DistFromCentral,'Area','MinIntensity','MeanIntensity','MaxIntensity','Centroid','Solidity');
     Nuclei_2C(posCentroid).MinIntensity = inf;
-    % select the region which is closest to previous nuclei 
-    [minCentroid,posCentroid]   = min([Nuclei_2C.MinIntensity]);
-    posCentroid2 = find(( [Nuclei_2C.Area]>50000)& ([Nuclei_2C.MinIntensity]<30));
+    % select the regions that satisfy
+    %  A Being close to previous detected nuclei d< 30 and furthest point <300
+    %  B Large area >50000
+    %  C High solidity to avoid regions that are very dispersed 
+    posCentroid2 = find(([Nuclei_2C.Area]>50000)& ([Nuclei_2C.MinIntensity]<30)& ([Nuclei_2C.MaxIntensity]<300)& ([Nuclei_2C.Solidity]>0.6));
     if ~isempty(posCentroid2)
-        Nuclei_3                    = Nuclei_3 +(Nuclei_1==posCentroid2);
+        Nuclei_3                    = Nuclei_3 +ismember(Nuclei_1,posCentroid2);
     end
     
 else
