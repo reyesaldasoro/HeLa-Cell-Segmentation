@@ -199,6 +199,18 @@ if ~exist('previousSegmentation','var')
     % select the region which is closest to rows/2, cols/2
     [minCentroid,posCentroid]   = min([Nuclei_2B.MinIntensity]);    
     Nuclei_3                    = (Nuclei_1==posCentroid);
+    
+    % Second chance for larger regions, REALLY CLOSE to central region
+    Nuclei_DistFromCentral                               = bwdist(Nuclei_3);
+    Nuclei_2C = regionprops(Nuclei_1,Nuclei_DistFromCentral,'Area','MinIntensity','MeanIntensity','MaxIntensity','Centroid');
+    Nuclei_2C(posCentroid).MinIntensity = inf;
+    % select the region which is closest to previous nuclei 
+    [minCentroid,posCentroid]   = min([Nuclei_2C.MinIntensity]);
+    posCentroid2 = find(( [Nuclei_2C.Area]>50000)& ([Nuclei_2C.MinIntensity]<30));
+    if ~isempty(posCentroid2)
+        Nuclei_3                    = Nuclei_3 +(Nuclei_1==posCentroid2);
+    end
+    
 else
     % If a previous segmentation exists, keep only those regions that are in contact
     % with the segmentation, as the segmentations are going up and down, it is
@@ -219,6 +231,10 @@ else
         Nuclei_1F = Nuclei_1;
     end
     Nuclei_3                    = imfill((Nuclei_1F),'holes');
+    
+    
+    
+    
 end
 
 %% Obtain a distance transform to calculate the intensities of increasingly distant lines
